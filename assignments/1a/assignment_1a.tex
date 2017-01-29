@@ -1,0 +1,76 @@
+\documentclass[english,a4paper,12pt,twoside]{article}
+
+\usepackage[T1]{fontenc}
+
+% UTF-8 support
+\usepackage{ucs} % provides utf8x input encoding
+\usepackage[utf8x]{inputenc}
+
+% language and regional settings
+\usepackage[icelandic,english]{babel}
+
+% smaller margins
+\usepackage[margin=2cm, bottom=2.8cm]{geometry}
+
+\usepackage{pdflscape}
+
+\usepackage{fancyhdr}
+\pagestyle{fancyplain}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0cm}
+\headheight 31pt
+
+\lhead{\small Software Development\\HBV401G}
+\chead{\large Assignment 1a\\\normalsize Team 8H}
+\rhead{\small hths17@hi.is, rak4@hi.is\\ vab18@hi.is}
+
+\title{
+  \Large HBV401G Software Development\\
+  \Huge Assignment 1a\\
+  Team 8H
+}
+\author{
+  Hannes Þór Sveinbjörnsson (hths17@hi.is)\\
+  Ragnheiður Ásta Karlsdóttir (rak4@hi.is)\\
+  Viktor Alex Brynjarsson (vab18@hi.is)\\
+}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\clearpage
+\setcounter{page}{1}
+\newpage
+\pagenumbering{arabic}
+\cfoot{\thepage}
+
+\subsubsection*{Search}
+\begin{itemize}
+  \item As a user, I want to find a hotel by name so that I can find available rooms in that hotel.
+  \item As a user, I want to find hotel rooms by location so that my search results all fit my geographical needs.
+  \item As a user, I want to find hotel rooms by availability (dates and length of stay) so that I know the search results are available at the time I will need a room.
+  \item As a user, I want to filter my search results by price so that I can find a hotel room in my price range.
+  \item As a user, I want to filter my search results by hotel rating so that I can find a hotel room which is up to standard.
+  \item As a user, I want to filter my search results by the number of beds so that I can find a room with adequate accommodation.
+  \item As a user, I want to filter my search results by the type of bed so that I can find a room with the bed of my preference.
+  \item As a user, I want to filter my search results by amenities (WIFI, breakfast included, 24/7 reception, room service, etc.) so that so that the search results will reflect my needs.
+\end{itemize}
+
+\subsubsection*{Viewing hotels}
+\begin{itemize}
+  \item As a user, I want to see details of the types of rooms in a specific hotel so that I know that the rooms available fit my needs.
+  \item As a user, I want to be able to see the availability of rooms in a specific hotel so that I know that I can book the rooms I require.
+  \item As a user, I want to see the location of the hotel on a map so that I can verify that it is in the location I am satisfied with.
+  \item As a user, I want to see images of the hotel rooms and the hotel so that I can be assured of it's quality and that it fits my needs.
+  \item As a user, I want to see reviews and ratings of the hotel by other guests so that I can be asassured of it's quality and that it fits my needs.
+  \item As a user, I want to see the interest in a hotel (5 people have viewed this hotel in the last hour, only 4 rooms available at this time) so that I am more likely to book.
+\end{itemize}
+
+\subsubsection*{Booking a room}
+\begin{itemize}
+  \item As a user, I want to book rooms (one or more) in a specific hotel for a certain number of nights at a certain date so that I know I have rooms available to me when I come to stay.
+  \item As a user, I want to be able to pay for my stay in advance so that I don't have to worry when I get there.
+\end{itemize}
+
+\end{document}
