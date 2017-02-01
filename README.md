@@ -24,3 +24,6 @@ Assignments and final product for Þróun Hugbúnaðar 2017 for group 8H
   - Umsagnir
   - Gerðir herbergja
   - Eftirsókn (fj. sem hafa skoðað s.l. klukkutíma)
+
+## For planning poker we can user
+(http://www.planitpoker.com)
