@@ -16,7 +16,7 @@
   - As a user, I want to see the interest in a hotel (5 people have viewed this hotel in the last hour, only 4 rooms available at this time) so that I am more likely to book.
   - As a user, I want to book rooms (one or more) in a specific hotel for a certain number of nights at a certain date so that I know I have a booked room(s) when I arrive.
   - As a user, I want to be able to pay for my stay in advance so that I don't have to worry when I get there.
-  - As a hotel director I want to be change the location information of my hotel so that the customer get correct information.
+  - As a hotel director I want to change the location information of my hotel so that the customer gets correct information.
   - As a hotel director I want to be able to add new room types and specify how many rooms of that type are available so that I can enable booking of new rooms.
   - As a hotel director I want to see the profitability of the rooms in my hotel so I can know whether I need to change any of my rooms' types (eg. twin bed into single bed).
   - As a marketing executive I want to be able to see a heat map of interest in hotel rooms on top of a map of a city so that I can see where to open new businesses aimed at tourists.
