@@ -1,5 +1,6 @@
 package is.hi.hbv402g.hotel.models;
 
-public class Room {
+public class Room
+{
 
 }
