@@ -7,10 +7,10 @@ import java.sql.SQLException;
 public class Database
 {
 
-    private static final String databaseString = "jdbc:sqlite:hotel.db";
+	private static final String databaseString = "jdbc:sqlite:hotel.db";
 
-    public static Connection getConnection() throws SQLException
-    {
-	return DriverManager.getConnection(databaseString);
-    }
+	public static Connection getConnection() throws SQLException
+	{
+		return DriverManager.getConnection(databaseString);
+	}
 }
