@@ -26,7 +26,8 @@ public class TestClass
 			}
 
 			return ids;
-		} catch (SQLException exc)
+		}
+		catch (SQLException exc)
 		{
 			System.out.println(exc.getMessage());
 			return null;

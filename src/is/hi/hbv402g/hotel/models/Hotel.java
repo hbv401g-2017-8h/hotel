@@ -44,7 +44,8 @@ public class Hotel
 			}
 
 			return hotel;
-		} catch (SQLException exc)
+		}
+		catch (SQLException exc)
 		{
 			System.out.println(exc.getMessage());
 			return null;
