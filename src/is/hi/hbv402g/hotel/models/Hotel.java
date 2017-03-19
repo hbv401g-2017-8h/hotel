@@ -4,12 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import is.hi.hbv402g.hotel.db.Database;
 
 public class Hotel
 {
 
+	private int id;
 	private String[] images;
 	private String[] amenities;
 	private String name;
@@ -18,8 +20,8 @@ public class Hotel
 	private String postalCode;
 	private String country;
 	private int starCount;
-	private Review[] reviews;
-	private Room[] rooms;
+	private ArrayList<Review> reviews;
+	private ArrayList<Room> rooms;
 
 	public static Hotel getHotelById(int id)
 	{
@@ -27,7 +29,7 @@ public class Hotel
 		{
 			Connection connection = Database.getConnection();
 			PreparedStatement statement = connection.prepareStatement(
-					"SELECT name, streetAddress, city, postalCode, country, starCount FROM hotel WHERE id = ?");
+					"SELECT name, streetAddress, city, postalCode, country, starCount FROM Hotel WHERE id = ?");
 			statement.setInt(1, id);
 
 			ResultSet results = statement.executeQuery();
@@ -35,6 +37,7 @@ public class Hotel
 			Hotel hotel = new Hotel();
 			if (results.next())
 			{
+				hotel.id = id;
 				hotel.setName(results.getString("name"));
 				hotel.setStreetAddress(results.getString("streetAddress"));
 				hotel.setCity(results.getString("city"));
@@ -132,24 +135,24 @@ public class Hotel
 		this.starCount = starCount;
 	}
 
-	public Review[] getReviews()
+	public ArrayList<Review> getReviews()
 	{
 		return reviews;
 	}
 
-	public void setReviews(Review[] reviews)
+	public void setReviews(ArrayList<Review> reviews)
 	{
 		this.reviews = reviews;
 	}
 
-	public Room[] getRooms()
+	public ArrayList<Room> getRooms()
 	{
-		// if (this.rooms == null)
-		// this.rooms = Room.getRoomsByHotel(this);
+		if (this.rooms == null)
+			this.rooms = Room.getRoomsByHotel(this);
 		return rooms;
 	}
 
-	public void setRooms(Room[] rooms)
+	public void setRooms(ArrayList<Room> rooms)
 	{
 		this.rooms = rooms;
 	}
@@ -160,4 +163,10 @@ public class Hotel
 				+ ",postalCode=" + this.getPostalCode() + ",country=" + this.getCountry() + ",starCount="
 				+ this.getStarCount() + "]";
 	}
+
+	public int getId()
+	{
+		return id;
+	}
+
 }
