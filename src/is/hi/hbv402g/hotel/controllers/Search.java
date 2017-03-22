@@ -5,6 +5,7 @@ import is.hi.hbv402g.hotel.models.Room;
 
 public class Search
 {
+	//private IDatabaseManager db;
 	private ArrayList<Room> availableRooms;
 	private String hotelName;
 	

@@ -10,7 +10,6 @@ import is.hi.hbv402g.hotel.db.Database;
 
 public class Hotel
 {
-
 	private int id;
 	private String[] images;
 	private String[] amenities;
