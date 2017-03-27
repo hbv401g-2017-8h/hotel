@@ -102,5 +102,58 @@ public class SearchTest
 		assertTrue("Could not find exact match", exactMatch);
 		assertTrue("Could not find greater set", greaterSet);
 	}
+	
+	@Test
+	public void testFilterByPriceRange()
+	{
+		// This test checks if amenities filter works correctly
+		
+		// Set up test data
+		
+		ArrayList<Room> rooms = new ArrayList<>();
+		
+		int lowPrice = 0;
+		int mediumPrice = 7000;
+		int highPrice = 20000;
+		
+		rooms.add(new Room(1) {{
+			setCostPerNight(lowPrice);
+		}});
+		
+		rooms.add(new Room(2) {{
+			setCostPerNight(mediumPrice);
+		}});
+		
+		rooms.add(new Room(3) {{
+			setCostPerNight(highPrice);
+		}});
+		
+		
+		
+		MockDataManager mdm = new MockDataManager(rooms);
+		Search search = new Search(mdm);
+		
+		// Perform actions to be tested
+		search.find(null, null, null, null);
+		Integer min = 5000;
+		Integer max = 10000;
+		search.setPriceRange(min, max);
+		ArrayList<Room> filteredRooms = search.filter();
+		
+		// Check results
+		assertNotNull(filteredRooms);
+		assertEquals(1, filteredRooms.size());
+		
+		
+		boolean exactMatch = false;
+		
+		for (Room r : filteredRooms)
+		{
+			if (r.getId() == 2)
+				exactMatch = true;
+		}
+		
+		assertTrue("Could not find exact match", exactMatch);
+	}
 
 }

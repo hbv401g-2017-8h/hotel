@@ -100,10 +100,15 @@ public class Search
 		this.maximumDoubleBeds = maximum;
 	}
 
-	public void setPriceRange(int minimum, int maximum)
+	public void setPriceRange(Integer minimum, Integer maximum)
 	{
-		this.minimumPrice = minimum;
-		this.maximumPrice = maximum;
+		if(minimum < 0 || maximum < 0){
+			throw new IllegalArgumentException("Error: price range must be positive.");
+		}
+		else {
+			this.minimumPrice = minimum;
+			this.maximumPrice = maximum;
+		}
 	}
 
 	public void setStarCount(int minimum, int maximum)
