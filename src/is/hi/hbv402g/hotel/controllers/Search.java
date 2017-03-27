@@ -69,31 +69,36 @@ public class Search
 
 	public void addAmenity(String amenity)
 	{
-		this.amenities = amenities;
+		this.amenities.add(amenity);
 	}
 	
 	public void removeAmenity(String amenity)
 	{
+		this.amenities.remove(amenity); //alert if not completed?
 		
 	}
 
 	public void setNumberOfSingleBeds(int minimum, int maximum)
 	{
-		
+		this.minimumSingleBeds = minimum;
+		this.maximumSingleBeds = maximum;
 	}
 
 	public void setNumberOfDoubleBeds(int minimum, int maximum)
 	{
-		
+		this.minimumDoubleBeds = minimum;
+		this.maximumDoubleBeds = maximum;
 	}
 
 	public void setPriceRange(int minimum, int maximum)
 	{
-		
+		this.minimumPrice = minimum;
+		this.maximumPrice = maximum;
 	}
 
 	public void setStarCount(int minimum, int maximum)
 	{
+		this.minimumStarCount = minimumStarCount;
 		this.maximumStarCount = maximumStarCount;
 	}
 
