@@ -21,6 +21,16 @@ public class Hotel
 	private int starCount;
 	private ArrayList<Review> reviews;
 	private ArrayList<Room> rooms;
+	
+	public Hotel()
+	{
+		
+	}
+	
+	public Hotel(int id)
+	{
+		this.id = id;
+	}
 
 	public static Hotel getHotelById(int id)
 	{

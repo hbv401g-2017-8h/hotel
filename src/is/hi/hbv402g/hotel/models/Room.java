@@ -17,6 +17,16 @@ public class Room
 	private Hotel hotel;
 	private int hotelId;
 	private int costPerNight;
+	
+	public Room()
+	{
+		
+	}
+	
+	public Room(int id)
+	{
+		this.id = id;
+	}
 
 	public int getNumberOfSingleBeds()
 	{
@@ -78,7 +88,8 @@ public class Room
 
 	public String toString()
 	{
-		return "[Room hotel=" + this.hotelId + 
+		return "[Room id=" + this.id +
+				", hotel=" + this.hotelId + 
 				", costPerNight=" + this.getCostPerNight() +
 				", enSuiteBathroom=" + this.getEnSuiteBathroom() + 
 				", numberOfSingleBeds=" + this.getNumberOfSingleBeds() +
