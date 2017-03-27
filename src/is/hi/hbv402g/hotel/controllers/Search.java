@@ -19,16 +19,16 @@ public class Search
 	private Date availabilityFrom;
 	private Date availabilityTo;
 	private ArrayList<String> amenities;
-	private int minimumSingleBeds;
-	private int maximumSingleBeds;
-	private int minimumDoubleBeds;
-	private int maximumDoubleBeds;
-	private int minimumPrice;
-	private int maximumPrice;
-	private int minimumStarCount;
-	private int maximumStarCount;
-	private int enSuiteBathroom;
-	private boolean attributesChanged;
+	private Integer minimumSingleBeds;
+	private Integer maximumSingleBeds;
+	private Integer minimumDoubleBeds;
+	private Integer maximumDoubleBeds;
+	private Integer minimumPrice;
+	private Integer maximumPrice;
+	private Integer minimumStarCount;
+	private Integer maximumStarCount;
+	private Integer enSuiteBathroom;
+	private Boolean attributesChanged;
 	
 	public Search(IDataManager db)
 	{
