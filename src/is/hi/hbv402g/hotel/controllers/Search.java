@@ -32,6 +32,79 @@ public class Search
 	{
 		this.hotelName = name;
 	}
+	//	public ArrayList<>
 	
-//	public ArrayList<>
+	public void setAvailabilityFrom(Date availabilityFrom)
+	{
+		this.availabilityFrom = availabilityFrom;
+	}
+
+	public void setAvailabilityTo(Date availabilityTo)
+	{
+		this.availabilityTo = availabilityTo;
+	}
+
+	public void setHotelStreetAddress(String hotelStreetAddress)
+	{
+		this.hotelStreetAddress = hotelStreetAddress;
+	}
+
+	public void setHotelCity(String hotelCity)
+	{
+		this.hotelCity = hotelCity;
+	}
+
+	public void setHotelPostalCode(String hotelPostalCode)
+	{
+		this.hotelPostalCode = hotelPostalCode;
+	}
+
+	public void setHotelCountry(String hotelCountry)
+	{
+		this.hotelCountry = hotelCountry;
+	}
+
+	
+
+	public void addAmenity(String amenity)
+	{
+		this.amenities = amenities;
+	}
+	
+	public void removeAmenity(String amenity)
+	{
+		
+	}
+
+	public void setNumberOfSingleBeds(int minimum, int maximum)
+	{
+		
+	}
+
+	public void setNumberOfDoubleBeds(int minimum, int maximum)
+	{
+		
+	}
+
+	public void setPriceRange(int minimum, int maximum)
+	{
+		
+	}
+
+	public void setStarCount(int minimum, int maximum)
+	{
+		this.maximumStarCount = maximumStarCount;
+	}
+
+	public void setEnSuiteBathroom(int enSuiteBathroom)
+	{
+		this.enSuiteBathroom = enSuiteBathroom;
+	}
+
+	public void setAttributesChanged(boolean attributesChanged)
+	{
+		this.attributesChanged = attributesChanged;
+	}
+	
+
 }
