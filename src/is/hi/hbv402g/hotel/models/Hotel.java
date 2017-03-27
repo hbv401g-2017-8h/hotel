@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class Hotel
 {
 	private int id;
-	private String[] images;
-	private String[] amenities;
+	private ArrayList<String> images;
+	private ArrayList<String> amenities;
 	private String name;
 	private String streetAddress;
 	private String city;
@@ -26,22 +26,22 @@ public class Hotel
 		this.id = id;
 	}
 
-	public String[] getImages()
+	public ArrayList<String> getImages()
 	{
 		return images;
 	}
 
-	public void setImages(String[] images)
+	public void setImages(ArrayList<String> images)
 	{
 		this.images = images;
 	}
 
-	public String[] getAmenities()
+	public ArrayList<String> getAmenities()
 	{
 		return amenities;
 	}
 
-	public void setAmenities(String[] amenities)
+	public void setAmenities(ArrayList<String> amenities)
 	{
 		this.amenities = amenities;
 	}

@@ -75,11 +75,15 @@ public class Search
 
 	public void addAmenity(String amenity)
 	{
+		if (this.amenities == null)
+			this.amenities = new ArrayList<>();
 		this.amenities.add(amenity);
 	}
 	
 	public void removeAmenity(String amenity)
 	{
+		if (this.amenities == null)
+			this.amenities = new ArrayList<>();
 		this.amenities.remove(amenity); //alert if not completed?
 		
 	}
@@ -122,5 +126,33 @@ public class Search
 	{
 		this.availableRooms = db.findHotelRooms(hotelName, location, availabilityFrom, availabilityTo); 
 		return availableRooms;
+	}
+	
+	public ArrayList<Room> filter()
+	{
+		ArrayList<Room> rooms = this.availableRooms;
+		
+		rooms = filterAmenities(rooms);
+		
+		this.filteredRooms = rooms;
+		return rooms;
+	}
+	
+	private ArrayList<Room> filterAmenities(ArrayList<Room> rooms)
+	{
+		if (this.amenities.size() == 0 && this.amenities == null)
+			return rooms;
+		
+		ArrayList<Room> filteredRooms = new ArrayList<>();
+		
+		for (Room r : rooms)
+		{
+			if (r.getHotel().getAmenities().containsAll(this.amenities))
+			{
+				filteredRooms.add(r);
+			}
+		}
+		
+		return filteredRooms;
 	}
 }
