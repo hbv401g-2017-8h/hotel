@@ -1,13 +1,5 @@
 package is.hi.hbv402g.hotel.models;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
-import is.hi.hbv402g.hotel.db.Database;
-
 public class Room
 {
 	private int id;
@@ -60,8 +52,6 @@ public class Room
 
 	public Hotel getHotel()
 	{
-		if(hotel == null)
-			hotel = Hotel.getHotelById(hotelId);
 		return hotel;
 	}
 
@@ -96,38 +86,4 @@ public class Room
 				", numberOfDoubleBeds=" + this.getNumberOfDoubleBeds() + "]";
 	}
 
-	public static ArrayList<Room> getRoomsByHotel(Hotel hotel)
-	{
-		try
-		{
-			Connection connection = Database.getConnection();
-			PreparedStatement statement = connection.prepareStatement(
-					"SELECT id, numSingleBeds, numDoubleBeds, bathroom, costPerNight FROM Room WHERE hotelId = ?");
-			statement.setInt(1, hotel.getId());
-
-			ResultSet results = statement.executeQuery();
-			
-			ArrayList<Room> rooms = new ArrayList<>();
-			
-			while (results.next() == true)
-			{
-				Room room = new Room();
-				room.id = results.getInt("id");
-				room.hotelId = hotel.getId();
-				room.setHotel(hotel);
-				room.setCostPerNight(results.getInt("costPerNight"));
-				room.setEnSuiteBathroom(results.getBoolean("bathroom"));
-				room.setNumberOfSingleBeds(results.getInt("numSingleBeds"));
-				room.setNumberOfDoubleBeds(results.getInt("numDoubleBeds"));
-				rooms.add(room);
-			}
-			
-			return rooms;
-		}
-		catch (SQLException exc)
-		{
-			System.out.println(exc.getMessage());
-			return null;
-		}
-	}
 }

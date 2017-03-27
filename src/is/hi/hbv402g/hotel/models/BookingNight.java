@@ -31,7 +31,6 @@ public class BookingNight
 
 	public ArrayList<BookingNight> getAssociatedBookings()
 	{
-		// TODO: fetch the associated bookings from database
 		return associatedBookings;
 	}
 
@@ -47,8 +46,6 @@ public class BookingNight
 
 	public Guest getGuest()
 	{
-		if (guest == null)
-			guest = Guest.getGuestById(guestId);
 		return guest;
 	}
 
