@@ -156,4 +156,367 @@ public class SearchTest
 		assertTrue("Could not find exact match", exactMatch);
 	}
 
+	@Test
+	public void testFilterAnySingleBeds()
+	{
+		// This test checks to that the mock data manager returns the list of rooms
+
+		// Set up test data
+		ArrayList<Room> rooms = new ArrayList<>();
+		
+		rooms.add(new Room(1) {{
+			setNumberOfSingleBeds(1);
+		}});
+		rooms.add(new Room(2) {{
+			setNumberOfSingleBeds(2);
+		}});
+		rooms.add(new Room(3) {{
+			setNumberOfSingleBeds(3);
+		}});
+		
+		MockDataManager mdm = new MockDataManager(rooms);
+		Search search = new Search(mdm);
+
+		// Perform actions to be tested
+		search.find(null, null, null, null);
+		search.setNumberOfSingleBeds(null, null);
+		ArrayList<Room> filteredRooms = search.filter();
+
+		// Check results
+		assertNotNull(filteredRooms);
+		assertEquals(3, filteredRooms.size());
+		
+		boolean oneBed = false;
+		boolean twoBed = false;
+		boolean threeBed = false;
+		
+		for (Room r : filteredRooms)
+		{
+			if (r.getId() == 1)
+				oneBed = true;
+			if (r.getId() == 2)
+				twoBed = true;
+			if (r.getId() == 3)
+				threeBed = true;
+		}
+		
+		assertTrue("Could not find one bed room", oneBed);
+		assertTrue("Could not find two bed room", twoBed);
+		assertTrue("Could not find three bed room", threeBed);
+	}
+
+	@Test
+	public void testFilterMinimumSingleBeds()
+	{
+		// This test checks to that the mock data manager returns the list of rooms
+
+		// Set up test data
+		ArrayList<Room> rooms = new ArrayList<>();
+		
+		rooms.add(new Room(1) {{
+			setNumberOfSingleBeds(1);
+		}});
+		rooms.add(new Room(2) {{
+			setNumberOfSingleBeds(2);
+		}});
+		rooms.add(new Room(3) {{
+			setNumberOfSingleBeds(3);
+		}});
+		
+		MockDataManager mdm = new MockDataManager(rooms);
+		Search search = new Search(mdm);
+
+		// Perform actions to be tested
+		search.find(null, null, null, null);
+		search.setNumberOfSingleBeds(2, null);
+		ArrayList<Room> filteredRooms = search.filter();
+
+		// Check results
+		assertNotNull(filteredRooms);
+		assertEquals(2, filteredRooms.size());
+		
+		boolean twoBed = false;
+		boolean threeBed = false;
+		
+		for (Room r : filteredRooms)
+		{
+			if (r.getId() == 2)
+				twoBed = true;
+			if (r.getId() == 3)
+				threeBed = true;
+		}
+		
+		assertTrue("Could not find two bed room", twoBed);
+		assertTrue("Could not find three bed room", threeBed);
+	}
+
+	@Test
+	public void testFilterMaximumSingleBeds()
+	{
+		// This test checks to that the mock data manager returns the list of rooms
+
+		// Set up test data
+		ArrayList<Room> rooms = new ArrayList<>();
+		
+		rooms.add(new Room(1) {{
+			setNumberOfSingleBeds(1);
+		}});
+		rooms.add(new Room(2) {{
+			setNumberOfSingleBeds(2);
+		}});
+		rooms.add(new Room(3) {{
+			setNumberOfSingleBeds(3);
+		}});
+		
+		MockDataManager mdm = new MockDataManager(rooms);
+		Search search = new Search(mdm);
+
+		// Perform actions to be tested
+		search.find(null, null, null, null);
+		search.setNumberOfSingleBeds(null, 2);
+		ArrayList<Room> filteredRooms = search.filter();
+
+		// Check results
+		assertNotNull(filteredRooms);
+		assertEquals(2, filteredRooms.size());
+		
+		boolean oneBed = false;
+		boolean twoBed = false;
+		
+		for (Room r : filteredRooms)
+		{
+			if (r.getId() == 1)
+				oneBed = true;
+			if (r.getId() == 2)
+				twoBed = true;
+		}
+		
+		assertTrue("Could not find one bed room", oneBed);
+		assertTrue("Could not find two bed room", twoBed);
+	}
+	
+
+
+	@Test
+	public void testFilterMinimumMaximumSingleBeds()
+	{
+		// This test checks to that the mock data manager returns the list of rooms
+
+		// Set up test data
+		ArrayList<Room> rooms = new ArrayList<>();
+		
+		rooms.add(new Room(1) {{
+			setNumberOfSingleBeds(10);
+		}});
+		rooms.add(new Room(2) {{
+			setNumberOfSingleBeds(20);
+		}});
+		rooms.add(new Room(3) {{
+			setNumberOfSingleBeds(30);
+		}});
+		
+		MockDataManager mdm = new MockDataManager(rooms);
+		Search search = new Search(mdm);
+
+		// Perform actions to be tested
+		search.find(null, null, null, null);
+		search.setNumberOfSingleBeds(15, 25);
+		ArrayList<Room> filteredRooms = search.filter();
+
+		// Check results
+		assertNotNull(filteredRooms);
+		assertEquals(1, filteredRooms.size());
+		
+		boolean twentyBed = false;
+		
+		for (Room r : filteredRooms)
+		{
+			if (r.getId() == 2)
+				twentyBed = true;
+		}
+		
+		assertTrue("Could not find twenty bed room", twentyBed);
+	}
+
+	@Test
+	public void testFilterAnyDoubleBeds()
+	{
+		// This test checks to that the mock data manager returns the list of rooms
+
+		// Set up test data
+		ArrayList<Room> rooms = new ArrayList<>();
+		
+		rooms.add(new Room(1) {{
+			setNumberOfDoubleBeds(1);
+		}});
+		rooms.add(new Room(2) {{
+			setNumberOfDoubleBeds(2);
+		}});
+		rooms.add(new Room(3) {{
+			setNumberOfDoubleBeds(3);
+		}});
+		
+		MockDataManager mdm = new MockDataManager(rooms);
+		Search search = new Search(mdm);
+
+		// Perform actions to be tested
+		search.find(null, null, null, null);
+		search.setNumberOfDoubleBeds(null, null);
+		ArrayList<Room> filteredRooms = search.filter();
+
+		// Check results
+		assertNotNull(filteredRooms);
+		assertEquals(3, filteredRooms.size());
+		
+		boolean oneBed = false;
+		boolean twoBed = false;
+		boolean threeBed = false;
+		
+		for (Room r : filteredRooms)
+		{
+			if (r.getId() == 1)
+				oneBed = true;
+			if (r.getId() == 2)
+				twoBed = true;
+			if (r.getId() == 3)
+				threeBed = true;
+		}
+		
+		assertTrue("Could not find one bed room", oneBed);
+		assertTrue("Could not find two bed room", twoBed);
+		assertTrue("Could not find three bed room", threeBed);
+	}
+
+	@Test
+	public void testFilterMinimumDoubleBeds()
+	{
+		// This test checks to that the mock data manager returns the list of rooms
+
+		// Set up test data
+		ArrayList<Room> rooms = new ArrayList<>();
+		
+		rooms.add(new Room(1) {{
+			setNumberOfDoubleBeds(1);
+		}});
+		rooms.add(new Room(2) {{
+			setNumberOfDoubleBeds(2);
+		}});
+		rooms.add(new Room(3) {{
+			setNumberOfDoubleBeds(3);
+		}});
+		
+		MockDataManager mdm = new MockDataManager(rooms);
+		Search search = new Search(mdm);
+
+		// Perform actions to be tested
+		search.find(null, null, null, null);
+		search.setNumberOfDoubleBeds(2, null);
+		ArrayList<Room> filteredRooms = search.filter();
+
+		// Check results
+		assertNotNull(filteredRooms);
+		assertEquals(2, filteredRooms.size());
+		
+		boolean twoBed = false;
+		boolean threeBed = false;
+		
+		for (Room r : filteredRooms)
+		{
+			if (r.getId() == 2)
+				twoBed = true;
+			if (r.getId() == 3)
+				threeBed = true;
+		}
+		
+		assertTrue("Could not find two bed room", twoBed);
+		assertTrue("Could not find three bed room", threeBed);
+	}
+
+	@Test
+	public void testFilterMaximumDoubleBeds()
+	{
+		// This test checks to that the mock data manager returns the list of rooms
+
+		// Set up test data
+		ArrayList<Room> rooms = new ArrayList<>();
+		
+		rooms.add(new Room(1) {{
+			setNumberOfDoubleBeds(1);
+		}});
+		rooms.add(new Room(2) {{
+			setNumberOfDoubleBeds(2);
+		}});
+		rooms.add(new Room(3) {{
+			setNumberOfDoubleBeds(3);
+		}});
+		
+		MockDataManager mdm = new MockDataManager(rooms);
+		Search search = new Search(mdm);
+
+		// Perform actions to be tested
+		search.find(null, null, null, null);
+		search.setNumberOfDoubleBeds(null, 2);
+		ArrayList<Room> filteredRooms = search.filter();
+
+		// Check results
+		assertNotNull(filteredRooms);
+		assertEquals(2, filteredRooms.size());
+		
+		boolean oneBed = false;
+		boolean twoBed = false;
+		
+		for (Room r : filteredRooms)
+		{
+			if (r.getId() == 1)
+				oneBed = true;
+			if (r.getId() == 2)
+				twoBed = true;
+		}
+		
+		assertTrue("Could not find one bed room", oneBed);
+		assertTrue("Could not find two bed room", twoBed);
+	}
+	
+
+
+	@Test
+	public void testFilterMinimumMaximumDoubleBeds()
+	{
+		// This test checks to that the mock data manager returns the list of rooms
+
+		// Set up test data
+		ArrayList<Room> rooms = new ArrayList<>();
+		
+		rooms.add(new Room(1) {{
+			setNumberOfDoubleBeds(10);
+		}});
+		rooms.add(new Room(2) {{
+			setNumberOfDoubleBeds(20);
+		}});
+		rooms.add(new Room(3) {{
+			setNumberOfDoubleBeds(30);
+		}});
+		
+		MockDataManager mdm = new MockDataManager(rooms);
+		Search search = new Search(mdm);
+
+		// Perform actions to be tested
+		search.find(null, null, null, null);
+		search.setNumberOfDoubleBeds(15, 25);
+		ArrayList<Room> filteredRooms = search.filter();
+
+		// Check results
+		assertNotNull(filteredRooms);
+		assertEquals(1, filteredRooms.size());
+		
+		boolean twentyBed = false;
+		
+		for (Room r : filteredRooms)
+		{
+			if (r.getId() == 2)
+				twentyBed = true;
+		}
+		
+		assertTrue("Could not find twenty bed room", twentyBed);
+	}
 }

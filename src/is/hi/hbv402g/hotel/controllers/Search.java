@@ -88,13 +88,13 @@ public class Search
 		
 	}
 
-	public void setNumberOfSingleBeds(int minimum, int maximum)
+	public void setNumberOfSingleBeds(Integer minimum, Integer maximum)
 	{
 		this.minimumSingleBeds = minimum;
 		this.maximumSingleBeds = maximum;
 	}
 
-	public void setNumberOfDoubleBeds(int minimum, int maximum)
+	public void setNumberOfDoubleBeds(Integer minimum, Integer maximum)
 	{
 		this.minimumDoubleBeds = minimum;
 		this.maximumDoubleBeds = maximum;
@@ -139,13 +139,16 @@ public class Search
 		
 		rooms = filterAmenities(rooms);
 		
+		rooms = filterNumberOfSingleBeds(rooms);
+		rooms = filterNumberOfDoubleBeds(rooms);
+		
 		this.filteredRooms = rooms;
 		return rooms;
 	}
 	
 	private ArrayList<Room> filterAmenities(ArrayList<Room> rooms)
 	{
-		if (this.amenities.size() == 0 && this.amenities == null)
+		if (this.amenities == null || this.amenities.size() == 0)
 			return rooms;
 		
 		ArrayList<Room> filteredRooms = new ArrayList<>();
@@ -153,6 +156,44 @@ public class Search
 		for (Room r : rooms)
 		{
 			if (r.getHotel().getAmenities().containsAll(this.amenities))
+			{
+				filteredRooms.add(r);
+			}
+		}
+		
+		return filteredRooms;
+	}
+	
+	private ArrayList<Room> filterNumberOfSingleBeds(ArrayList<Room> rooms)
+	{
+		if (this.minimumSingleBeds == null && this.maximumSingleBeds == null)
+			return rooms;
+		
+		ArrayList<Room> filteredRooms = new ArrayList<>();
+		
+		for (Room r : rooms)
+		{
+			if ((this.minimumSingleBeds == null || r.getNumberOfSingleBeds() >= this.minimumSingleBeds) &&
+				(this.maximumSingleBeds == null || r.getNumberOfSingleBeds() <= this.maximumSingleBeds))
+			{
+				filteredRooms.add(r);
+			}
+		}
+		
+		return filteredRooms;
+	}
+	
+	private ArrayList<Room> filterNumberOfDoubleBeds(ArrayList<Room> rooms)
+	{
+		if (this.minimumDoubleBeds == null && this.maximumDoubleBeds == null)
+			return rooms;
+		
+		ArrayList<Room> filteredRooms = new ArrayList<>();
+		
+		for (Room r : rooms)
+		{
+			if ((this.minimumDoubleBeds == null || r.getNumberOfDoubleBeds() >= this.minimumDoubleBeds) &&
+				(this.maximumDoubleBeds == null || r.getNumberOfDoubleBeds() <= this.maximumDoubleBeds))
 			{
 				filteredRooms.add(r);
 			}
