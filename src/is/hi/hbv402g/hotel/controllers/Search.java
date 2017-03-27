@@ -3,11 +3,12 @@ package is.hi.hbv402g.hotel.controllers;
 import java.util.ArrayList;
 import java.util.Date;
 
+import is.hi.hbv402g.hotel.db.IDataManager;
 import is.hi.hbv402g.hotel.models.Room;
 
 public class Search
 {
-	//private IDatabaseManager db;
+	private IDataManager db;
 	private ArrayList<Room> availableRooms;
 	private ArrayList<Room> filteredRooms;
 	private String hotelName;
@@ -28,6 +29,11 @@ public class Search
 	private int maximumStarCount;
 	private int enSuiteBathroom;
 	private boolean attributesChanged;
+	
+	public Search(IDataManager db)
+	{
+		this.db = db;
+	}
 	
 	public void setHotelName(String name)
 	{
@@ -112,5 +118,9 @@ public class Search
 		this.attributesChanged = attributesChanged;
 	}
 	
-
+	public ArrayList<Room> find(String hotelName, String location, Date availabilityFrom, Date availabilityTo)
+	{
+		this.availableRooms = db.findHotelRooms(hotelName, location, availabilityFrom, availabilityTo); 
+		return availableRooms;
+	}
 }

@@ -8,20 +8,16 @@ import is.hi.hbv402g.hotel.models.Room;
 
 public class MockDataManager implements IDataManager
 {
+	private ArrayList<Room> rooms;
+	
+	public MockDataManager(ArrayList<Room> rooms)
+	{
+		this.rooms = rooms;
+	}
 
 	public ArrayList<Room> findHotelRooms(String hotelName, String location, Date availabilityFrom, Date availabilityTo)
 	{
-		Hotel hotel = new Hotel(666);
-		hotel.setName(hotelName);
-		
-		ArrayList<Room> rooms = new ArrayList<>();
-		
-		rooms.add(createRoom(1, 1, 0, false, 5000, hotel));
-		rooms.add(createRoom(2, 0, 1, true, 9000, hotel));
-		rooms.add(createRoom(3, 0, 2, false, 12000, hotel));
-		rooms.add(createRoom(4, 3, 3, true, 15000, hotel));
-		
-		return rooms;
+		return this.rooms;
 	}
 	
 	public static Room createRoom(int id, int numberOfSingleBeds,
