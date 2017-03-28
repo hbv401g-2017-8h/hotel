@@ -141,6 +141,7 @@ public class Search
 		
 		rooms = filterNumberOfSingleBeds(rooms);
 		rooms = filterNumberOfDoubleBeds(rooms);
+		rooms = filterByPrice(rooms);
 		
 		this.filteredRooms = rooms;
 		return rooms;
@@ -199,6 +200,23 @@ public class Search
 			}
 		}
 		
+		return filteredRooms;
+	}
+	
+	private ArrayList<Room> filterByPrice(ArrayList<Room> rooms)
+	{
+		if(this.minimumPrice == null || this.maximumPrice == null)
+			return rooms;
+		ArrayList<Room> filteredRooms = new ArrayList<>();
+		
+		for(Room r : rooms)
+		{
+			if((this.minimumPrice == null || r.getCostPerNight() >= this.minimumPrice) &&
+				(this.maximumPrice == null || r.getCostPerNight() <= this.maximumPrice))
+			{
+				filteredRooms.add(r);
+			}
+		}
 		return filteredRooms;
 	}
 }

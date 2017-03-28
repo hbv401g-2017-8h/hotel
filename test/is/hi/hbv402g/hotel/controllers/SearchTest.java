@@ -103,10 +103,36 @@ public class SearchTest
 		assertTrue("Could not find greater set", greaterSet);
 	}
 	
+	@Test(expected=IllegalArgumentException.class)
+	public void testNegativePriceRangeException()
+	{
+		// This test checks if  negative price range exception works correctly
+		
+		// Set up test data
+				
+		ArrayList<Room> rooms = new ArrayList<>();
+			
+		int price = 5000;
+				
+		rooms.add(new Room(1) {{
+			setCostPerNight(price);
+		}});
+				
+		MockDataManager mdm = new MockDataManager(rooms);
+		Search search = new Search(mdm);
+				
+		// Perform actions to be tested
+		search.find(null, null, null, null);
+		Integer min = -5000;
+		Integer max = 10000;
+		search.setPriceRange(min, max);
+		ArrayList<Room> filteredRooms = search.filter();
+	}
+	
 	@Test
 	public void testFilterByPriceRange()
 	{
-		// This test checks if amenities filter works correctly
+		// This test checks if price filter works correctly
 		
 		// Set up test data
 		
