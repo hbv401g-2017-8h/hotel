@@ -88,22 +88,27 @@ public class Search
 		
 	}
 
-	public void setNumberOfSingleBeds(int minimum, int maximum)
+	public void setNumberOfSingleBeds(Integer minimum, Integer maximum)
 	{
 		this.minimumSingleBeds = minimum;
 		this.maximumSingleBeds = maximum;
 	}
 
-	public void setNumberOfDoubleBeds(int minimum, int maximum)
+	public void setNumberOfDoubleBeds(Integer minimum, Integer maximum)
 	{
 		this.minimumDoubleBeds = minimum;
 		this.maximumDoubleBeds = maximum;
 	}
 
-	public void setPriceRange(int minimum, int maximum)
+	public void setPriceRange(Integer minimum, Integer maximum)
 	{
-		this.minimumPrice = minimum;
-		this.maximumPrice = maximum;
+		if(minimum < 0 || maximum < 0){
+			throw new IllegalArgumentException("Error: price range must be positive.");
+		}
+		else {
+			this.minimumPrice = minimum;
+			this.maximumPrice = maximum;
+		}
 	}
 
 	public void setStarCount(int minimum, int maximum)
@@ -134,13 +139,17 @@ public class Search
 		
 		rooms = filterAmenities(rooms);
 		
+		rooms = filterNumberOfSingleBeds(rooms);
+		rooms = filterNumberOfDoubleBeds(rooms);
+		rooms = filterByPrice(rooms);
+		
 		this.filteredRooms = rooms;
 		return rooms;
 	}
 	
 	private ArrayList<Room> filterAmenities(ArrayList<Room> rooms)
 	{
-		if (this.amenities.size() == 0 && this.amenities == null)
+		if (this.amenities == null || this.amenities.size() == 0)
 			return rooms;
 		
 		ArrayList<Room> filteredRooms = new ArrayList<>();
@@ -153,6 +162,61 @@ public class Search
 			}
 		}
 		
+		return filteredRooms;
+	}
+	
+	private ArrayList<Room> filterNumberOfSingleBeds(ArrayList<Room> rooms)
+	{
+		if (this.minimumSingleBeds == null && this.maximumSingleBeds == null)
+			return rooms;
+		
+		ArrayList<Room> filteredRooms = new ArrayList<>();
+		
+		for (Room r : rooms)
+		{
+			if ((this.minimumSingleBeds == null || r.getNumberOfSingleBeds() >= this.minimumSingleBeds) &&
+				(this.maximumSingleBeds == null || r.getNumberOfSingleBeds() <= this.maximumSingleBeds))
+			{
+				filteredRooms.add(r);
+			}
+		}
+		
+		return filteredRooms;
+	}
+	
+	private ArrayList<Room> filterNumberOfDoubleBeds(ArrayList<Room> rooms)
+	{
+		if (this.minimumDoubleBeds == null && this.maximumDoubleBeds == null)
+			return rooms;
+		
+		ArrayList<Room> filteredRooms = new ArrayList<>();
+		
+		for (Room r : rooms)
+		{
+			if ((this.minimumDoubleBeds == null || r.getNumberOfDoubleBeds() >= this.minimumDoubleBeds) &&
+				(this.maximumDoubleBeds == null || r.getNumberOfDoubleBeds() <= this.maximumDoubleBeds))
+			{
+				filteredRooms.add(r);
+			}
+		}
+		
+		return filteredRooms;
+	}
+	
+	private ArrayList<Room> filterByPrice(ArrayList<Room> rooms)
+	{
+		if(this.minimumPrice == null || this.maximumPrice == null)
+			return rooms;
+		ArrayList<Room> filteredRooms = new ArrayList<>();
+		
+		for(Room r : rooms)
+		{
+			if((this.minimumPrice == null || r.getCostPerNight() >= this.minimumPrice) &&
+				(this.maximumPrice == null || r.getCostPerNight() <= this.maximumPrice))
+			{
+				filteredRooms.add(r);
+			}
+		}
 		return filteredRooms;
 	}
 }
