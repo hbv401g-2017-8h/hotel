@@ -28,8 +28,8 @@ public class Search
 	private Integer maximumPrice;
 	private Integer minimumStarCount;
 	private Integer maximumStarCount;
-	private Integer enSuiteBathroom;
-	private Boolean attributesChanged;
+	private boolean enSuiteBathroom;
+	private boolean attributesChanged;
 
 	public Search(IDataManager db)
 	{
@@ -84,7 +84,6 @@ public class Search
 		if (this.amenities == null)
 			this.amenities = new ArrayList<>();
 		this.amenities.remove(amenity); // alert if not completed?
-
 	}
 
 	public void setNumberOfSingleBeds(Integer minimum, Integer maximum)
@@ -101,7 +100,7 @@ public class Search
 
 	public void setPriceRange(Integer minimum, Integer maximum)
 	{
-		if (minimum < 0 || maximum < 0)
+		if ((minimum != null && minimum < 0) || (maximum != null && maximum < 0))
 		{
 			throw new IllegalArgumentException("Error: price range must be positive.");
 		}
@@ -129,7 +128,7 @@ public class Search
 		}
 	}
 
-	public void setEnSuiteBathroom(int enSuiteBathroom)
+	public void setEnSuiteBathroom(boolean enSuiteBathroom)
 	{
 		this.enSuiteBathroom = enSuiteBathroom;
 	}
@@ -137,6 +136,11 @@ public class Search
 	public void setAttributesChanged(boolean attributesChanged)
 	{
 		this.attributesChanged = attributesChanged;
+	}
+
+	public ArrayList<Room> getFilteredRooms()
+	{
+		return filteredRooms;
 	}
 
 	public ArrayList<Room> find(String hotelName, String location, Date availabilityFrom, Date availabilityTo)
@@ -150,11 +154,11 @@ public class Search
 		ArrayList<Room> rooms = this.availableRooms;
 
 		rooms = filterAmenities(rooms);
-
 		rooms = filterNumberOfSingleBeds(rooms);
 		rooms = filterNumberOfDoubleBeds(rooms);
 		rooms = filterByPrice(rooms);
 		rooms = filterByStarCount(rooms);
+		rooms = filterByEnSuiteBathroom(rooms);
 
 		this.filteredRooms = rooms;
 		return rooms;
@@ -218,8 +222,9 @@ public class Search
 
 	private ArrayList<Room> filterByPrice(ArrayList<Room> rooms)
 	{
-		if (this.minimumPrice == null || this.maximumPrice == null)
+		if (this.minimumPrice == null && this.maximumPrice == null)
 			return rooms;
+		
 		ArrayList<Room> filteredRooms = new ArrayList<>();
 
 		for (Room r : rooms)
@@ -247,6 +252,23 @@ public class Search
 				filteredRooms.add(r);
 			}
 		}
+		return filteredRooms;
+	}
+
+	private ArrayList<Room> filterByEnSuiteBathroom(ArrayList<Room> rooms)
+	{
+		if (this.enSuiteBathroom == false)
+			return rooms;
+		
+		ArrayList<Room> filteredRooms = new ArrayList<>();
+		for (Room r : rooms)
+		{
+			if (r.getEnSuiteBathroom())
+			{
+				filteredRooms.add(r);
+			}
+		}
+
 		return filteredRooms;
 	}
 }

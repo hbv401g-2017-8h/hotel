@@ -133,14 +133,133 @@ public class SearchTest
 		search.setPriceRange(min, max);
 		ArrayList<Room> filteredRooms = search.filter();
 	}
+	
+	@Test
+	public void testFilterMinimumPrice()
+	{
+		// This test checks if price rooms filtered by minimum price only works correctly
+		
+		// Set up test data
+		ArrayList<Room> rooms = new ArrayList<>();
+		
+		rooms.add(new Room(1)
+		{
+			{
+				setCostPerNight(1000);
+			}
+		});
+		
+		rooms.add(new Room(2)
+		{
+			{
+				setCostPerNight(5000);
+			}
+		});
+		
+		rooms.add(new Room(3)
+		{
+			{
+				setCostPerNight(11000);
+			}
+		});
+
+		MockDataManager mdm = new MockDataManager(rooms);
+		Search search = new Search(mdm);
+
+		// Perform actions to be tested
+		search.find(null, null, null, null);
+		search.setPriceRange(3000, null);
+		ArrayList<Room> filteredRooms = search.filter();
+
+		// Check results
+		assertNotNull(filteredRooms);
+		assertEquals(2, filteredRooms.size());
+
+		boolean minPricedRoom = false;
+		boolean midPricedRoom = false;
+		boolean maxPricedRoom = false;
+
+		for (Room r : filteredRooms)
+		{
+			if (r.getId() == 1)
+				minPricedRoom = true;
+			if (r.getId() == 2)
+				midPricedRoom = true;
+			if (r.getId() == 3)
+				maxPricedRoom = true;
+		}
+
+		assertFalse("Found least expesive room", minPricedRoom);
+		assertTrue("Could not find medium priced room", midPricedRoom);
+		assertTrue("Could not find most expensive room", maxPricedRoom);
+	}
+	
+	@Test
+	public void testFilterMaximumPrice()
+	{
+		// This test checks if price rooms filtered by minimum price only works correctly
+		
+		// Set up test data
+		ArrayList<Room> rooms = new ArrayList<>();
+		
+		rooms.add(new Room(1)
+		{
+			{
+				setCostPerNight(1000);
+			}
+		});
+		
+		rooms.add(new Room(2)
+		{
+			{
+				setCostPerNight(5000);
+			}
+		});
+		
+		rooms.add(new Room(3)
+		{
+			{
+				setCostPerNight(11000);
+			}
+		});
+
+		MockDataManager mdm = new MockDataManager(rooms);
+		Search search = new Search(mdm);
+
+		// Perform actions to be tested
+		search.find(null, null, null, null);
+		search.setPriceRange(null, 7000);
+		ArrayList<Room> filteredRooms = search.filter();
+
+		// Check results
+		assertNotNull(filteredRooms);
+		assertEquals(2, filteredRooms.size());
+
+		boolean minPricedRoom = false;
+		boolean midPricedRoom = false;
+		boolean maxPricedRoom = false;
+
+		for (Room r : filteredRooms)
+		{
+			if (r.getId() == 1)
+				minPricedRoom = true;
+			if (r.getId() == 2)
+				midPricedRoom = true;
+			if (r.getId() == 3)
+				maxPricedRoom = true;
+		}
+
+		assertTrue("Could not find least expensive room", minPricedRoom);
+		assertTrue("Could not find medium priced room", midPricedRoom);
+		assertFalse("Found most expesive room", maxPricedRoom);
+	}
 
 	@Test
-	public void testFilterByPriceRange()
+	public void testFilterMinimumMaximumPrice()
 	{
 		// This test checks if price filter works correctly
 
 		// Set up test data
-
 		ArrayList<Room> rooms = new ArrayList<>();
 
 		int lowPrice = 0;
@@ -696,5 +815,54 @@ public class SearchTest
 		}
 
 		assertTrue("Could not find three star room", threeStars);
+	}
+	
+	@Test
+	public void testFilterEnSuiteBathrooms()
+	{
+		// This test checks that the mock data manager returns the list of
+		// rooms that have bathrooms
+
+		// Set up test data
+		ArrayList<Room> rooms = new ArrayList<>();
+
+		rooms.add(new Room(1)
+		{
+			{
+				setEnSuiteBathroom(true);
+			}
+		});
+		rooms.add(new Room(2)
+		{
+			{
+				setEnSuiteBathroom(false);
+			}
+		});
+
+		MockDataManager mdm = new MockDataManager(rooms);
+		Search search = new Search(mdm);
+
+		// Perform actions to be tested
+		search.find(null, null, null, null);
+		search.setEnSuiteBathroom(true);
+		ArrayList<Room> filteredRooms = search.filter();
+
+		// Check results
+		assertNotNull(filteredRooms);
+		assertEquals(1, filteredRooms.size());
+
+		boolean withBathroom = false;
+		boolean withoutBathroom = false;
+
+		for (Room r : filteredRooms)
+		{
+			if (r.getId() == 1)
+				withBathroom = true;
+			if (r.getId() == 2)
+				withoutBathroom = true;
+		}
+
+		assertTrue("Could not find room with bathroom", withBathroom);
+		assertFalse("Found room without bathroom", withoutBathroom);
 	}
 }
