@@ -54,7 +54,6 @@ public class SearchTest
 		// This test checks if amenities filter works correctly
 		
 		// Set up test data
-		
 		Hotel amenityLessHotel = new Hotel(1);
 		amenityLessHotel.setAmenities(new ArrayList<String>());
 		Room room1 = new Room(1);
@@ -101,6 +100,8 @@ public class SearchTest
 		
 		assertTrue("Could not find exact match", exactMatch);
 		assertTrue("Could not find greater set", greaterSet);
+		
+		
 	}
 
 }
