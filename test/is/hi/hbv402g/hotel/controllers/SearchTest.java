@@ -632,4 +632,69 @@ public class SearchTest
 
 		assertTrue("Could not find twenty bed room", twentyBed);
 	}
+	
+	@Test
+	public void testFilterByStarCount()
+	{
+		// This test checks if star count filter works
+
+		// Set up test data
+		ArrayList<Hotel> hotels = new ArrayList<>();
+		ArrayList<Room> rooms = new ArrayList<>();
+
+		int lowStarCount = 1;
+		int mediumStarCount = 3;
+		int highStarCount = 5;
+		
+		hotels.add(new Hotel(1)
+		{
+			{
+				setStarCount(lowStarCount);
+			}
+		});
+		hotels.add(new Hotel(2)
+		{
+			{
+				setStarCount(mediumStarCount);
+			}
+		});
+		hotels.add(new Hotel(3)
+		{
+			{
+				setStarCount(highStarCount);
+			}
+		});
+		
+		for(Hotel h : hotels)
+		{
+			rooms.add(new Room(h.getId())
+			{
+				{
+					setHotel(h);
+				}
+			});
+		}
+		
+		MockDataManager mdm = new MockDataManager(rooms);
+		Search search = new Search(mdm);
+		
+		// Perform actions to be tested
+		search.find(null, null, null, null);
+		search.setStarCount(2, 4);
+		ArrayList<Room> filteredRooms = search.filter();
+		
+		// Check results
+		assertNotNull(filteredRooms);
+		assertEquals(1, filteredRooms.size());
+
+		boolean threeStars = false;
+
+		for (Room r : filteredRooms)
+		{
+			if (r.getId() == 2)
+				threeStars = true;
+		}
+
+		assertTrue("Could not find three star room", threeStars);
+	}
 }

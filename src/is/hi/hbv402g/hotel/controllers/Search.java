@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import is.hi.hbv402g.hotel.db.IDataManager;
+import is.hi.hbv402g.hotel.models.Hotel;
 import is.hi.hbv402g.hotel.models.Room;
 
 public class Search
@@ -113,8 +114,19 @@ public class Search
 
 	public void setStarCount(int minimum, int maximum)
 	{
-		this.minimumStarCount = minimumStarCount;
-		this.maximumStarCount = maximumStarCount;
+		if (minimum < 0 || maximum < 0)
+		{
+			throw new IllegalArgumentException("Error: Both minimum and maximum star count must be positive integers.");
+		}
+		else if (minimum > 5 || maximum > 5)
+		{
+			throw new IllegalArgumentException("Error: Both minimum and maximum star count must be less than 5.");
+		}
+		else
+		{
+			this.minimumStarCount = minimum;
+			this.maximumStarCount = maximum;
+		}
 	}
 
 	public void setEnSuiteBathroom(int enSuiteBathroom)
@@ -142,6 +154,7 @@ public class Search
 		rooms = filterNumberOfSingleBeds(rooms);
 		rooms = filterNumberOfDoubleBeds(rooms);
 		rooms = filterByPrice(rooms);
+		rooms = filterByStarCount(rooms);
 
 		this.filteredRooms = rooms;
 		return rooms;
@@ -213,6 +226,23 @@ public class Search
 		{
 			if ((this.minimumPrice == null || r.getCostPerNight() >= this.minimumPrice)
 					&& (this.maximumPrice == null || r.getCostPerNight() <= this.maximumPrice))
+			{
+				filteredRooms.add(r);
+			}
+		}
+		return filteredRooms;
+	}
+	
+	private ArrayList<Room> filterByStarCount(ArrayList<Room> rooms)
+	{
+		if (this.minimumStarCount == null || this.maximumStarCount == null)
+			return rooms;
+		ArrayList<Room> filteredRooms = new ArrayList<>();
+
+		for (Room r : rooms)
+		{
+			if ((this.minimumStarCount == null || r.getHotel().getStarCount() >= this.minimumStarCount)
+					&& (this.maximumStarCount == null || r.getHotel().getStarCount() <= this.maximumStarCount))
 			{
 				filteredRooms.add(r);
 			}
