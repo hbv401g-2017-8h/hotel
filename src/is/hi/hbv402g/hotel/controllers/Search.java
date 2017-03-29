@@ -126,6 +126,11 @@ public class Search
 		this.attributesChanged = attributesChanged;
 	}
 
+	public ArrayList<Room> getFilteredRooms()
+	{
+		return filteredRooms;
+	}
+
 	public ArrayList<Room> find(String hotelName, String location, Date availabilityFrom, Date availabilityTo)
 	{
 		this.availableRooms = db.findHotelRooms(hotelName, location, availabilityFrom, availabilityTo);
