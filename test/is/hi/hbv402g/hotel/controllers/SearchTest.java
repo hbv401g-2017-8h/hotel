@@ -133,14 +133,133 @@ public class SearchTest
 		search.setPriceRange(min, max);
 		ArrayList<Room> filteredRooms = search.filter();
 	}
+	
+	@Test
+	public void testFilterMinimumPrice()
+	{
+		// This test checks if price rooms filtered by minimum price only works correctly
+		
+		// Set up test data
+		ArrayList<Room> rooms = new ArrayList<>();
+		
+		rooms.add(new Room(1)
+		{
+			{
+				setCostPerNight(1000);
+			}
+		});
+		
+		rooms.add(new Room(2)
+		{
+			{
+				setCostPerNight(5000);
+			}
+		});
+		
+		rooms.add(new Room(3)
+		{
+			{
+				setCostPerNight(11000);
+			}
+		});
+
+		MockDataManager mdm = new MockDataManager(rooms);
+		Search search = new Search(mdm);
+
+		// Perform actions to be tested
+		search.find(null, null, null, null);
+		search.setPriceRange(3000, null);
+		ArrayList<Room> filteredRooms = search.filter();
+
+		// Check results
+		assertNotNull(filteredRooms);
+		assertEquals(2, filteredRooms.size());
+
+		boolean minPricedRoom = false;
+		boolean midPricedRoom = false;
+		boolean maxPricedRoom = false;
+
+		for (Room r : filteredRooms)
+		{
+			if (r.getId() == 1)
+				minPricedRoom = true;
+			if (r.getId() == 2)
+				midPricedRoom = true;
+			if (r.getId() == 3)
+				maxPricedRoom = true;
+		}
+
+		assertFalse("Found least expesive room", minPricedRoom);
+		assertTrue("Could not find medium priced room", midPricedRoom);
+		assertTrue("Could not find most expensive room", maxPricedRoom);
+	}
+	
+	@Test
+	public void testFilterMaximumPrice()
+	{
+		// This test checks if price rooms filtered by minimum price only works correctly
+		
+		// Set up test data
+		ArrayList<Room> rooms = new ArrayList<>();
+		
+		rooms.add(new Room(1)
+		{
+			{
+				setCostPerNight(1000);
+			}
+		});
+		
+		rooms.add(new Room(2)
+		{
+			{
+				setCostPerNight(5000);
+			}
+		});
+		
+		rooms.add(new Room(3)
+		{
+			{
+				setCostPerNight(11000);
+			}
+		});
+
+		MockDataManager mdm = new MockDataManager(rooms);
+		Search search = new Search(mdm);
+
+		// Perform actions to be tested
+		search.find(null, null, null, null);
+		search.setPriceRange(null, 7000);
+		ArrayList<Room> filteredRooms = search.filter();
+
+		// Check results
+		assertNotNull(filteredRooms);
+		assertEquals(2, filteredRooms.size());
+
+		boolean minPricedRoom = false;
+		boolean midPricedRoom = false;
+		boolean maxPricedRoom = false;
+
+		for (Room r : filteredRooms)
+		{
+			if (r.getId() == 1)
+				minPricedRoom = true;
+			if (r.getId() == 2)
+				midPricedRoom = true;
+			if (r.getId() == 3)
+				maxPricedRoom = true;
+		}
+
+		assertTrue("Could not find least expensive room", minPricedRoom);
+		assertTrue("Could not find medium priced room", midPricedRoom);
+		assertFalse("Found most expesive room", maxPricedRoom);
+	}
 
 	@Test
-	public void testFilterByPriceRange()
+	public void testFilterMinimumMaximumPrice()
 	{
 		// This test checks if price filter works correctly
 
 		// Set up test data
-
 		ArrayList<Room> rooms = new ArrayList<>();
 
 		int lowPrice = 0;

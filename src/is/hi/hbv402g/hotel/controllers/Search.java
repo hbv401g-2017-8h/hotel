@@ -205,7 +205,7 @@ public class Search
 
 	private ArrayList<Room> filterByPrice(ArrayList<Room> rooms)
 	{
-		if (this.minimumPrice == null || this.maximumPrice == null)
+		if (this.minimumPrice == null && this.maximumPrice == null)
 			return rooms;
 		ArrayList<Room> filteredRooms = new ArrayList<>();
 
