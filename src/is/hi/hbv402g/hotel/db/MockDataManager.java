@@ -19,23 +19,5 @@ public class MockDataManager implements IDataManager
 	{
 		return this.rooms;
 	}
-	
-	public static Room createRoom(int id, int numberOfSingleBeds,
-			int numberOfDoubleBeds, boolean enSuiteBathroom, int costPerNight,
-			Hotel hotel)
-	{
-		Room r = new Room(id);
-		
-		r.setNumberOfSingleBeds(numberOfSingleBeds);
-		r.setNumberOfDoubleBeds(numberOfDoubleBeds);
-		r.setEnSuiteBathroom(enSuiteBathroom);
-		r.setCostPerNight(costPerNight);
-		r.setHotel(hotel);
-		
-		ArrayList<Room> hotelRooms = hotel.getRooms();
-		hotelRooms.add(r);
-		
-		return r;
-	}
 
 }
