@@ -751,4 +751,53 @@ public class SearchTest
 
 		assertTrue("Could not find twenty bed room", twentyBed);
 	}
+	
+	@Test
+	public void testFilterEnSuiteBathrooms()
+	{
+		// This test checks that the mock data manager returns the list of
+		// rooms that have bathrooms
+
+		// Set up test data
+		ArrayList<Room> rooms = new ArrayList<>();
+
+		rooms.add(new Room(1)
+		{
+			{
+				setEnSuiteBathroom(true);
+			}
+		});
+		rooms.add(new Room(2)
+		{
+			{
+				setEnSuiteBathroom(false);
+			}
+		});
+
+		MockDataManager mdm = new MockDataManager(rooms);
+		Search search = new Search(mdm);
+
+		// Perform actions to be tested
+		search.find(null, null, null, null);
+		search.setEnSuiteBathroom(true);
+		ArrayList<Room> filteredRooms = search.filter();
+
+		// Check results
+		assertNotNull(filteredRooms);
+		assertEquals(1, filteredRooms.size());
+
+		boolean withBathroom = false;
+		boolean withoutBathroom = false;
+
+		for (Room r : filteredRooms)
+		{
+			if (r.getId() == 1)
+				withBathroom = true;
+			if (r.getId() == 2)
+				withoutBathroom = true;
+		}
+
+		assertTrue("Could not find room with bathroom", withBathroom);
+		assertFalse("Found room without bathroom", withoutBathroom);
+	}
 }

@@ -27,8 +27,8 @@ public class Search
 	private Integer maximumPrice;
 	private Integer minimumStarCount;
 	private Integer maximumStarCount;
-	private Integer enSuiteBathroom;
-	private Boolean attributesChanged;
+	private boolean enSuiteBathroom;
+	private boolean attributesChanged;
 
 	public Search(IDataManager db)
 	{
@@ -83,7 +83,6 @@ public class Search
 		if (this.amenities == null)
 			this.amenities = new ArrayList<>();
 		this.amenities.remove(amenity); // alert if not completed?
-
 	}
 
 	public void setNumberOfSingleBeds(Integer minimum, Integer maximum)
@@ -117,7 +116,7 @@ public class Search
 		this.maximumStarCount = maximumStarCount;
 	}
 
-	public void setEnSuiteBathroom(int enSuiteBathroom)
+	public void setEnSuiteBathroom(boolean enSuiteBathroom)
 	{
 		this.enSuiteBathroom = enSuiteBathroom;
 	}
@@ -138,10 +137,10 @@ public class Search
 		ArrayList<Room> rooms = this.availableRooms;
 
 		rooms = filterAmenities(rooms);
-
 		rooms = filterNumberOfSingleBeds(rooms);
 		rooms = filterNumberOfDoubleBeds(rooms);
 		rooms = filterByPrice(rooms);
+		rooms = filterByEnSuiteBathroom(rooms);
 
 		this.filteredRooms = rooms;
 		return rooms;
@@ -207,6 +206,7 @@ public class Search
 	{
 		if (this.minimumPrice == null && this.maximumPrice == null)
 			return rooms;
+		
 		ArrayList<Room> filteredRooms = new ArrayList<>();
 
 		for (Room r : rooms)
@@ -217,6 +217,23 @@ public class Search
 				filteredRooms.add(r);
 			}
 		}
+		return filteredRooms;
+	}
+	
+	private ArrayList<Room> filterByEnSuiteBathroom(ArrayList<Room> rooms)
+	{
+		if (this.enSuiteBathroom == false)
+			return rooms;
+		
+		ArrayList<Room> filteredRooms = new ArrayList<>();
+		for (Room r : rooms)
+		{
+			if (r.getEnSuiteBathroom())
+			{
+				filteredRooms.add(r);
+			}
+		}
+		
 		return filteredRooms;
 	}
 }
