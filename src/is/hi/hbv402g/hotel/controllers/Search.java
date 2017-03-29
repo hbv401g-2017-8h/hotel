@@ -100,7 +100,7 @@ public class Search
 
 	public void setPriceRange(Integer minimum, Integer maximum)
 	{
-		if (minimum < 0 || maximum < 0)
+		if ((minimum != null && minimum < 0) || (maximum != null && maximum < 0))
 		{
 			throw new IllegalArgumentException("Error: price range must be positive.");
 		}
