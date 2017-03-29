@@ -752,6 +752,226 @@ public class SearchTest
 		assertTrue("Could not find twenty bed room", twentyBed);
 	}
 	
+	@Test(expected = IllegalArgumentException.class)
+	public void testFilterByStarCountNegativeException()
+	{
+		// This test checks if star count filter works
+
+		// Set up test data
+		ArrayList<Hotel> hotels = new ArrayList<>();
+		ArrayList<Room> rooms = new ArrayList<>();
+
+		int starCount = 1;
+		
+		
+		hotels.add(new Hotel(1)
+		{
+			{
+				setStarCount(starCount);
+			}
+		});
+		
+		
+		for(Hotel h : hotels)
+		{
+			rooms.add(new Room(h.getId())
+			{
+				{
+					setHotel(h);
+				}
+			});
+		}
+		
+		MockDataManager mdm = new MockDataManager(rooms);
+		Search search = new Search(mdm);
+		
+		// Perform actions to be tested
+		search.find(null, null, null, null);
+		search.setStarCount(-5, -5);
+		ArrayList<Room> filteredRooms = search.filter();
+		
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testFilterByStarCountOutOfBoundsException()
+	{
+		// This test checks if star count filter works
+
+		// Set up test data
+		ArrayList<Hotel> hotels = new ArrayList<>();
+		ArrayList<Room> rooms = new ArrayList<>();
+
+		int starCount = 1;
+		
+		
+		hotels.add(new Hotel(1)
+		{
+			{
+				setStarCount(starCount);
+			}
+		});
+		
+		
+		for(Hotel h : hotels)
+		{
+			rooms.add(new Room(h.getId())
+			{
+				{
+					setHotel(h);
+				}
+			});
+		}
+		
+		MockDataManager mdm = new MockDataManager(rooms);
+		Search search = new Search(mdm);
+		
+		// Perform actions to be tested
+		search.find(null, null, null, null);
+		search.setStarCount(7, 7);
+		ArrayList<Room> filteredRooms = search.filter();
+		
+	}
+	
+	
+	
+	@Test
+	public void testFilterByStarCountWithoutMaximum()
+	{
+		// This test checks if star count filter works
+
+		// Set up test data
+		ArrayList<Hotel> hotels = new ArrayList<>();
+		ArrayList<Room> rooms = new ArrayList<>();
+
+		int lowStarCount = 1;
+		int mediumStarCount = 3;
+		int highStarCount = 5;
+		
+		hotels.add(new Hotel(1)
+		{
+			{
+				setStarCount(lowStarCount);
+			}
+		});
+		hotels.add(new Hotel(2)
+		{
+			{
+				setStarCount(mediumStarCount);
+			}
+		});
+		hotels.add(new Hotel(3)
+		{
+			{
+				setStarCount(highStarCount);
+			}
+		});
+		
+		for(Hotel h : hotels)
+		{
+			rooms.add(new Room(h.getId())
+			{
+				{
+					setHotel(h);
+				}
+			});
+		}
+		
+		MockDataManager mdm = new MockDataManager(rooms);
+		Search search = new Search(mdm);
+		
+		// Perform actions to be tested
+		search.find(null, null, null, null);
+		search.setStarCount(2, null);
+		ArrayList<Room> filteredRooms = search.filter();
+		
+		// Check results
+		assertNotNull(filteredRooms);
+		assertEquals(2, filteredRooms.size());
+
+		boolean threeStars = false;
+		boolean fiveStars = false;
+
+		for (Room r : filteredRooms)
+		{
+			if (r.getId() == 2)
+				threeStars = true;
+			if (r.getId() == 3)
+				fiveStars = true;
+		}
+
+		assertTrue("Could not find three star room", threeStars);
+		assertTrue("Could not find five star room", fiveStars);
+	}
+	
+	@Test
+	public void testFilterByStarCountWithoutMinimum()
+	{
+		// This test checks if star count filter works
+
+		// Set up test data
+		ArrayList<Hotel> hotels = new ArrayList<>();
+		ArrayList<Room> rooms = new ArrayList<>();
+
+		int lowStarCount = 1;
+		int mediumStarCount = 3;
+		int highStarCount = 5;
+		
+		hotels.add(new Hotel(1)
+		{
+			{
+				setStarCount(lowStarCount);
+			}
+		});
+		hotels.add(new Hotel(2)
+		{
+			{
+				setStarCount(mediumStarCount);
+			}
+		});
+		hotels.add(new Hotel(3)
+		{
+			{
+				setStarCount(highStarCount);
+			}
+		});
+		
+		for(Hotel h : hotels)
+		{
+			rooms.add(new Room(h.getId())
+			{
+				{
+					setHotel(h);
+				}
+			});
+		}
+		
+		MockDataManager mdm = new MockDataManager(rooms);
+		Search search = new Search(mdm);
+		
+		// Perform actions to be tested
+		search.find(null, null, null, null);
+		search.setStarCount(null, 4);
+		ArrayList<Room> filteredRooms = search.filter();
+		
+		// Check results
+		assertNotNull(filteredRooms);
+		assertEquals(2, filteredRooms.size());
+
+		boolean oneStars = false;
+		boolean threeStars = false;
+
+		for (Room r : filteredRooms)
+		{
+			if (r.getId() == 1)
+				oneStars = true;
+			if (r.getId() == 2)
+				threeStars = true;
+		}
+
+		assertTrue("Could not find one star room", oneStars);
+		assertTrue("Could not find three star room", threeStars);
+	}
+	
 	@Test
 	public void testFilterByStarCount()
 	{
@@ -816,6 +1036,8 @@ public class SearchTest
 
 		assertTrue("Could not find three star room", threeStars);
 	}
+	
+	
 	
 	@Test
 	public void testFilterEnSuiteBathrooms()
