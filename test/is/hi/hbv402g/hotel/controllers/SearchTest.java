@@ -1,3 +1,24 @@
+// The Search class methods tested with input:
+// 
+// 	Method						|	Input					|	Test
+//------------------------------|---------------------------|--------------
+// 	find						|	Room(id=1)				|	
+//	filterByAmenities			|	
+//							
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 package is.hi.hbv402g.hotel.controllers;
 
 import static org.junit.Assert.*;
@@ -102,6 +123,33 @@ public class SearchTest
 
 		assertTrue("Could not find exact match", exactMatch);
 		assertTrue("Could not find greater set", greaterSet);
+
+	}
+
+	@Test
+	public void testRemoveAmenities()
+	{
+		// This test checks if amenities filter works correctly
+
+		// Set up test data
+
+		Hotel hotel1 = new Hotel(1);
+		hotel1.setAmenities(new ArrayList<>(Arrays.asList("wifi")));
+		Room room1 = new Room(1);
+		room1.setHotel(hotel1);
+		
+		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(room1)));
+		Search search = new Search(mdm);
+
+		// Perform actions to be tested
+		ArrayList<Room> availableRooms = search.find("hotel1", null, null, null);
+		search.addAmenity("wifi");
+		search.removeAmenity("wifi");
+		ArrayList<Room> filteredRooms = search.filter();
+
+		// Check results
+		assertNotNull(filteredRooms);
+		assertEquals(availableRooms.size(), filteredRooms.size());
 
 	}
 
