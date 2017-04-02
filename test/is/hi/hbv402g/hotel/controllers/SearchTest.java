@@ -55,14 +55,17 @@ public class SearchTest
 		oneStarAmenityLessHotel = new Hotel(1);
 		oneStarAmenityLessHotel.setStarCount(1);
 		oneStarAmenityLessHotel.setAmenities(new ArrayList<String>());
+		oneStarAmenityLessHotel.setName("AaaHotel");
 		
 		threeStarOnlyWiFiHotel = new Hotel(2);
 		threeStarOnlyWiFiHotel.setStarCount(3);
 		threeStarOnlyWiFiHotel.setAmenities(new ArrayList<>(Arrays.asList("wifi")));
+		threeStarOnlyWiFiHotel.setName("BbbHotel");
 		
 		fiveStarWiFiAndRoomServiceHotel = new Hotel(3);
 		fiveStarWiFiAndRoomServiceHotel.setStarCount(5);
 		fiveStarWiFiAndRoomServiceHotel.setAmenities(new ArrayList<>(Arrays.asList("wifi", "roomService")));
+		fiveStarWiFiAndRoomServiceHotel.setName("CccHotel");
 		
 		WifiRoomServiceAndBreakfastHotel = new Hotel(4);
 		WifiRoomServiceAndBreakfastHotel.setAmenities(new ArrayList<>(Arrays.asList("wifi", "roomService", "breakfast")));
@@ -885,45 +888,70 @@ public class SearchTest
 				sortedRooms.get(1).getCostPerNight() == 10000);
 	}
 	
-//	@Test
-//	public void testSortByHotelNameAZ()
-//	{
-//		// This test checks that the mock data manager returns the list of
-//		// rooms that have bathrooms
-//
-//		// Set up test data
-//	
-//		ArrayList<Room> rooms = new ArrayList<>();
-//
-//		rooms.add(new Room(1)
-//		{
-//			{
-//				setHotel().;(10000);
-//			}
-//		});
-//		rooms.add(new Room(2)
-//		{
-//			{
-//				setCostPerNight(15000);
-//			}
-//		});
-//
-//		MockDataManager mdm = new MockDataManager(rooms);
-//		Search search = new Search(mdm);
-//
-//		// Perform actions to be tested
-//		search.find(null, null, null, null);
-//		ArrayList<Room> sortedRooms = search.sort(Search.SortBy.HOTEL_NAME_AZ);
-//
-//		// Check results
-//		assertNotNull(sortedRooms);
-//		assertEquals(2, sortedRooms.size());
-//
-//		assertTrue("Incorrect sort, low price not first in list", 
-//				sortedRooms.get(0).getCostPerNight() == 10000);
-//		assertTrue("Incorrect sort, high price not last in list", 
-//				sortedRooms.get(1).getCostPerNight() == 15000);
-//	}
+	@Test
+	public void testSortByHotelNameAZ()
+	{
+		// This test checks that the mock data manager returns the list of
+		// rooms that have bathrooms
+
+		// Set up test data
+	
+		ArrayList<Room> rooms = new ArrayList<>();
+		
+		rooms.add(mediumCostSingleDoubleBedRoom);
+		rooms.add(highCostSingleDoubleBedRoom);
+		rooms.add(lowCostSingleDoubleBedRoom);
+
+		MockDataManager mdm = new MockDataManager(rooms);
+		Search search = new Search(mdm);
+
+		// Perform actions to be tested
+		search.find(null, null, null, null);
+		ArrayList<Room> sortedRooms = search.sort(Search.SortBy.HOTEL_NAME_AZ);
+
+		// Check results
+		assertNotNull(sortedRooms);
+		assertEquals(3, sortedRooms.size());
+
+		assertTrue("Incorrect sort, A not first in list", 
+				sortedRooms.get(0).getHotel().getName() == "AaaHotel");
+		assertTrue("Incorrect sort, B not in middle of list",
+				sortedRooms.get(1).getHotel().getName() == "BbbHotel");
+		assertTrue("Incorrect sort, C not last in list", 
+				sortedRooms.get(2).getHotel().getName() == "CccHotel");
+	}
+	
+	@Test
+	public void testSortByHotelNameZA()
+	{
+		// This test checks that the mock data manager returns the list of
+		// rooms that have bathrooms
+
+		// Set up test data
+		ArrayList<Room> rooms = new ArrayList<>();
+		
+		rooms.add(mediumCostSingleDoubleBedRoom);
+		rooms.add(lowCostSingleDoubleBedRoom);
+		rooms.add(highCostSingleDoubleBedRoom);
+
+		MockDataManager mdm = new MockDataManager(rooms);
+		Search search = new Search(mdm);
+
+		// Perform actions to be tested
+		search.find(null, null, null, null);
+		ArrayList<Room> sortedRooms = search.sort(Search.SortBy.HOTEL_NAME_ZA);
+
+		// Check results
+		assertNotNull(sortedRooms);
+		assertEquals(3, sortedRooms.size());
+
+		assertTrue("Incorrect sort, C not first in list", 
+				sortedRooms.get(0).getHotel().getName() == "CccHotel");
+		assertTrue("Incorrect sort, B not in middle of list",
+				sortedRooms.get(1).getHotel().getName() == "BbbHotel");
+		assertTrue("Incorrect sort, A not last in list", 
+				sortedRooms.get(2).getHotel().getName() == "AaaHotel");
+	}
 }
 
 
