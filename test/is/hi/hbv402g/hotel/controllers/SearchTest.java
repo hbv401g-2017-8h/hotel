@@ -179,31 +179,32 @@ public class SearchTest
 		Integer min = -5000;
 		Integer max = 10000;
 		search.setPriceRange(min, max);
-		ArrayList<Room> filteredRooms = search.filter();
+		search.filter();
 	}
-	
+
 	@Test
 	public void testFilterMinimumPrice()
 	{
-		// This test checks if price rooms filtered by minimum price only works correctly
-		
+		// This test checks if price rooms filtered by minimum price only works
+		// correctly
+
 		// Set up test data
 		ArrayList<Room> rooms = new ArrayList<>();
-		
+
 		rooms.add(new Room(1)
 		{
 			{
 				setCostPerNight(1000);
 			}
 		});
-		
+
 		rooms.add(new Room(2)
 		{
 			{
 				setCostPerNight(5000);
 			}
 		});
-		
+
 		rooms.add(new Room(3)
 		{
 			{
@@ -241,29 +242,30 @@ public class SearchTest
 		assertTrue("Could not find medium priced room", midPricedRoom);
 		assertTrue("Could not find most expensive room", maxPricedRoom);
 	}
-	
+
 	@Test
 	public void testFilterMaximumPrice()
 	{
-		// This test checks if price rooms filtered by minimum price only works correctly
-		
+		// This test checks if price rooms filtered by minimum price only works
+		// correctly
+
 		// Set up test data
 		ArrayList<Room> rooms = new ArrayList<>();
-		
+
 		rooms.add(new Room(1)
 		{
 			{
 				setCostPerNight(1000);
 			}
 		});
-		
+
 		rooms.add(new Room(2)
 		{
 			{
 				setCostPerNight(5000);
 			}
 		});
-		
+
 		rooms.add(new Room(3)
 		{
 			{
@@ -799,7 +801,7 @@ public class SearchTest
 
 		assertTrue("Could not find twenty bed room", twentyBed);
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	public void testFilterByStarCountNegativeException()
 	{
@@ -810,17 +812,15 @@ public class SearchTest
 		ArrayList<Room> rooms = new ArrayList<>();
 
 		int starCount = 1;
-		
-		
+
 		hotels.add(new Hotel(1)
 		{
 			{
 				setStarCount(starCount);
 			}
 		});
-		
-		
-		for(Hotel h : hotels)
+
+		for (Hotel h : hotels)
 		{
 			rooms.add(new Room(h.getId())
 			{
@@ -829,17 +829,17 @@ public class SearchTest
 				}
 			});
 		}
-		
+
 		MockDataManager mdm = new MockDataManager(rooms);
 		Search search = new Search(mdm);
-		
+
 		// Perform actions to be tested
 		search.find(null, null, null, null);
 		search.setStarCount(-5, -5);
-		ArrayList<Room> filteredRooms = search.filter();
-		
+		search.filter();
+
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	public void testFilterByStarCountOutOfBoundsException()
 	{
@@ -850,17 +850,15 @@ public class SearchTest
 		ArrayList<Room> rooms = new ArrayList<>();
 
 		int starCount = 1;
-		
-		
+
 		hotels.add(new Hotel(1)
 		{
 			{
 				setStarCount(starCount);
 			}
 		});
-		
-		
-		for(Hotel h : hotels)
+
+		for (Hotel h : hotels)
 		{
 			rooms.add(new Room(h.getId())
 			{
@@ -869,19 +867,16 @@ public class SearchTest
 				}
 			});
 		}
-		
+
 		MockDataManager mdm = new MockDataManager(rooms);
 		Search search = new Search(mdm);
-		
+
 		// Perform actions to be tested
 		search.find(null, null, null, null);
 		search.setStarCount(7, 7);
-		ArrayList<Room> filteredRooms = search.filter();
-		
+		search.filter();
 	}
-	
-	
-	
+
 	@Test
 	public void testFilterByStarCountWithoutMaximum()
 	{
@@ -894,7 +889,7 @@ public class SearchTest
 		int lowStarCount = 1;
 		int mediumStarCount = 3;
 		int highStarCount = 5;
-		
+
 		hotels.add(new Hotel(1)
 		{
 			{
@@ -913,8 +908,8 @@ public class SearchTest
 				setStarCount(highStarCount);
 			}
 		});
-		
-		for(Hotel h : hotels)
+
+		for (Hotel h : hotels)
 		{
 			rooms.add(new Room(h.getId())
 			{
@@ -923,15 +918,15 @@ public class SearchTest
 				}
 			});
 		}
-		
+
 		MockDataManager mdm = new MockDataManager(rooms);
 		Search search = new Search(mdm);
-		
+
 		// Perform actions to be tested
 		search.find(null, null, null, null);
 		search.setStarCount(2, null);
 		ArrayList<Room> filteredRooms = search.filter();
-		
+
 		// Check results
 		assertNotNull(filteredRooms);
 		assertEquals(2, filteredRooms.size());
@@ -950,7 +945,7 @@ public class SearchTest
 		assertTrue("Could not find three star room", threeStars);
 		assertTrue("Could not find five star room", fiveStars);
 	}
-	
+
 	@Test
 	public void testFilterByStarCountWithoutMinimum()
 	{
@@ -963,7 +958,7 @@ public class SearchTest
 		int lowStarCount = 1;
 		int mediumStarCount = 3;
 		int highStarCount = 5;
-		
+
 		hotels.add(new Hotel(1)
 		{
 			{
@@ -982,8 +977,8 @@ public class SearchTest
 				setStarCount(highStarCount);
 			}
 		});
-		
-		for(Hotel h : hotels)
+
+		for (Hotel h : hotels)
 		{
 			rooms.add(new Room(h.getId())
 			{
@@ -992,15 +987,15 @@ public class SearchTest
 				}
 			});
 		}
-		
+
 		MockDataManager mdm = new MockDataManager(rooms);
 		Search search = new Search(mdm);
-		
+
 		// Perform actions to be tested
 		search.find(null, null, null, null);
 		search.setStarCount(null, 4);
 		ArrayList<Room> filteredRooms = search.filter();
-		
+
 		// Check results
 		assertNotNull(filteredRooms);
 		assertEquals(2, filteredRooms.size());
@@ -1019,7 +1014,7 @@ public class SearchTest
 		assertTrue("Could not find one star room", oneStars);
 		assertTrue("Could not find three star room", threeStars);
 	}
-	
+
 	@Test
 	public void testFilterByStarCount()
 	{
@@ -1032,7 +1027,7 @@ public class SearchTest
 		int lowStarCount = 1;
 		int mediumStarCount = 3;
 		int highStarCount = 5;
-		
+
 		hotels.add(new Hotel(1)
 		{
 			{
@@ -1051,8 +1046,8 @@ public class SearchTest
 				setStarCount(highStarCount);
 			}
 		});
-		
-		for(Hotel h : hotels)
+
+		for (Hotel h : hotels)
 		{
 			rooms.add(new Room(h.getId())
 			{
@@ -1061,15 +1056,15 @@ public class SearchTest
 				}
 			});
 		}
-		
+
 		MockDataManager mdm = new MockDataManager(rooms);
 		Search search = new Search(mdm);
-		
+
 		// Perform actions to be tested
 		search.find(null, null, null, null);
 		search.setStarCount(2, 4);
 		ArrayList<Room> filteredRooms = search.filter();
-		
+
 		// Check results
 		assertNotNull(filteredRooms);
 		assertEquals(1, filteredRooms.size());
@@ -1084,9 +1079,7 @@ public class SearchTest
 
 		assertTrue("Could not find three star room", threeStars);
 	}
-	
-	
-	
+
 	@Test
 	public void testFilterEnSuiteBathrooms()
 	{

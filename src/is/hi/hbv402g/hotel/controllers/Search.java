@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import is.hi.hbv402g.hotel.db.IDataManager;
-import is.hi.hbv402g.hotel.models.Hotel;
 import is.hi.hbv402g.hotel.models.Room;
 
 public class Search
@@ -12,13 +11,6 @@ public class Search
 	private IDataManager db;
 	private ArrayList<Room> availableRooms;
 	private ArrayList<Room> filteredRooms;
-	private String hotelName;
-	private String hotelStreetAddress;
-	private String hotelCity;
-	private String hotelPostalCode;
-	private String hotelCountry;
-	private Date availabilityFrom;
-	private Date availabilityTo;
 	private ArrayList<String> amenities;
 	private Integer minimumSingleBeds;
 	private Integer maximumSingleBeds;
@@ -29,47 +21,10 @@ public class Search
 	private Integer minimumStarCount;
 	private Integer maximumStarCount;
 	private boolean enSuiteBathroom;
-	private boolean attributesChanged;
 
 	public Search(IDataManager db)
 	{
 		this.db = db;
-	}
-
-	public void setHotelName(String name)
-	{
-		this.hotelName = name;
-	}
-	// public ArrayList<>
-
-	public void setAvailabilityFrom(Date availabilityFrom)
-	{
-		this.availabilityFrom = availabilityFrom;
-	}
-
-	public void setAvailabilityTo(Date availabilityTo)
-	{
-		this.availabilityTo = availabilityTo;
-	}
-
-	public void setHotelStreetAddress(String hotelStreetAddress)
-	{
-		this.hotelStreetAddress = hotelStreetAddress;
-	}
-
-	public void setHotelCity(String hotelCity)
-	{
-		this.hotelCity = hotelCity;
-	}
-
-	public void setHotelPostalCode(String hotelPostalCode)
-	{
-		this.hotelPostalCode = hotelPostalCode;
-	}
-
-	public void setHotelCountry(String hotelCountry)
-	{
-		this.hotelCountry = hotelCountry;
 	}
 
 	public void addAmenity(String amenity)
@@ -133,20 +88,16 @@ public class Search
 		this.enSuiteBathroom = enSuiteBathroom;
 	}
 
-	public void setAttributesChanged(boolean attributesChanged)
+	public ArrayList<Room> getSearchResults()
 	{
-		this.attributesChanged = attributesChanged;
-	}
-
-	public ArrayList<Room> getFilteredRooms()
-	{
-		return filteredRooms;
+		return this.filteredRooms;
 	}
 
 	public ArrayList<Room> find(String hotelName, String location, Date availabilityFrom, Date availabilityTo)
 	{
 		this.availableRooms = db.findHotelRooms(hotelName, location, availabilityFrom, availabilityTo);
-		return availableRooms;
+		this.filteredRooms = this.availableRooms;
+		return this.availableRooms;
 	}
 
 	public ArrayList<Room> filter()
@@ -161,7 +112,7 @@ public class Search
 		rooms = filterByEnSuiteBathroom(rooms);
 
 		this.filteredRooms = rooms;
-		return rooms;
+		return this.filteredRooms;
 	}
 
 	private ArrayList<Room> filterAmenities(ArrayList<Room> rooms)
@@ -224,7 +175,7 @@ public class Search
 	{
 		if (this.minimumPrice == null && this.maximumPrice == null)
 			return rooms;
-		
+
 		ArrayList<Room> filteredRooms = new ArrayList<>();
 
 		for (Room r : rooms)
@@ -237,7 +188,7 @@ public class Search
 		}
 		return filteredRooms;
 	}
-	
+
 	private ArrayList<Room> filterByStarCount(ArrayList<Room> rooms)
 	{
 		if (this.minimumStarCount == null && this.maximumStarCount == null)
@@ -259,7 +210,7 @@ public class Search
 	{
 		if (this.enSuiteBathroom == false)
 			return rooms;
-		
+
 		ArrayList<Room> filteredRooms = new ArrayList<>();
 		for (Room r : rooms)
 		{
