@@ -726,29 +726,7 @@ public class SearchTest
 		// This test checks that the mock data manager returns the list of
 		// rooms that have bathrooms
 
-		// Set up test data
-		Hotel oneStar = new Hotel(1);
-		oneStar.setStarCount(1);
-		
-		Hotel fiveStar = new Hotel(2);
-		fiveStar.setStarCount(5);
-		
-		ArrayList<Room> rooms = new ArrayList<>();
-
-		rooms.add(new Room(2)
-		{
-			{
-				setHotel(fiveStar);
-			}
-		});
-		rooms.add(new Room(1)
-		{
-			{
-				setHotel(oneStar);
-			}
-		});
-
-		MockDataManager mdm = new MockDataManager(rooms);
+		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(highCostSingleDoubleBedRoom, lowCostSingleDoubleBedRoom)));
 		Search search = new Search(mdm);
 
 		// Perform actions to be tested
@@ -771,29 +749,7 @@ public class SearchTest
 		// This test checks that the mock data manager returns the list of
 		// rooms that have bathrooms
 
-		// Set up test data
-		Hotel oneStar = new Hotel(1);
-		oneStar.setStarCount(1);
-		
-		Hotel fiveStar = new Hotel(2);
-		fiveStar.setStarCount(5);
-		
-		ArrayList<Room> rooms = new ArrayList<>();
-
-		rooms.add(new Room(1)
-		{
-			{
-				setHotel(oneStar);
-			}
-		});
-		rooms.add(new Room(2)
-		{
-			{
-				setHotel(fiveStar);
-			}
-		});
-
-		MockDataManager mdm = new MockDataManager(rooms);
+		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(lowCostSingleDoubleBedRoom, highCostSingleDoubleBedRoom)));
 		Search search = new Search(mdm);
 
 		// Perform actions to be tested
@@ -816,23 +772,7 @@ public class SearchTest
 		// This test checks that the mock data manager returns the list of
 		// rooms that have bathrooms
 
-		// Set up test data
-		ArrayList<Room> rooms = new ArrayList<>();
-
-		rooms.add(new Room(1)
-		{
-			{
-				setCostPerNight(10000);
-			}
-		});
-		rooms.add(new Room(2)
-		{
-			{
-				setCostPerNight(15000);
-			}
-		});
-
-		MockDataManager mdm = new MockDataManager(rooms);
+		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(highCostSingleDoubleBedRoom, mediumCostSingleDoubleBedRoom)));
 		Search search = new Search(mdm);
 
 		// Perform actions to be tested
@@ -844,9 +784,9 @@ public class SearchTest
 		assertEquals(2, sortedRooms.size());
 
 		assertTrue("Incorrect sort, low price not first in list", 
-				sortedRooms.get(0).getCostPerNight() == 10000);
+				sortedRooms.get(0).getCostPerNight() == 5000);
 		assertTrue("Incorrect sort, high price not last in list", 
-				sortedRooms.get(1).getCostPerNight() == 15000);
+				sortedRooms.get(1).getCostPerNight() == 11000);
 	}
 	
 	@Test
@@ -855,23 +795,7 @@ public class SearchTest
 		// This test checks that the mock data manager returns the list of
 		// rooms that have bathrooms
 
-		// Set up test data
-		ArrayList<Room> rooms = new ArrayList<>();
-
-		rooms.add(new Room(1)
-		{
-			{
-				setCostPerNight(10000);
-			}
-		});
-		rooms.add(new Room(2)
-		{
-			{
-				setCostPerNight(15000);
-			}
-		});
-
-		MockDataManager mdm = new MockDataManager(rooms);
+		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(mediumCostSingleDoubleBedRoom, highCostSingleDoubleBedRoom)));
 		Search search = new Search(mdm);
 
 		// Perform actions to be tested
@@ -883,9 +807,9 @@ public class SearchTest
 		assertEquals(2, sortedRooms.size());
 
 		assertTrue("Incorrect sort, high price not first in list", 
-				sortedRooms.get(0).getCostPerNight() == 15000);
+				sortedRooms.get(0).getCostPerNight() == 11000);
 		assertTrue("Incorrect sort, low price not last in list", 
-				sortedRooms.get(1).getCostPerNight() == 10000);
+				sortedRooms.get(1).getCostPerNight() == 5000);
 	}
 	
 	@Test
