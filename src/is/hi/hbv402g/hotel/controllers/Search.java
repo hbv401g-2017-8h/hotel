@@ -1,6 +1,8 @@
 package is.hi.hbv402g.hotel.controllers;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 import is.hi.hbv402g.hotel.db.IDataManager;
@@ -22,6 +24,17 @@ public class Search
 	private Integer maximumStarCount;
 	private boolean enSuiteBathroom;
 
+	public enum SortBy
+	{
+		PRICE_DESCENDING,
+		PRICE_ASCENDING,
+		STARCOUNT_DESCENDING,
+		STARCOUNT_ASCENDING,
+		HOTEL_NAME_AZ,
+		HOTEL_NAME_ZA,
+		NONE
+	}
+	
 	public Search(IDataManager db)
 	{
 		this.db = db;
@@ -100,6 +113,60 @@ public class Search
 		return this.availableRooms;
 	}
 
+	public ArrayList<Room> sort(SortBy sb)
+	{
+		if (sb == SortBy.HOTEL_NAME_AZ)
+			Collections.sort(this.filteredRooms, new Comparator<Room>() {
+				@Override
+				public int compare(Room a, Room b)
+				{
+					return a.getHotel().getName().compareTo(b.getHotel().getName());
+				}
+			});
+		else if (sb == SortBy.HOTEL_NAME_ZA)
+			Collections.sort(this.filteredRooms, new Comparator<Room>() {
+				@Override
+				public int compare(Room a, Room b)
+				{
+					return b.getHotel().getName().compareTo(a.getHotel().getName());
+				}
+			});
+		else if (sb == SortBy.PRICE_ASCENDING)
+			Collections.sort(this.filteredRooms, new Comparator<Room>() {
+				@Override
+				public int compare(Room a, Room b)
+				{
+					return Integer.compare(a.getCostPerNight(), b.getCostPerNight());
+				}
+			});
+		else if (sb == SortBy.PRICE_DESCENDING)
+			Collections.sort(this.filteredRooms, new Comparator<Room>() {
+				@Override
+				public int compare(Room a, Room b)
+				{
+					return Integer.compare(b.getCostPerNight(), a.getCostPerNight());
+				}
+			});
+		else if (sb == SortBy.STARCOUNT_ASCENDING)
+			Collections.sort(this.filteredRooms, new Comparator<Room>() {
+				@Override
+				public int compare(Room a, Room b)
+				{
+					return Integer.compare(a.getHotel().getStarCount(), b.getHotel().getStarCount());
+				}
+			});
+		else if (sb == SortBy.STARCOUNT_DESCENDING)
+			Collections.sort(this.filteredRooms, new Comparator<Room>() {
+				@Override
+				public int compare(Room a, Room b)
+				{
+					return Integer.compare(b.getHotel().getStarCount(), a.getHotel().getStarCount());
+				}
+			});
+		
+		return filteredRooms;
+	}
+	
 	public ArrayList<Room> filter()
 	{
 		ArrayList<Room> rooms = this.availableRooms;
