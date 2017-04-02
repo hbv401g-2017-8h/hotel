@@ -131,7 +131,7 @@ public class SearchTest
 		Integer min = -5000;
 		Integer max = 10000;
 		search.setPriceRange(min, max);
-		ArrayList<Room> filteredRooms = search.filter();
+		search.filter();
 	}
 	
 	@Test
