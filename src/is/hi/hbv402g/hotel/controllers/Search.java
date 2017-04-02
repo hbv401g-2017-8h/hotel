@@ -111,13 +111,13 @@ public class Search
 		}
 	}
 
-	public void setStarCount(int minimum, int maximum)
+	public void setStarCount(Integer minimum, Integer maximum)
 	{
-		if (minimum < 0 || maximum < 0)
+		if (minimum != null && minimum < 1 || maximum != null && maximum < 1)
 		{
 			throw new IllegalArgumentException("Error: Both minimum and maximum star count must be positive integers.");
 		}
-		else if (minimum > 5 || maximum > 5)
+		else if (minimum != null && minimum > 5 || maximum != null && maximum > 5)
 		{
 			throw new IllegalArgumentException("Error: Both minimum and maximum star count must be less than 5.");
 		}
@@ -240,7 +240,7 @@ public class Search
 	
 	private ArrayList<Room> filterByStarCount(ArrayList<Room> rooms)
 	{
-		if (this.minimumStarCount == null || this.maximumStarCount == null)
+		if (this.minimumStarCount == null && this.maximumStarCount == null)
 			return rooms;
 		ArrayList<Room> filteredRooms = new ArrayList<>();
 
