@@ -17,10 +17,11 @@ public class MainFrame extends JFrame
 {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
+	private JTextField textFieldHotel;
+	private JTextField textFieldArea;
+	private JTextField textFieldDateFrom;
+	private JTextField textFieldDateTo;
+	
 
 	/**
 	 * Launch the application.
@@ -59,21 +60,31 @@ public class MainFrame extends JFrame
 		JPanel panel = new JPanel();
 		contentPane.add(panel);
 		
-		textField_3 = new JTextField();
-		panel.add(textField_3);
-		textField_3.setColumns(15);
+		// Define search text fields with input hint text.
+		textFieldHotel = new JTextField();
+		panel.add(textFieldHotel);
+		textFieldHotel.setColumns(15);
+		textFieldHotel.setText("Hotel Name");
+		//textFieldHotel.addFocusListener(new java.awt.event.FocusAdapter() {
+        //    public void focusGained(java.awt.event.FocusEvent evt) {
+                //leitargluggiFocusGained(evt);
+        //    }
+        //    public void focusLost(java.awt.event.FocusEvent evt) {
+                //leitargluggiFocusLost(evt);
+        //    }
+        //});
 		
-		textField_2 = new JTextField();
-		panel.add(textField_2);
-		textField_2.setColumns(15);
+		textFieldArea = new JTextField();
+		panel.add(textFieldArea);
+		textFieldArea.setColumns(15);
 		
-		textField_1 = new JTextField();
-		panel.add(textField_1);
-		textField_1.setColumns(10);
+		textFieldDateFrom = new JTextField();
+		panel.add(textFieldDateFrom);
+		textFieldDateFrom.setColumns(10);
 		
-		textField = new JTextField();
-		panel.add(textField);
-		textField.setColumns(10);
+		textFieldDateTo = new JTextField();
+		panel.add(textFieldDateTo);
+		textFieldDateTo.setColumns(10);
 		
 		JButton btnSearch = new JButton("Search");
 		btnSearch.addActionListener(new ActionListener() {
