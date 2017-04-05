@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import is.hi.hbv402g.hotel.models.Guest;
 import is.hi.hbv402g.hotel.models.Hotel;
@@ -24,8 +25,52 @@ public class DatabaseManager implements IDataManager
 
 	public ArrayList<Room> findHotelRooms(String hotelName, String location, Date availabilityFrom, Date availabilityTo)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Room> rooms = new ArrayList<>();
+		
+		String sql = "";
+		sql += "SELECT ";
+		sql += "r.id, r.hotelId, r.numSingleBeds, r.numDoubleBeds, r.bathroom, r.costPerNight, ";
+		sql += "h.id, h.name, h.streetAddress, h.city, h.postalCode, h.country, h.starCount ";
+		sql += "FROM Room as r INNER JOIN Hotel as h ON (r.hotelId = h.id)";
+		try
+		{
+			Connection connection = getConnection();
+			PreparedStatement statement = connection.prepareStatement(sql);
+			
+			ResultSet results = statement.executeQuery();
+	
+			HashMap<Integer, Hotel> hotels = new HashMap<>();
+			while (results.next())
+			{
+				Hotel h = hotels.get(results.getInt(7));
+				if (h == null)
+				{
+					h = new Hotel(results.getInt(7));
+					h.setName(results.getString(8));
+					h.setStreetAddress(results.getString(9));
+					h.setCity(results.getString(10));
+					h.setPostalCode(results.getString(11));
+					h.setCountry(results.getString(12));
+					h.setStarCount(results.getInt(13));
+					hotels.put(h.getId(), h);
+				}
+				
+				Room r = new Room(results.getInt(1));
+				r.setHotel(h);
+				r.setNumberOfSingleBeds(results.getInt(3));
+				r.setNumberOfDoubleBeds(results.getInt(4));
+				r.setEnSuiteBathroom(results.getBoolean(5));
+				r.setCostPerNight(results.getInt(6));
+				
+				rooms.add(r);
+			}
+		}
+		catch (SQLException exc)
+		{
+			System.out.println(exc.getMessage());
+			return null;
+		}
+		return rooms;
 	}
 
 	public static Hotel getHotelById(int id)
