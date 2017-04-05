@@ -1,24 +1,3 @@
-// Equivalence partitioning:
-// 
-// 	Input Conditions			|	Valid classes	 		|	Invalid classes
-//------------------------------|---------------------------|-------------------
-// 								|	Room(id=1)				|	
-//	filterByAmenities			|	
-//							
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 package is.hi.hbv402g.hotel.controllers;
 
 import static org.junit.Assert.*;
@@ -59,16 +38,19 @@ public class SearchTest
 		
 		threeStarOnlyWiFiHotel = new Hotel(2);
 		threeStarOnlyWiFiHotel.setStarCount(3);
-		threeStarOnlyWiFiHotel.setAmenities(new ArrayList<>(Arrays.asList("wifi")));
+		threeStarOnlyWiFiHotel.setAmenities(new ArrayList<>(
+				Arrays.asList("wifi")));
 		threeStarOnlyWiFiHotel.setName("BbbHotel");
 		
 		fiveStarWiFiAndRoomServiceHotel = new Hotel(3);
 		fiveStarWiFiAndRoomServiceHotel.setStarCount(5);
-		fiveStarWiFiAndRoomServiceHotel.setAmenities(new ArrayList<>(Arrays.asList("wifi", "roomService")));
+		fiveStarWiFiAndRoomServiceHotel.setAmenities(
+				new ArrayList<>(Arrays.asList("wifi", "roomService")));
 		fiveStarWiFiAndRoomServiceHotel.setName("CccHotel");
 		
 		WifiRoomServiceAndBreakfastHotel = new Hotel(4);
-		WifiRoomServiceAndBreakfastHotel.setAmenities(new ArrayList<>(Arrays.asList("wifi", "roomService", "breakfast")));
+		WifiRoomServiceAndBreakfastHotel.setAmenities(new ArrayList<>(
+				Arrays.asList("wifi", "roomService", "breakfast")));
 		
 		lowCostSingleDoubleBedRoom = new Room(1);
 		lowCostSingleDoubleBedRoom.setCostPerNight(1000);
@@ -116,7 +98,9 @@ public class SearchTest
 		// This test checks to that the mock data manager returns the list of
 		// rooms
 
-		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(lowCostSingleDoubleBedRoom)));
+		// Set up test data
+		MockDataManager mdm = new MockDataManager(
+				new ArrayList<>(Arrays.asList(lowCostSingleDoubleBedRoom)));
 		Search search = new Search(mdm);
 
 		// Perform actions to be tested
@@ -133,7 +117,13 @@ public class SearchTest
 	{
 		// This test checks if amenities filter works correctly
 
-		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(lowCostSingleDoubleBedRoom, mediumCostSingleDoubleBedRoom, highCostSingleDoubleBedRoom, tenSingleDoubleBedEnSuiteRoom)));
+		// Set up test data
+		MockDataManager mdm = new MockDataManager(
+				new ArrayList<>(Arrays.asList(
+						lowCostSingleDoubleBedRoom, 
+						mediumCostSingleDoubleBedRoom, 
+						highCostSingleDoubleBedRoom, 
+						tenSingleDoubleBedEnSuiteRoom)));
 		Search search = new Search(mdm);
 
 		// Perform actions to be tested
@@ -156,10 +146,8 @@ public class SearchTest
 			if (r.getId() == 4)
 				greaterSet = true;
 		}
-
 		assertTrue("Could not find exact match", exactMatch);
 		assertTrue("Could not find greater set", greaterSet);
-
 	}
 
 	@Test
@@ -167,7 +155,9 @@ public class SearchTest
 	{
 		// This test checks if amenities filter works correctly
 		
-		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(mediumCostSingleDoubleBedRoom)));
+		// Set up test data
+		MockDataManager mdm = new MockDataManager(
+				new ArrayList<>(Arrays.asList(mediumCostSingleDoubleBedRoom)));
 		Search search = new Search(mdm);
 
 		// Perform actions to be tested
@@ -179,7 +169,6 @@ public class SearchTest
 		// Check results
 		assertNotNull(filteredRooms);
 		assertEquals(availableRooms.size(), filteredRooms.size());
-
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -187,7 +176,9 @@ public class SearchTest
 	{
 		// This test checks if negative price range exception works correctly
 
-		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(mediumCostSingleDoubleBedRoom)));
+		// Set up test data
+		MockDataManager mdm = new MockDataManager(
+				new ArrayList<>(Arrays.asList(mediumCostSingleDoubleBedRoom)));
 		Search search = new Search(mdm);
 
 		// Perform actions to be tested
@@ -201,10 +192,15 @@ public class SearchTest
 	@Test
 	public void testFilterMinimumPrice()
 	{
-		// This test checks if price rooms filtered by minimum price only works
-		// correctly
+		// This test checks if price rooms filtered by minimum price only 
+		// works correctly
 
-		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(lowCostSingleDoubleBedRoom, mediumCostSingleDoubleBedRoom, highCostSingleDoubleBedRoom)));
+		// Set up test data
+		MockDataManager mdm = new MockDataManager(
+				new ArrayList<>(Arrays.asList(
+						lowCostSingleDoubleBedRoom, 
+						mediumCostSingleDoubleBedRoom, 
+						highCostSingleDoubleBedRoom)));
 		Search search = new Search(mdm);
 
 		// Perform actions to be tested
@@ -229,7 +225,6 @@ public class SearchTest
 			if (r.getId() == 3)
 				maxPricedRoom = true;
 		}
-
 		assertFalse("Found least expesive room", minPricedRoom);
 		assertTrue("Could not find medium priced room", midPricedRoom);
 		assertTrue("Could not find most expensive room", maxPricedRoom);
@@ -241,7 +236,12 @@ public class SearchTest
 		// This test checks if price rooms filtered by minimum price only works
 		// correctly
 
-		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(lowCostSingleDoubleBedRoom, mediumCostSingleDoubleBedRoom, highCostSingleDoubleBedRoom)));
+		// Set up test data
+		MockDataManager mdm = new MockDataManager(
+				new ArrayList<>(Arrays.asList(
+						lowCostSingleDoubleBedRoom, 
+						mediumCostSingleDoubleBedRoom, 
+						highCostSingleDoubleBedRoom)));
 		Search search = new Search(mdm);
 
 		// Perform actions to be tested
@@ -266,7 +266,6 @@ public class SearchTest
 			if (r.getId() == 3)
 				maxPricedRoom = true;
 		}
-
 		assertTrue("Could not find least expensive room", minPricedRoom);
 		assertTrue("Could not find medium priced room", midPricedRoom);
 		assertFalse("Found most expesive room", maxPricedRoom);
@@ -277,7 +276,12 @@ public class SearchTest
 	{
 		// This test checks if price filter works correctly
 
-		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(lowCostSingleDoubleBedRoom, mediumCostSingleDoubleBedRoom, highCostSingleDoubleBedRoom)));
+		// Set up test data
+		MockDataManager mdm = new MockDataManager(
+				new ArrayList<>(Arrays.asList(
+						lowCostSingleDoubleBedRoom, 
+						mediumCostSingleDoubleBedRoom, 
+						highCostSingleDoubleBedRoom)));
 		Search search = new Search(mdm);
 
 		// Perform actions to be tested
@@ -298,7 +302,6 @@ public class SearchTest
 			if (r.getId() == 2)
 				exactMatch = true;
 		}
-
 		assertTrue("Could not find exact match", exactMatch);
 	}
 
@@ -308,7 +311,12 @@ public class SearchTest
 		// This test checks to that the mock data manager returns the list of
 		// rooms
 
-		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(lowCostSingleDoubleBedRoom, mediumCostSingleDoubleBedRoom, highCostSingleDoubleBedRoom)));
+		// Set up test data
+		MockDataManager mdm = new MockDataManager(
+				new ArrayList<>(Arrays.asList(
+						lowCostSingleDoubleBedRoom, 
+						mediumCostSingleDoubleBedRoom, 
+						highCostSingleDoubleBedRoom)));
 		Search search = new Search(mdm);
 
 		// Perform actions to be tested
@@ -333,7 +341,6 @@ public class SearchTest
 			if (r.getId() == 3)
 				threeBed = true;
 		}
-
 		assertTrue("Could not find one bed room", oneBed);
 		assertTrue("Could not find two bed room", twoBed);
 		assertTrue("Could not find three bed room", threeBed);
@@ -345,7 +352,12 @@ public class SearchTest
 		// This test checks to that the mock data manager returns the list of
 		// rooms
 
-		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(lowCostSingleDoubleBedRoom, mediumCostSingleDoubleBedRoom, highCostSingleDoubleBedRoom)));
+		// Set up test data
+		MockDataManager mdm = new MockDataManager(
+				new ArrayList<>(Arrays.asList(
+						lowCostSingleDoubleBedRoom, 
+						mediumCostSingleDoubleBedRoom, 
+						highCostSingleDoubleBedRoom)));
 		Search search = new Search(mdm);
 
 		// Perform actions to be tested
@@ -367,7 +379,6 @@ public class SearchTest
 			if (r.getId() == 3)
 				threeBed = true;
 		}
-
 		assertTrue("Could not find two bed room", twoBed);
 		assertTrue("Could not find three bed room", threeBed);
 	}
@@ -378,7 +389,12 @@ public class SearchTest
 		// This test checks to that the mock data manager returns the list of
 		// rooms
 
-		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(lowCostSingleDoubleBedRoom, mediumCostSingleDoubleBedRoom, highCostSingleDoubleBedRoom)));
+		// Set up test data
+		MockDataManager mdm = new MockDataManager(
+				new ArrayList<>(Arrays.asList(
+						lowCostSingleDoubleBedRoom, 
+						mediumCostSingleDoubleBedRoom, 
+						highCostSingleDoubleBedRoom)));
 		Search search = new Search(mdm);
 
 		// Perform actions to be tested
@@ -400,7 +416,6 @@ public class SearchTest
 			if (r.getId() == 2)
 				twoBed = true;
 		}
-
 		assertTrue("Could not find one bed room", oneBed);
 		assertTrue("Could not find two bed room", twoBed);
 	}
@@ -411,7 +426,11 @@ public class SearchTest
 		// This test checks to that the mock data manager returns the list of
 		// rooms
 
-		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(tenSingleDoubleBedEnSuiteRoom, twentySingleDoubleBedNonSuiteRoom, thirtySingleDoubleBedRoom)));
+		MockDataManager mdm = new MockDataManager(
+				new ArrayList<>(Arrays.asList(
+						tenSingleDoubleBedEnSuiteRoom, 
+						twentySingleDoubleBedNonSuiteRoom, 
+						thirtySingleDoubleBedRoom)));
 		Search search = new Search(mdm);
 
 		// Perform actions to be tested
@@ -430,7 +449,6 @@ public class SearchTest
 			if (r.getId() == 5)
 				twentyBed = true;
 		}
-
 		assertTrue("Could not find twenty bed room", twentyBed);
 	}
 
@@ -440,7 +458,13 @@ public class SearchTest
 		// This test checks to that the mock data manager returns the list of
 		// rooms
 
-		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(lowCostSingleDoubleBedRoom, mediumCostSingleDoubleBedRoom, highCostSingleDoubleBedRoom)));
+		// Set up test data
+		MockDataManager mdm = new MockDataManager(
+				new ArrayList<>(
+						Arrays.asList(
+								lowCostSingleDoubleBedRoom, 
+								mediumCostSingleDoubleBedRoom, 
+								highCostSingleDoubleBedRoom)));
 		Search search = new Search(mdm);
 
 		// Perform actions to be tested
@@ -477,7 +501,12 @@ public class SearchTest
 		// This test checks to that the mock data manager returns the list of
 		// rooms
 
-		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(lowCostSingleDoubleBedRoom, mediumCostSingleDoubleBedRoom, highCostSingleDoubleBedRoom)));
+		// Set up test data
+		MockDataManager mdm = new MockDataManager(
+				new ArrayList<>(Arrays.asList(
+						lowCostSingleDoubleBedRoom, 
+						mediumCostSingleDoubleBedRoom, 
+						highCostSingleDoubleBedRoom)));
 		Search search = new Search(mdm);
 
 		// Perform actions to be tested
@@ -499,7 +528,6 @@ public class SearchTest
 			if (r.getId() == 3)
 				threeBed = true;
 		}
-
 		assertTrue("Could not find two bed room", twoBed);
 		assertTrue("Could not find three bed room", threeBed);
 	}
@@ -510,7 +538,12 @@ public class SearchTest
 		// This test checks to that the mock data manager returns the list of
 		// rooms
 
-		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(lowCostSingleDoubleBedRoom, mediumCostSingleDoubleBedRoom, highCostSingleDoubleBedRoom)));
+		// Set up test data
+		MockDataManager mdm = new MockDataManager(
+				new ArrayList<>(Arrays.asList(
+						lowCostSingleDoubleBedRoom, 
+						mediumCostSingleDoubleBedRoom, 
+						highCostSingleDoubleBedRoom)));
 		Search search = new Search(mdm);
 
 		// Perform actions to be tested
@@ -543,7 +576,12 @@ public class SearchTest
 		// This test checks to that the mock data manager returns the list of
 		// rooms
 
-		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(tenSingleDoubleBedEnSuiteRoom, twentySingleDoubleBedNonSuiteRoom, thirtySingleDoubleBedRoom)));
+		// Set up test data
+		MockDataManager mdm = new MockDataManager(
+				new ArrayList<>(Arrays.asList(
+						tenSingleDoubleBedEnSuiteRoom, 
+						twentySingleDoubleBedNonSuiteRoom, 
+						thirtySingleDoubleBedRoom)));
 		Search search = new Search(mdm);
 
 		// Perform actions to be tested
@@ -562,7 +600,6 @@ public class SearchTest
 			if (r.getId() == 5)
 				twentyBed = true;
 		}
-
 		assertTrue("Could not find twenty bed room", twentyBed);
 	}
 
@@ -571,14 +608,15 @@ public class SearchTest
 	{
 		// This test checks if star count filter works
 
-		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(lowCostSingleDoubleBedRoom)));
+		// Set up test data
+		MockDataManager mdm = new MockDataManager(
+				new ArrayList<>(Arrays.asList(lowCostSingleDoubleBedRoom)));
 		Search search = new Search(mdm);
 
 		// Perform actions to be tested
 		search.find(null, null, null, null);
 		search.setStarCount(-5, -5);
 		search.filter();
-
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -586,7 +624,9 @@ public class SearchTest
 	{
 		// This test checks if star count filter works
 
-		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(lowCostSingleDoubleBedRoom)));
+		// Set up test data
+		MockDataManager mdm = new MockDataManager(
+				new ArrayList<>(Arrays.asList(lowCostSingleDoubleBedRoom)));
 		Search search = new Search(mdm);
 
 		// Perform actions to be tested
@@ -600,7 +640,12 @@ public class SearchTest
 	{
 		// This test checks if star count filter works
 
-		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(lowCostSingleDoubleBedRoom, mediumCostSingleDoubleBedRoom, highCostSingleDoubleBedRoom)));
+		// Set up test data
+		MockDataManager mdm = new MockDataManager(
+				new ArrayList<>(Arrays.asList(
+						lowCostSingleDoubleBedRoom, 
+						mediumCostSingleDoubleBedRoom, 
+						highCostSingleDoubleBedRoom)));
 		Search search = new Search(mdm);
 
 		// Perform actions to be tested
@@ -632,7 +677,12 @@ public class SearchTest
 	{
 		// This test checks if star count filter works
 
-		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(lowCostSingleDoubleBedRoom, mediumCostSingleDoubleBedRoom, highCostSingleDoubleBedRoom)));
+		// Set up test data
+		MockDataManager mdm = new MockDataManager(
+				new ArrayList<>(Arrays.asList(
+						lowCostSingleDoubleBedRoom, 
+						mediumCostSingleDoubleBedRoom, 
+						highCostSingleDoubleBedRoom)));
 		Search search = new Search(mdm);
 
 		// Perform actions to be tested
@@ -664,7 +714,12 @@ public class SearchTest
 	{
 		// This test checks if star count filter works
 
-		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(lowCostSingleDoubleBedRoom, mediumCostSingleDoubleBedRoom, highCostSingleDoubleBedRoom)));
+		// Set up test data
+		MockDataManager mdm = new MockDataManager(
+				new ArrayList<>(Arrays.asList(
+						lowCostSingleDoubleBedRoom, 
+						mediumCostSingleDoubleBedRoom, 
+						highCostSingleDoubleBedRoom)));
 		Search search = new Search(mdm);
 
 		// Perform actions to be tested
@@ -683,7 +738,6 @@ public class SearchTest
 			if (r.getId() == 2)
 				threeStars = true;
 		}
-
 		assertTrue("Could not find three star room", threeStars);
 	}
 
@@ -693,7 +747,11 @@ public class SearchTest
 		// This test checks that the mock data manager returns the list of
 		// rooms that have bathrooms
 
-		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(tenSingleDoubleBedEnSuiteRoom, twentySingleDoubleBedNonSuiteRoom)));
+		// Set up test data
+		MockDataManager mdm = new MockDataManager(
+				new ArrayList<>(Arrays.asList(
+						tenSingleDoubleBedEnSuiteRoom, 
+						twentySingleDoubleBedNonSuiteRoom)));
 		Search search = new Search(mdm);
 
 		// Perform actions to be tested
@@ -724,14 +782,19 @@ public class SearchTest
 	public void testSortByStarcountAscending()
 	{
 		// This test checks that the mock data manager returns the list of
-		// rooms that have bathrooms
+		// rooms by star count in ascending order.
 
-		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(highCostSingleDoubleBedRoom, lowCostSingleDoubleBedRoom)));
+		// Set up test data
+		MockDataManager mdm = new MockDataManager(
+				new ArrayList<>(Arrays.asList(
+						highCostSingleDoubleBedRoom, 
+						lowCostSingleDoubleBedRoom)));
 		Search search = new Search(mdm);
 
 		// Perform actions to be tested
 		search.find(null, null, null, null);
-		ArrayList<Room> sortedRooms = search.sort(Search.SortBy.STARCOUNT_ASCENDING);
+		ArrayList<Room> sortedRooms = search.sort(
+				Search.SortBy.STARCOUNT_ASCENDING);
 
 		// Check results
 		assertNotNull(sortedRooms);
@@ -747,9 +810,13 @@ public class SearchTest
 	public void testSortByStarcountDescending()
 	{
 		// This test checks that the mock data manager returns the list of
-		// rooms that have bathrooms
+		// rooms by star count in descending order.
 
-		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(lowCostSingleDoubleBedRoom, highCostSingleDoubleBedRoom)));
+		// Set up test data
+		MockDataManager mdm = new MockDataManager(
+				new ArrayList<>(Arrays.asList(
+						lowCostSingleDoubleBedRoom, 
+						highCostSingleDoubleBedRoom)));
 		Search search = new Search(mdm);
 
 		// Perform actions to be tested
@@ -770,9 +837,13 @@ public class SearchTest
 	public void testSortByPriceAscending()
 	{
 		// This test checks that the mock data manager returns the list of
-		// rooms that have bathrooms
+		// rooms by price in ascending order.
 
-		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(highCostSingleDoubleBedRoom, mediumCostSingleDoubleBedRoom)));
+		// Set up test data
+		MockDataManager mdm = new MockDataManager(
+				new ArrayList<>(Arrays.asList(
+						highCostSingleDoubleBedRoom, 
+						mediumCostSingleDoubleBedRoom)));
 		Search search = new Search(mdm);
 
 		// Perform actions to be tested
@@ -793,9 +864,13 @@ public class SearchTest
 	public void testSortByPriceDescending()
 	{
 		// This test checks that the mock data manager returns the list of
-		// rooms that have bathrooms
+		// rooms in descending order by price.
 
-		MockDataManager mdm = new MockDataManager(new ArrayList<>(Arrays.asList(mediumCostSingleDoubleBedRoom, highCostSingleDoubleBedRoom)));
+		// Set up test data
+		MockDataManager mdm = new MockDataManager(
+				new ArrayList<>(Arrays.asList(
+						mediumCostSingleDoubleBedRoom, 
+						highCostSingleDoubleBedRoom)));
 		Search search = new Search(mdm);
 
 		// Perform actions to be tested
@@ -816,10 +891,9 @@ public class SearchTest
 	public void testSortByHotelNameAZ()
 	{
 		// This test checks that the mock data manager returns the list of
-		// rooms that have bathrooms
+		// rooms in alphabetical order.
 
 		// Set up test data
-	
 		ArrayList<Room> rooms = new ArrayList<>();
 		
 		rooms.add(mediumCostSingleDoubleBedRoom);
@@ -849,7 +923,7 @@ public class SearchTest
 	public void testSortByHotelNameZA()
 	{
 		// This test checks that the mock data manager returns the list of
-		// rooms that have bathrooms
+		// rooms in reverse alphabetical order.
 
 		// Set up test data
 		ArrayList<Room> rooms = new ArrayList<>();
