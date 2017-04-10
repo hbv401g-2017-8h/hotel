@@ -31,11 +31,23 @@ public class DatabaseManager implements IDataManager
 		sql += "SELECT ";
 		sql += "r.id, r.hotelId, r.numSingleBeds, r.numDoubleBeds, r.bathroom, r.costPerNight, ";
 		sql += "h.id, h.name, h.streetAddress, h.city, h.postalCode, h.country, h.starCount ";
-		sql += "FROM Room as r INNER JOIN Hotel as h ON (r.hotelId = h.id)";
+		sql += "FROM Room as r INNER JOIN Hotel as h ON (r.hotelId = h.id) ";
+		
+		if(hotelName != null && !hotelName.isEmpty())
+		{
+			sql += "WHERE h.name LIKE ?";
+		}
+		
+		int i = 1;
 		try
 		{
 			Connection connection = getConnection();
 			PreparedStatement statement = connection.prepareStatement(sql);
+			
+			if(hotelName != null && !hotelName.isEmpty())
+			{
+				statement.setString(i++, "%"+hotelName+"%");
+			}
 			
 			ResultSet results = statement.executeQuery();
 	
