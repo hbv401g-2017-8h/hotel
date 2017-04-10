@@ -45,7 +45,7 @@ public class MainWindow
 	private void initialize()
 	{
 		frame = new MainFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 1200, 700);
 		frame.setDefaultCloseOperation(MainFrame.EXIT_ON_CLOSE);
 	}
 

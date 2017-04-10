@@ -16,6 +16,11 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.awt.event.ActionEvent;
 import java.awt.GridLayout;
 
@@ -75,7 +80,7 @@ public class MainFrame extends JFrame
 	public MainFrame()
 	{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1500, 1000);
+		setBounds(100, 100, 1200, 700);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -115,26 +120,26 @@ public class MainFrame extends JFrame
 		textFieldDateFrom = new JTextField();
 		panel.add(textFieldDateFrom);
 		textFieldDateFrom.setColumns(15);
-		textFieldDateFrom.setText("From: DD/MM/YYYY");
+		textFieldDateFrom.setText("From: DD.MM.YYYY");
 		textFieldDateFrom.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                hotelFocusGained(evt, textFieldDateFrom, "From: DD/MM/YYYY");
+                hotelFocusGained(evt, textFieldDateFrom, "From: DD.MM.YYYY");
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
-                hotelFocusLost(evt, textFieldDateFrom, "From: DD/MM/YYYY");
+                hotelFocusLost(evt, textFieldDateFrom, "From: DD.MM.YYYY");
             }
         });
 		
 		textFieldDateTo = new JTextField();
 		panel.add(textFieldDateTo);
 		textFieldDateTo.setColumns(15);
-		textFieldDateTo.setText("To: DD/MM/YYYY");
+		textFieldDateTo.setText("To: DD.MM.YYYY");
 		textFieldDateTo.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                hotelFocusGained(evt, textFieldDateTo, "To: DD/MM/YYYY");
+                hotelFocusGained(evt, textFieldDateTo, "To: DD.MM.YYYY");
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
-                hotelFocusLost(evt, textFieldDateTo, "To: DD/MM/YYYY");
+                hotelFocusLost(evt, textFieldDateTo, "To: DD.MM.YYYY");
             }
         });
 		
@@ -155,10 +160,38 @@ public class MainFrame extends JFrame
 	{
 		Search s = new Search(new DatabaseManager());
 		
+		
+		// Parse date strings to Date objects
+		String dateFromString = textFieldDateFrom.getText();
+		String dateToString = textFieldDateTo.getText();
+		
+		DateFormat df = new SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH);
+	    Date dateFrom = null;
+		try
+		{
+			dateFrom = df.parse(dateFromString);
+		}
+		catch (ParseException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    Date dateTo = null;
+		try
+		{
+			dateTo = df.parse(dateToString);
+		}
+		catch (ParseException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		s.find(textFieldHotel.getText(), 
 				textFieldArea.getText(),
-				null,
-				null);
+				dateFrom,
+				dateTo);
 		
 		searchResultPanel.setSearch(s);
 	}
