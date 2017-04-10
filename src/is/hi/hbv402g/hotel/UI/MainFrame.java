@@ -1,6 +1,7 @@
 package is.hi.hbv402g.hotel.UI;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 
@@ -14,6 +15,7 @@ import is.hi.hbv402g.hotel.db.DatabaseManager;
 import javax.swing.BoxLayout;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
@@ -65,6 +67,7 @@ public class MainFrame extends JFrame
 				{
 					MainFrame frame = new MainFrame();
 					frame.setVisible(true);
+					frame.requestFocusInWindow();
 				}
 				catch (Exception e)
 				{
@@ -86,13 +89,13 @@ public class MainFrame extends JFrame
 		setContentPane(contentPane);
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 		
-		JPanel panel = new JPanel();
-		contentPane.add(panel);
-		panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
+		JPanel searchTextPanel = new JPanel();
+		contentPane.add(searchTextPanel);
+		searchTextPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
 		
 		// Define search text fields with input hint text.
 		textFieldHotel = new JTextField();
-		panel.add(textFieldHotel);
+		searchTextPanel.add(textFieldHotel);
 		textFieldHotel.setColumns(20);
 		textFieldHotel.setText("Hotel");
 		textFieldHotel.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -105,7 +108,7 @@ public class MainFrame extends JFrame
         });
 		
 		textFieldArea = new JTextField();
-		panel.add(textFieldArea);
+		searchTextPanel.add(textFieldArea);
 		textFieldArea.setColumns(20);
 		textFieldArea.setText("Location");
 		textFieldArea.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -118,7 +121,7 @@ public class MainFrame extends JFrame
         });
 		
 		textFieldDateFrom = new JTextField();
-		panel.add(textFieldDateFrom);
+		searchTextPanel.add(textFieldDateFrom);
 		textFieldDateFrom.setColumns(15);
 		textFieldDateFrom.setText("From: DD.MM.YYYY");
 		textFieldDateFrom.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -131,7 +134,7 @@ public class MainFrame extends JFrame
         });
 		
 		textFieldDateTo = new JTextField();
-		panel.add(textFieldDateTo);
+		searchTextPanel.add(textFieldDateTo);
 		textFieldDateTo.setColumns(15);
 		textFieldDateTo.setText("To: DD.MM.YYYY");
 		textFieldDateTo.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -149,7 +152,7 @@ public class MainFrame extends JFrame
 				submitSearch();
 			}
 		});
-		panel.add(btnSearch);
+		searchTextPanel.add(btnSearch);
 		
 		searchResultPanel = new SearchResultPanel();
 		contentPane.add(searchResultPanel);
@@ -166,25 +169,48 @@ public class MainFrame extends JFrame
 		String dateToString = textFieldDateTo.getText();
 		
 		DateFormat df = new SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH);
-	    Date dateFrom = null;
-		try
+		
+		Date dateFrom = null;
+		Component frame = null;
+		if(!dateFromString.equals("From: DD.MM.YYYY"))
 		{
-			dateFrom = df.parse(dateFromString);
+	    
+			try
+			{
+				dateFrom = df.parse(dateFromString);
+			}
+			catch (ParseException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				
+				//custom title, error icon
+				JOptionPane.showMessageDialog(frame,
+			    "Starting date should be in the format: DD.MM.YYYY",
+			    "Date from error",
+			    JOptionPane.ERROR_MESSAGE);
+				
+			}
 		}
-		catch (ParseException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 	    Date dateTo = null;
-		try
+	    if(!dateToString.equals("To: DD.MM.YYYY"))
 		{
-			dateTo = df.parse(dateToString);
-		}
-		catch (ParseException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			try
+			{
+				dateTo = df.parse(dateToString);
+			}
+			catch (ParseException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				
+				//custom title, error icon
+				JOptionPane.showMessageDialog(frame,
+			    "End date should be in the format: DD.MM.YYYY",
+			    "Date to error",
+			    JOptionPane.ERROR_MESSAGE);
+			}
 		}
 		
 		
