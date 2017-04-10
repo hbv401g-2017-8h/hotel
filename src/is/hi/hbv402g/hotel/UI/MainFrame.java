@@ -23,7 +23,7 @@ public class MainFrame extends JFrame
 	private JTextField textFieldDateTo;
 	
 
-	// Lætur texta hverfa í leitarglugga
+	// LÃ¦tur texta hverfa Ã­ leitarglugga
     private void hotelFocusGained(java.awt.event.FocusEvent evt, JTextField tf, String text) {                                         
         if (tf.getText().equals(text))
         {
@@ -31,7 +31,7 @@ public class MainFrame extends JFrame
         }
     }                                        
 
-    // Lætur texta birtast í leitarglugga
+    // LÃ¦tur texta birtast Ã­ leitarglugga
     private void hotelFocusLost(java.awt.event.FocusEvent evt, JTextField tf, String text) {                                       
         if (tf.getText().equals(""))
         {
