@@ -22,6 +22,7 @@ public class MainWindow
 				{
 					MainWindow window = new MainWindow();
 					window.frame.setVisible(true);
+					window.frame.requestFocusInWindow();
 				}
 				catch (Exception e)
 				{

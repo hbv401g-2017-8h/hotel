@@ -31,7 +31,7 @@ public class MainFrame extends JFrame
 
 	private JPanel contentPane;
 	private JTextField textFieldHotel;
-	private JTextField textFieldArea;
+	private JTextField textFieldLocation;
 	private JTextField textFieldDateFrom;
 	private JTextField textFieldDateTo;
 	private SearchResultPanel searchResultPanel;
@@ -107,16 +107,16 @@ public class MainFrame extends JFrame
             }
         });
 		
-		textFieldArea = new JTextField();
-		searchTextPanel.add(textFieldArea);
-		textFieldArea.setColumns(20);
-		textFieldArea.setText("Location");
-		textFieldArea.addFocusListener(new java.awt.event.FocusAdapter() {
+		textFieldLocation = new JTextField();
+		searchTextPanel.add(textFieldLocation);
+		textFieldLocation.setColumns(20);
+		textFieldLocation.setText("Location");
+		textFieldLocation.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                hotelFocusGained(evt, textFieldArea, "Location");
+                hotelFocusGained(evt, textFieldLocation, "Location");
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
-                hotelFocusLost(evt, textFieldArea, "Location");
+                hotelFocusLost(evt, textFieldLocation, "Location");
             }
         });
 		
@@ -215,7 +215,7 @@ public class MainFrame extends JFrame
 		
 		
 		s.find(textFieldHotel.getText(), 
-				textFieldArea.getText(),
+				textFieldLocation.getText(),
 				dateFrom,
 				dateTo);
 		

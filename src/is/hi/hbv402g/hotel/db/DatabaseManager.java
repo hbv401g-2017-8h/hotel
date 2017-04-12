@@ -38,6 +38,14 @@ public class DatabaseManager implements IDataManager
 			sql += "WHERE h.name LIKE ?";
 		}
 		
+		if(location != null && !location.isEmpty())
+		{
+			sql += "OR h.streetAddress LIKE ?";
+			sql += "OR h.city LIKE ?";
+			sql += "OR h.postalCode LIKE ?";
+			sql += "OR h.country LIKE ?";
+		}
+		
 		int i = 1;
 		try
 		{
@@ -47,6 +55,18 @@ public class DatabaseManager implements IDataManager
 			if(hotelName != null && !hotelName.isEmpty())
 			{
 				statement.setString(i++, "%"+hotelName+"%");
+			}
+			else
+			{
+				i++;
+			}
+			
+			if(location != null && !location.isEmpty())
+			{
+				statement.setString(i++, "%"+location+"%");
+				statement.setString(i++, "%"+location+"%");
+				statement.setString(i++, "%"+location+"%");
+				statement.setString(i++, "%"+location+"%");
 			}
 			
 			ResultSet results = statement.executeQuery();
