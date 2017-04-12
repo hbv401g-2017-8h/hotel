@@ -32,8 +32,8 @@ public class SearchResultPanel extends JPanel
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane);
 		
-		tableModel = new DefaultTableModel(0, 2);// new Object[][] { { null, null }, }, new String[] { "Hotel", "Room" }
-		tableModel.setColumnIdentifiers(new String[] { "Hotel", "Room" });
+		tableModel = new DefaultTableModel(0, 5);// new Object[][] { { null, null }, }, new String[] { "Hotel", "Room" }
+		tableModel.setColumnIdentifiers(new String[] { "Hotel", "Number of single beds", "Number of double beds", "En Suite Bathroom", "Cost per night" });
 		table = new JTable();
 		table.setModel( tableModel);// new String[] { "Hotel", "Room" });
 		
@@ -55,7 +55,7 @@ public class SearchResultPanel extends JPanel
 		
 		for(Room r : hotelRooms)
 		{
-			tableModel.addRow(new Object[] { r.getHotel().toString(), r.toString()});
+			tableModel.addRow(new Object[] { r.getHotel().getName(), r.getNumberOfSingleBeds(), r.getNumberOfDoubleBeds(), (r.getEnSuiteBathroom()? "Yes": "No"), r.getCostPerNight()});
 		}
 	}
 
