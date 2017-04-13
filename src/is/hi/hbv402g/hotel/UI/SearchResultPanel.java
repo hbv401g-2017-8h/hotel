@@ -32,10 +32,10 @@ public class SearchResultPanel extends JPanel
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane);
 		
-		tableModel = new DefaultTableModel(0, 5);// new Object[][] { { null, null }, }, new String[] { "Hotel", "Room" }
+		tableModel = new DefaultTableModel(0, 5);
 		tableModel.setColumnIdentifiers(new String[] { "Hotel", "Number of single beds", "Number of double beds", "En Suite Bathroom", "Cost per night" });
 		table = new JTable();
-		table.setModel( tableModel);// new String[] { "Hotel", "Room" });
+		table.setModel( tableModel);
 		
 		scrollPane.setViewportView(table);
 
