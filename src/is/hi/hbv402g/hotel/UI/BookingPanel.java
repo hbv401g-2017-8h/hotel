@@ -135,22 +135,22 @@ public class BookingPanel extends JPanel
 		lblBookingDateTo.setBounds(12, 286, 163, 15);
 		panel.add(lblBookingDateTo);
 		
-		JButton btnBook = new JButton("Book");
+		JButton btnBook = new JButton("Complete booking");
 		btnBook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				completeBooking();
 			}
 		});
-		btnBook.setBounds(324, 315, 114, 25);
+		btnBook.setBounds(263, 315, 175, 25);
 		panel.add(btnBook);
 		
-		JButton btnBack = new JButton("Back");
+		JButton btnBack = new JButton("Back to search");
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				backToSearch();
 			}
 		});
-		btnBack.setBounds(12, 315, 117, 25);
+		btnBack.setBounds(12, 315, 175, 25);
 		panel.add(btnBack);
 		
 		Double width = btnBook.getBounds().x + btnBook.getBounds().getWidth() + 12;
