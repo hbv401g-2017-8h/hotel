@@ -21,7 +21,11 @@ import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JSlider;
+import java.awt.Component;
+import javax.swing.Box;
+import java.awt.Font;
 
 public class SearchResultPanel extends JPanel
 {
@@ -57,6 +61,12 @@ public class SearchResultPanel extends JPanel
 	private RangeSlider singleBedRangeSlider = new RangeSlider();
 	private RangeSlider doubleBedRangeSlider = new RangeSlider();
 	private Checkbox bathroomCheckBox;
+	private final Component verticalGlue = Box.createVerticalGlue();
+	private final Component rigidArea = Box.createRigidArea(new Dimension(0, 40));
+	private final Component rigidArea_1 = Box.createRigidArea(new Dimension(0, 40));
+	private final Component rigidArea_2 = Box.createRigidArea(new Dimension(0, 40));
+	private final Component rigidArea_3 = Box.createRigidArea(new Dimension(0, 20));
+	private final Component rigidArea_4 = Box.createRigidArea(new Dimension(0, 40));
 
 	public SearchResultPanel()
 	{
@@ -153,20 +163,43 @@ public class SearchResultPanel extends JPanel
 		
 		
 		JLabel filterLabel = new JLabel("Filter By:");
-		starLabel.setText("Number of Stars: Min: "+starMin.toString()+" Max: "+starMax.toString());
+		filterLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
+		filterLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		filterLabel.setPreferredSize(new Dimension(20,20));
+		starLabel.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		starLabel.setText("Stars: Min: "+starMin.toString()+" Max: "+starMax.toString());
+		starLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		priceLabel.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		priceLabel.setText("Price: Min:"+priceMin.toString()+" Max: "+priceMax.toString());
-		singleBedLabel.setText("Number of Single Beds: Min: "+singleBedMin.toString()+" Max: "+singleBedMax.toString());
-		doubleBedLabel.setText("Number of Double Beds: Min:"+doubleBedMin.toString()+" Max: "+doubleBedMax.toString());
+		priceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		singleBedLabel.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		singleBedLabel.setText("Single Beds: Min: "+singleBedMin.toString()+" Max: "+singleBedMax.toString());
+		singleBedLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		doubleBedLabel.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		doubleBedLabel.setText("Double Beds: Min:"+doubleBedMin.toString()+" Max: "+doubleBedMax.toString());
+		doubleBedLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		bathroomCheckBox = new Checkbox("En Suite Bathroom");
+		bathroomCheckBox.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		
+		filterPanel.add(rigidArea_4);
 		
 		// Add components to filter panel
 		filterPanel.add(filterLabel);
+		
+		filterPanel.add(rigidArea_3);
+		filterPanel.add(new JSeparator());
 		filterPanel.add(starLabel);
 		filterPanel.add(starRangeSlider);
+		
+		filterPanel.add(rigidArea);
 		filterPanel.add(priceLabel);
 		filterPanel.add(priceRangeSlider);
+		
+		filterPanel.add(rigidArea_1);
 		filterPanel.add(singleBedLabel);
 		filterPanel.add(singleBedRangeSlider);
+		
+		filterPanel.add(rigidArea_2);
 		filterPanel.add(doubleBedLabel);
 		filterPanel.add(doubleBedRangeSlider);
 		filterPanel.add(bathroomCheckBox);
@@ -174,6 +207,8 @@ public class SearchResultPanel extends JPanel
 		// Add sub panels to searchResultPanel
 		this.add(tablePanel);
 		this.add(filterPanel);
+		
+		filterPanel.add(verticalGlue);
 
 		
 	}
