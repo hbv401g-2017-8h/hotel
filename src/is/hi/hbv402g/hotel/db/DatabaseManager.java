@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,31 +28,80 @@ public class DatabaseManager implements IDataManager
 	{
 		ArrayList<Room> rooms = new ArrayList<>();
 		
+		// Create the basic query which will stand alone if no conditions are set
 		String sql = "";
 		sql += "SELECT ";
 		sql += "r.id, r.hotelId, r.numSingleBeds, r.numDoubleBeds, r.bathroom, r.costPerNight, ";
 		sql += "h.id, h.name, h.streetAddress, h.city, h.postalCode, h.country, h.starCount ";
-		sql += "FROM Room as r INNER JOIN Hotel as h ON (r.hotelId = h.id) ";
 		
+		if (availabilityFrom != null || availabilityTo != null)
+		{
+			ArrayList<String> availabilityCond = new ArrayList<>();
+			if (availabilityFrom != null)
+			{
+				availabilityCond.add("bn.date >= ?");
+			}
+			if (availabilityTo != null)
+			{
+				availabilityCond.add("bn.date <= ?");
+			}
+			
+			//sql += ",(SELECT count(*) FROM BookingNight as bn WHERE " + String.join(" AND ", availabilityCond) + " AND bn.roomId = r.id) as bookedNights ";
+			sql += ",(SELECT count(*) FROM BookingNight as bn WHERE bn.roomId = r.id) as bookedNights ";
+		}
+		
+		sql += "FROM Room as r ";
+		sql += "INNER JOIN Hotel as h ON (r.hotelId = h.id) ";
+		//sql += "LEFT OUTER JOIN BookingNight as bn ON (bn.roomId = r.id) ";
+		
+		// Collect search constraints
+		ArrayList<String> conditions = new ArrayList<>();
 		if(hotelName != null && !hotelName.isEmpty())
 		{
-			sql += "WHERE h.name LIKE ?";
+			conditions.add("h.name LIKE ?");
 		}
 		
-		if(location != null && !location.isEmpty())
+		if (location != null && !location.isEmpty())
 		{
-			sql += "OR h.streetAddress LIKE ?";
-			sql += "OR h.city LIKE ?";
-			sql += "OR h.postalCode LIKE ?";
-			sql += "OR h.country LIKE ?";
+			conditions.add("(h.streetAddress LIKE ? OR h.city LIKE ? OR h.postalCode LIKE ? or h.country LIKE ?)");
 		}
 		
+		/*
+		if (availabilityFrom != null || availabilityTo != null)
+		{
+			conditions.add("bookedNights > 0");
+		}
+		*/
+		/*
+		// Add the search constraints to the sql query
+		if (conditions.size() > 0)
+		{
+			sql += "WHERE " + String.join(" AND ", conditions);
+		}
+		*/
+
+		System.out.println(sql);
 		int i = 1;
 		try
 		{
+			// Create the prepared statement
 			Connection connection = getConnection();
 			PreparedStatement statement = connection.prepareStatement(sql);
 			
+			
+			// Add the search constraints to the prepared statement
+			/*
+			if (availabilityFrom != null)
+			{
+				statement.setDate(i++, new java.sql.Date(availabilityFrom.getTime()));
+			}
+			
+			if (availabilityTo != null)
+			{
+				statement.setDate(i++, new java.sql.Date(availabilityTo.getTime()));
+			}
+			*/
+			/*
 			if(hotelName != null && !hotelName.isEmpty())
 			{
 				statement.setString(i++, "%"+hotelName+"%");
@@ -69,11 +119,26 @@ public class DatabaseManager implements IDataManager
 				statement.setString(i++, "%"+location+"%");
 			}
 			
+			if (location != null && !location.isEmpty())
+			{
+				statement.setString(i++, "%"+location+"%");
+				statement.setString(i++, "%"+location+"%");
+				statement.setString(i++, "%"+location+"%");
+				statement.setString(i++, "%"+location+"%");
+			}*/
+			
 			ResultSet results = statement.executeQuery();
+			ResultSetMetaData rsmd = results.getMetaData();
 	
+			// Create the hotels and the room instances
 			HashMap<Integer, Hotel> hotels = new HashMap<>();
 			while (results.next())
 			{
+				for (int j = 1; j < rsmd.getColumnCount() + 1; j++)
+				{
+					System.out.println(rsmd.getColumnName(j) + ": " + results.getString(j));
+				}
+				
 				Hotel h = hotels.get(results.getInt(7));
 				if (h == null)
 				{
