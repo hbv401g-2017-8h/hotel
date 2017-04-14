@@ -14,11 +14,12 @@ public class Application
 	public static void main(String[] args)
 	{
 		IDataManager dataManager = new DatabaseManager();
-		ArrayList<Room> rooms = dataManager.findHotelRooms(null, null, null, null);
+		//ArrayList<Room> rooms = dataManager.findHotelRooms("saga", "eykjavík", new Date(2017, 4, 12), new Date(2017, 4, 12));
+		ArrayList<Room> rooms = dataManager.findHotelRooms("saga", "eykjavík", new Date(2017, 4, 15), new Date(2017, 4, 17));
 		
 		for (Room r : rooms)
 		{
-			System.out.println(r);
+			System.out.println(r.getHotel() + " - " + r);
 		}
 	}
 

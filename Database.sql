@@ -21,6 +21,13 @@ CREATE TABLE Room(
   FOREIGN KEY(hotelId) REFERENCES Hotel(id)
 );
 
+CREATE TABLE BookingNight(
+  id int PRIMARY KEY,
+  roomId int,
+  date DATE,
+  FOREIGN KEY(roomId) REFERENCES Room(id)
+);
+
 INSERT INTO Hotel VALUES(
   0001,
   'Hótel Saga',
