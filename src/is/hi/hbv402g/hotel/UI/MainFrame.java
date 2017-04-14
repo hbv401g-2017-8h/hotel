@@ -26,6 +26,7 @@ import java.util.Locale;
 import java.awt.event.ActionEvent;
 import java.awt.GridLayout;
 import javax.swing.JSlider;
+import java.awt.Checkbox;
 
 public class MainFrame extends JFrame
 {
@@ -48,7 +49,14 @@ public class MainFrame extends JFrame
 	private JTextField textFieldDateFrom;
 	private JTextField textFieldDateTo;
 	private JLabel priceLabel;
+	private JLabel starLabel;
+	private JLabel singleBedLabel;
+	private JLabel doubleBedLabel;
+	private JSlider starSlider;
 	private JSlider priceSlider;
+	private JSlider singleBedSlider;
+	private JSlider doubleBedSlider;
+	private Checkbox bathroomCheckBox;
 	
 	
 	
@@ -161,12 +169,31 @@ public class MainFrame extends JFrame
 		
 		// Make components to filter panel
 		
-		priceLabel = new JLabel("Price Filter");
+		JLabel filterLabel = new JLabel("Filter By:");
+		starLabel = new JLabel("Number of Stars");
+		priceLabel = new JLabel("Price");
+		singleBedLabel = new JLabel("Number of Single Beds");
+		doubleBedLabel = new JLabel("Number of Double Beds");
+		bathroomCheckBox = new Checkbox("En Suite Bathroom");
+		
+		starSlider = new JSlider();
 		priceSlider = new JSlider(JSlider.HORIZONTAL, PRICE_MIN, PRICE_MAX, PRICE_INIT);
+		singleBedSlider = new JSlider();
+		doubleBedSlider = new JSlider();
 		
 		// Add components to filter panel
+		filterPanel.add(filterLabel);
+		filterPanel.add(starLabel);
+		filterPanel.add(starSlider);
 		filterPanel.add(priceLabel);
 		filterPanel.add(priceSlider);
+		filterPanel.add(singleBedLabel);
+		filterPanel.add(singleBedSlider);
+		filterPanel.add(doubleBedLabel);
+		filterPanel.add(doubleBedSlider);
+		filterPanel.add(bathroomCheckBox);
+		
+		
 		
 		
 	}
