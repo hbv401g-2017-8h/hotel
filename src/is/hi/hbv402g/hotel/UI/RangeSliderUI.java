@@ -25,7 +25,7 @@ import javax.swing.plaf.basic.BasicSliderUI;
 class RangeSliderUI extends BasicSliderUI {
 
     /** Color of selected range. */
-    private Color rangeColor = Color.GREEN;
+    private Color rangeColor = Color.GRAY;
     
     /** Location and size of thumb for upper value. */
     private Rectangle upperThumbRect;
@@ -255,10 +255,10 @@ class RangeSliderUI extends BasicSliderUI {
             RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.translate(knobBounds.x, knobBounds.y);
 
-        g2d.setColor(Color.CYAN);
+        g2d.setColor(Color.WHITE);
         g2d.fill(thumbShape);
 
-        g2d.setColor(Color.BLUE);
+        g2d.setColor(Color.GRAY);
         g2d.draw(thumbShape);
         
         // Dispose graphics.
@@ -284,10 +284,10 @@ class RangeSliderUI extends BasicSliderUI {
             RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.translate(knobBounds.x, knobBounds.y);
 
-        g2d.setColor(Color.PINK);
+        g2d.setColor(Color.BLACK);
         g2d.fill(thumbShape);
 
-        g2d.setColor(Color.RED);
+        g2d.setColor(Color.GRAY);
         g2d.draw(thumbShape);
 
         // Dispose graphics.

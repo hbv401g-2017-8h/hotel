@@ -33,6 +33,7 @@ import java.awt.event.ActionEvent;
 import java.awt.GridLayout;
 import javax.swing.JSlider;
 import java.awt.Checkbox;
+import java.awt.Font;
 
 public class MainFrame extends JFrame
 {
@@ -95,6 +96,7 @@ public class MainFrame extends JFrame
 		
 		// Define search text fields with input hint text.
 		textFieldHotel = new JTextField();
+		textFieldHotel.setFont(new Font("Dialog", Font.PLAIN, 12));
 		textFieldHotel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				submitSearch();
@@ -113,6 +115,7 @@ public class MainFrame extends JFrame
         });
 		
 		textFieldLocation = new JTextField();
+		textFieldLocation.setFont(new Font("Dialog", Font.PLAIN, 12));
 		textFieldLocation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				submitSearch();
@@ -149,6 +152,7 @@ public class MainFrame extends JFrame
 		
 		/*
 		textFieldDateFrom = new JTextField();
+		textFieldDateFrom.setFont(new Font("Dialog", Font.PLAIN, 12));
 		textFieldDateFrom.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				submitSearch();
@@ -167,6 +171,7 @@ public class MainFrame extends JFrame
         });
 		
 		textFieldDateTo = new JTextField();
+		textFieldDateTo.setFont(new Font("Dialog", Font.PLAIN, 12));
 		textFieldDateTo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				submitSearch();
@@ -186,6 +191,7 @@ public class MainFrame extends JFrame
         */
 		
 		JButton btnSearch = new JButton("Search");
+		btnSearch.setFont(new Font("Dialog", Font.PLAIN, 12));
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				submitSearch();
