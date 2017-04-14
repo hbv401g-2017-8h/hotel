@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
+import javax.swing.JCheckBox;
 import javax.swing.JScrollPane;
 
 public class SearchResultPanel extends JPanel
@@ -22,22 +23,25 @@ public class SearchResultPanel extends JPanel
 
 	private Search search;
 	private MainFrame mainFrame;
-	private JTable table;
-	private DefaultTableModel tableModel;
+	private JTable searchTable;
+	private DefaultTableModel searchTableModel;
 
 	public SearchResultPanel()
 	{
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
-		JScrollPane scrollPane = new JScrollPane();
-		add(scrollPane);
+		JScrollPane searchScrollPane = new JScrollPane();
+		add(searchScrollPane);
 		
-		tableModel = new DefaultTableModel(0, 5);
-		tableModel.setColumnIdentifiers(new String[] { "Hotel", "Number of single beds", "Number of double beds", "En Suite Bathroom", "Cost per night" });
-		table = new JTable();
-		table.setModel( tableModel);
+		searchTableModel = new DefaultTableModel(0, 6);
+		searchTableModel.setColumnIdentifiers(new String[] { "Hotel", "Number of single beds", "Number of double beds", "En Suite Bathroom", "Cost per night", "Book" });
+		searchTable = new JTable();
+		searchTable.setModel( searchTableModel);
 		
-		scrollPane.setViewportView(table);
+		searchTable.getColumn("Book").setCellRenderer(new ButtonTableRenderer());
+		searchTable.getColumn("Book").setCellEditor(new ButtonTableEditor(new JCheckBox()));
+		
+		searchScrollPane.setViewportView(searchTable);
 
 	}
 	
@@ -51,11 +55,12 @@ public class SearchResultPanel extends JPanel
 	{
 		ArrayList<Room> hotelRooms = this.search.getSearchResults();
 		
-		tableModel.setRowCount(0);
+		searchTableModel.setRowCount(0);
 		
 		for(Room r : hotelRooms)
 		{
-			tableModel.addRow(new Object[] { r.getHotel().getName(), r.getNumberOfSingleBeds(), r.getNumberOfDoubleBeds(), (r.getEnSuiteBathroom()? "Yes": "No"), r.getCostPerNight()});
+			searchTableModel.addRow(new Object[] { r.getHotel().getName(), r.getNumberOfSingleBeds(), r.getNumberOfDoubleBeds(), (r.getEnSuiteBathroom()? "Yes": "No"), r.getCostPerNight(), "Book"});
+		
 		}
 	}
 
