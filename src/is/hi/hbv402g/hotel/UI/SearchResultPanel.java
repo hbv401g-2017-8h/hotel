@@ -8,6 +8,8 @@ import is.hi.hbv402g.hotel.models.Room;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -44,7 +46,17 @@ public class SearchResultPanel extends JPanel
 		searchTable.getColumn("Book").setCellEditor(new ButtonTableEditor(new JCheckBox()));
 		
 		searchScrollPane.setViewportView(searchTable);
-
+		
+		searchTable.addMouseListener(new MouseAdapter() {
+	         public void mouseClicked(MouseEvent e) {
+	            if (e.getClickCount() == 2) {
+	               JTable target = (JTable) e.getSource();
+	               int row = target.getSelectedRow();
+	               ArrayList<Room> rooms = search.getSearchResults();
+	               System.out.println(rooms.get(row));
+	            }
+	         }
+	      });
 	}
 	
 	public void setSearch(Search search)
