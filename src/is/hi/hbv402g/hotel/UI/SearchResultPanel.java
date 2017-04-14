@@ -88,6 +88,7 @@ public class SearchResultPanel extends JPanel
 		
 		searchTableModel.setColumnIdentifiers(new String[] { "Hotel", "Number of single beds", "Number of double beds", "En Suite Bathroom", "Cost per night", "Book" });
 		searchTable = new JTable();
+		searchTable.setFont(new Font("Dialog", Font.PLAIN, 12));
 		searchTable.setModel( searchTableModel);
 		searchTable.getTableHeader().setReorderingAllowed(false);
 		
@@ -125,6 +126,7 @@ public class SearchResultPanel extends JPanel
     	singleBedMax = singleBedRangeSlider.getUpperValue();
     	doubleBedMin = doubleBedRangeSlider.getValue();
     	doubleBedMax = doubleBedRangeSlider.getUpperValue();
+		starRangeSlider.setSnapToTicks(true);
 		
 		// Add listener for filters.
 		starRangeSlider.addChangeListener(new ChangeListener() {
@@ -173,19 +175,19 @@ public class SearchResultPanel extends JPanel
 		
 		
 		JLabel filterLabel = new JLabel("Filter By:");
-		filterLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
+		filterLabel.setFont(new Font("Dialog", Font.BOLD, 14));
 		filterLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		filterLabel.setPreferredSize(new Dimension(20,20));
-		starLabel.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		starLabel.setFont(new Font("Dialog", Font.PLAIN, 14));
 		starLabel.setText("Stars: Min: "+starMin.toString()+" Max: "+starMax.toString());
 		starLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		priceLabel.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		priceLabel.setFont(new Font("Dialog", Font.PLAIN, 14));
 		priceLabel.setText("Price: Min:"+priceMin.toString()+" Max: "+priceMax.toString());
 		priceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		singleBedLabel.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		singleBedLabel.setFont(new Font("Dialog", Font.PLAIN, 14));
 		singleBedLabel.setText("Single Beds: Min: "+singleBedMin.toString()+" Max: "+singleBedMax.toString());
 		singleBedLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		doubleBedLabel.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		doubleBedLabel.setFont(new Font("Dialog", Font.PLAIN, 14));
 		doubleBedLabel.setText("Double Beds: Min:"+doubleBedMin.toString()+" Max: "+doubleBedMax.toString());
 		doubleBedLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		bathroomCheckBox = new Checkbox("En Suite Bathroom");
