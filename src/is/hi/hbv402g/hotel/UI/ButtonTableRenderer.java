@@ -5,6 +5,7 @@ import javax.swing.table.*;
   
 /**
  * @version 1.0 11/09/98
+ * * Retrieved from: http://esus.com/jbutton-cell-jtable/
  */
 public class ButtonTableRenderer extends JButton implements TableCellRenderer {
   

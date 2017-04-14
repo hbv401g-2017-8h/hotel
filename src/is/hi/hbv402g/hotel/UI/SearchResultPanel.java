@@ -24,7 +24,7 @@ public class SearchResultPanel extends JPanel
 	private Search search;
 	private MainFrame mainFrame;
 	private JTable searchTable;
-	private DefaultTableModel searchTableModel;
+	private SearchTableModel searchTableModel;
 
 	public SearchResultPanel()
 	{
@@ -33,10 +33,12 @@ public class SearchResultPanel extends JPanel
 		JScrollPane searchScrollPane = new JScrollPane();
 		add(searchScrollPane);
 		
-		searchTableModel = new DefaultTableModel(0, 6);
+		searchTableModel = new SearchTableModel(0, 6);
+		
 		searchTableModel.setColumnIdentifiers(new String[] { "Hotel", "Number of single beds", "Number of double beds", "En Suite Bathroom", "Cost per night", "Book" });
 		searchTable = new JTable();
 		searchTable.setModel( searchTableModel);
+		searchTable.getTableHeader().setReorderingAllowed(false);
 		
 		searchTable.getColumn("Book").setCellRenderer(new ButtonTableRenderer());
 		searchTable.getColumn("Book").setCellEditor(new ButtonTableEditor(new JCheckBox()));
