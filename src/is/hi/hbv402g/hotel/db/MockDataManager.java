@@ -17,7 +17,11 @@ public class MockDataManager implements IDataManager
 	}
 
 	// Return the list of rooms given in the constructor
-	public ArrayList<Room> findHotelRooms(String hotelName, String location, Date availabilityFrom, Date availabilityTo)
+	public ArrayList<Room> findHotelRooms(
+			String hotelName, 
+			String location, 
+			Date availabilityFrom, 
+			Date availabilityTo)
 	{
 		return this.rooms;
 	}
