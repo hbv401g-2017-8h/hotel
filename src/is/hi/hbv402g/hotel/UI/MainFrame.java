@@ -79,7 +79,7 @@ public class MainFrame extends JFrame
 		
 		JPanel searchTextPanel = new JPanel();
 		masterPanel.add(searchTextPanel);
-		searchTextPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
+		searchTextPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
 		
 		// Define search text fields with input hint text.
 		textFieldHotel = new JTextField();
