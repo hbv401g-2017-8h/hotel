@@ -13,6 +13,10 @@ import javax.swing.table.DefaultTableModel;
 
 import java.awt.Checkbox;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -26,6 +30,7 @@ import javax.swing.JSlider;
 import java.awt.Component;
 import javax.swing.Box;
 import java.awt.Font;
+import java.awt.SystemColor;
 
 public class SearchResultPanel extends JPanel
 {
@@ -110,7 +115,7 @@ public class SearchResultPanel extends JPanel
 		initRangeSlider(singleBedRangeSlider, SINGLE_BED_MIN, SINGLE_BED_MAX);
 		initRangeSlider(doubleBedRangeSlider, DOUBLE_BED_MIN, DOUBLE_BED_MAX);
 		
-        
+		priceRangeSlider.setMinorTickSpacing(10000);
         
 		starMin = starRangeSlider.getValue();
         starMax = starRangeSlider.getUpperValue();
@@ -185,6 +190,10 @@ public class SearchResultPanel extends JPanel
 		doubleBedLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		bathroomCheckBox = new Checkbox("En Suite Bathroom");
 		bathroomCheckBox.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		
+		
+		bathroomCheckBox.addItemListener(new BathroomItemListener());
+		
 		
 		filterPanel.add(rigidArea_4);
 		
@@ -265,5 +274,18 @@ public class SearchResultPanel extends JPanel
         ArrayList<Room> rooms = search.getSearchResults();
         MainFrame mf = Utilities.findParent(this, MainFrame.class);
 		mf.showRoom(rooms.get(row));
+	}
+	
+	class BathroomItemListener implements ItemListener {
+		public void itemStateChanged(ItemEvent e) {
+		    if (e.getStateChange() == ItemEvent.SELECTED)
+		    {
+		    	System.out.println("Selected");
+		    }
+		    else 
+		    {
+		    	System.out.println("UnSelected");
+		    }
+		}
 	}
 }
