@@ -7,10 +7,12 @@ import is.hi.hbv402g.hotel.models.Room;
 import javax.swing.JLabel;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.BoxLayout;
 
 public class RoomPanel extends JPanel
 {
@@ -26,69 +28,97 @@ public class RoomPanel extends JPanel
 	private JLabel lblCost;
 	private JLabel lblCity;
 	private JLabel lblCountry;
+	private JButton btnBack;
+	private JPanel panel;
 	
 	/**
 	 * Create the panel.
 	 */
 	public RoomPanel()
 	{
-		setLayout(null);
+		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		
+		panel = new JPanel();
+		add(panel);
+		panel.setLayout(null);
 		
 		lblName = new JLabel("Hotelname");
-		lblName.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblName.setBounds(10, 11, 195, 14);
-		add(lblName);
+		lblName.setBounds(12, 12, 195, 14);
+		panel.add(lblName);
+		lblName.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		lblAddress = new JLabel("Address:");
-		lblAddress.setBounds(10, 36, 195, 14);
-		add(lblAddress);
+		lblAddress.setFont(new Font("Dialog", Font.PLAIN, 12));
+		lblAddress.setBounds(12, 38, 195, 14);
+		panel.add(lblAddress);
 		
 		lblStars = new JLabel("Stars:");
-		lblStars.setBounds(10, 138, 195, 14);
-		add(lblStars);
+		lblStars.setFont(new Font("Dialog", Font.PLAIN, 12));
+		lblStars.setBounds(12, 138, 195, 14);
+		panel.add(lblStars);
 		
 		lblRoom = new JLabel("About the room");
-		lblRoom.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblRoom.setBounds(215, 12, 225, 14);
-		add(lblRoom);
+		lblRoom.setBounds(217, 12, 225, 14);
+		panel.add(lblRoom);
+		lblRoom.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		lblSetAddress = new JLabel("StreetAddress");
-		lblSetAddress.setBounds(10, 61, 195, 14);
-		add(lblSetAddress);
+		lblSetAddress.setFont(new Font("Dialog", Font.PLAIN, 12));
+		lblSetAddress.setBounds(12, 62, 195, 14);
+		panel.add(lblSetAddress);
 		
 		lblEnSuiteBathroom = new JLabel("En suite bathroom");
-		lblEnSuiteBathroom.setBounds(215, 61, 225, 14);
-		add(lblEnSuiteBathroom);
+		lblEnSuiteBathroom.setFont(new Font("Dialog", Font.PLAIN, 12));
+		lblEnSuiteBathroom.setBounds(217, 62, 225, 14);
+		panel.add(lblEnSuiteBathroom);
 		
 		lblNumberOfSingle = new JLabel("Number of single beds");
-		lblNumberOfSingle.setBounds(215, 87, 225, 14);
-		add(lblNumberOfSingle);
+		lblNumberOfSingle.setFont(new Font("Dialog", Font.PLAIN, 12));
+		lblNumberOfSingle.setBounds(217, 88, 225, 14);
+		panel.add(lblNumberOfSingle);
 		
 		lblNumberOfDouble = new JLabel("Number of double beds");
-		lblNumberOfDouble.setBounds(215, 113, 225, 14);
-		add(lblNumberOfDouble);
+		lblNumberOfDouble.setFont(new Font("Dialog", Font.PLAIN, 12));
+		lblNumberOfDouble.setBounds(217, 113, 225, 14);
+		panel.add(lblNumberOfDouble);
 		
 		lblCost = new JLabel("Cost:");
-		lblCost.setBounds(215, 36, 225, 14);
-		add(lblCost);
+		lblCost.setFont(new Font("Dialog", Font.PLAIN, 12));
+		lblCost.setBounds(217, 38, 225, 14);
+		panel.add(lblCost);
 		
 		lblCity = new JLabel("City");
-		lblCity.setBounds(10, 86, 195, 14);
-		add(lblCity);
+		lblCity.setFont(new Font("Dialog", Font.PLAIN, 12));
+		lblCity.setBounds(12, 88, 195, 14);
+		panel.add(lblCity);
 		
 		lblCountry = new JLabel("Country");
-		lblCountry.setBounds(10, 113, 195, 14);
-		add(lblCountry);
+		lblCountry.setFont(new Font("Dialog", Font.PLAIN, 12));
+		lblCountry.setBounds(12, 113, 195, 14);
+		panel.add(lblCountry);
 		
 		JButton btnBookNow = new JButton("Book now");
+		btnBookNow.setBounds(300, 255, 130, 23);
+		panel.add(btnBookNow);
+		
+		btnBack = new JButton("Back");
+		btnBack.setBounds(12, 255, 130, 23);
+		panel.add(btnBack);
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				backToSearch();
+			}
+		});
 		btnBookNow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				MainFrame mf = Utilities.findParent((Component) e.getSource(), MainFrame.class);
 				mf.openBooking(r);
 			}
 		});
-		btnBookNow.setBounds(351, 266, 89, 23);
-		add(btnBookNow);
+		
+		Double width = btnBookNow.getBounds().x + btnBookNow.getBounds().getWidth() + 12;
+		Double height = btnBookNow.getBounds().y + btnBookNow.getBounds().getHeight() + 12;
+		panel.setMaximumSize(new Dimension(width.intValue(), height.intValue() * 2));
 	}
 	
 	public void setRoom(Room r)
@@ -100,9 +130,21 @@ public class RoomPanel extends JPanel
 		lblCity.setText(r.getHotel().getPostalCode() + " " + r.getHotel().getCity());
 		lblCountry.setText(r.getHotel().getCountry());
 		lblStars.setText(String.format("Stars: %d", r.getHotel().getStarCount()));
-		lblCost.setText(String.format("Cost per night: %d isk.", r.getCostPerNight()));
+		lblCost.setText(String.format("Cost per night: %d ISK", r.getCostPerNight()));
 		lblEnSuiteBathroom.setText(r.getEnSuiteBathroom() ? "Bathroom: Yes":"Bathroom: No");
 		lblNumberOfSingle.setText(String.format("Number of single beds: %d", r.getNumberOfSingleBeds()));
 		lblNumberOfDouble.setText(String.format("Number of double beds: %d", r.getNumberOfDoubleBeds()));
 	}
+	
+	private void backToSearch()
+	{
+		MainFrame mf = Utilities.findParent(this, MainFrame.class);
+		mf.showSearch();
+	}
 }
+
+
+
+
+
+
