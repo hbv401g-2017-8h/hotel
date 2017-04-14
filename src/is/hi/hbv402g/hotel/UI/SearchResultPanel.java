@@ -1,3 +1,4 @@
+
 package is.hi.hbv402g.hotel.UI;
 
 import javax.swing.JPanel;
@@ -6,6 +7,8 @@ import is.hi.hbv402g.hotel.controllers.Search;
 import is.hi.hbv402g.hotel.models.Room;
 
 import javax.swing.JTable;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.Checkbox;
@@ -18,42 +21,52 @@ import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JSlider;
+import java.awt.Component;
+import javax.swing.Box;
+import java.awt.Font;
 
 public class SearchResultPanel extends JPanel
 {
 	
 	static final int STAR_MIN = 0;
     static final int STAR_MAX = 5;
-    static final int STAR_INIT = 3;
 	static final int PRICE_MIN = 0;
     static final int PRICE_MAX = 30000;
-    static final int PRICE_INIT = 5000;
     static final int SINGLE_BED_MIN = 0;
     static final int SINGLE_BED_MAX = 5;
-    static final int SINGLE_BED_INIT = 3;
     static final int DOUBLE_BED_MIN = 0;
     static final int DOUBLE_BED_MAX = 3;
-    static final int DOUBLE_BED_INIT = 2;
 
-	/**
-	 * Create the panel.
-	 */
 	private JPanel tablePanel;
 	private JPanel filterPanel;
 	private Search search;
-	private MainFrame mainFrame;
 	private JTable searchTable;
 	private SearchTableModel searchTableModel;
-	private JLabel priceLabel;
-	private JLabel starLabel;
-	private JLabel singleBedLabel;
-	private JLabel doubleBedLabel;
-	private JSlider starSlider;
-	private JSlider priceSlider;
-	private JSlider singleBedSlider;
-	private JSlider doubleBedSlider;
+	private JLabel starLabel = new JLabel();
+	private JLabel priceLabel = new JLabel();
+	private JLabel singleBedLabel = new JLabel();
+	private JLabel doubleBedLabel = new JLabel();
+	private Integer starMin;
+	private Integer starMax;
+	private Integer priceMin;
+	private Integer priceMax;
+	private Integer singleBedMin;
+	private Integer singleBedMax;
+	private Integer doubleBedMin;
+	private Integer doubleBedMax;
+	private RangeSlider starRangeSlider = new RangeSlider();
+	private RangeSlider priceRangeSlider = new RangeSlider();
+	private RangeSlider singleBedRangeSlider = new RangeSlider();
+	private RangeSlider doubleBedRangeSlider = new RangeSlider();
 	private Checkbox bathroomCheckBox;
+	private final Component verticalGlue = Box.createVerticalGlue();
+	private final Component rigidArea = Box.createRigidArea(new Dimension(0, 40));
+	private final Component rigidArea_1 = Box.createRigidArea(new Dimension(0, 40));
+	private final Component rigidArea_2 = Box.createRigidArea(new Dimension(0, 40));
+	private final Component rigidArea_3 = Box.createRigidArea(new Dimension(0, 20));
+	private final Component rigidArea_4 = Box.createRigidArea(new Dimension(0, 40));
 
 	public SearchResultPanel()
 	{
@@ -76,60 +89,123 @@ public class SearchResultPanel extends JPanel
 		searchTable.getColumn("Book").setCellRenderer(new ButtonTableRenderer());
 		searchTable.getColumn("Book").setCellEditor(new ButtonTableEditor(new JCheckBox(), this));
 		
-		searchScrollPane.setViewportView(searchTable);
+		searchTable.addMouseListener(new MouseAdapter() {
+	         public void mouseClicked(MouseEvent e) {
+	            if (e.getClickCount() == 2) {
+	            	showRoom();
+	            }
+	         }
+	      });
 		
+		searchScrollPane.setViewportView(searchTable);
+
 		filterPanel = new JPanel();
 		filterPanel.setLayout(new BoxLayout(filterPanel, BoxLayout.Y_AXIS));
 		filterPanel.setMaximumSize(new Dimension(50, Integer.MAX_VALUE));
 		
 		// Make components to filter panel
+		// Initialize sliders
+		initRangeSlider(starRangeSlider, STAR_MIN, STAR_MAX);
+		initRangeSlider(priceRangeSlider, PRICE_MIN, PRICE_MAX);
+		initRangeSlider(singleBedRangeSlider, SINGLE_BED_MIN, SINGLE_BED_MAX);
+		initRangeSlider(doubleBedRangeSlider, DOUBLE_BED_MIN, DOUBLE_BED_MAX);
+		
+        
+        
+		starMin = starRangeSlider.getValue();
+        starMax = starRangeSlider.getUpperValue();
+        priceMin = priceRangeSlider.getValue();
+    	priceMax = priceRangeSlider.getUpperValue();
+    	singleBedMin = singleBedRangeSlider.getValue();
+    	singleBedMax = singleBedRangeSlider.getUpperValue();
+    	doubleBedMin = doubleBedRangeSlider.getValue();
+    	doubleBedMax = doubleBedRangeSlider.getUpperValue();
+		
+		// Add listener for filters.
+		starRangeSlider.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                RangeSlider slider = (RangeSlider) e.getSource();
+                starMin = slider.getValue();
+                starMax = slider.getUpperValue();
+                starLabel.setText("Number of Stars: Min: "+starMin.toString()+" Max: "+starMax.toString());
+            }
+        });
+		
+		priceRangeSlider.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                RangeSlider slider = (RangeSlider) e.getSource();
+                priceMin = slider.getValue();
+                priceMax = slider.getUpperValue();
+                priceLabel.setText("Price: Min:"+priceMin.toString()+" Max: "+priceMax.toString());
+            }
+        });
+		
+		singleBedRangeSlider.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                RangeSlider slider = (RangeSlider) e.getSource();
+                singleBedMin = slider.getValue();
+                singleBedMax = slider.getUpperValue();
+                singleBedLabel.setText("Number of Single Beds: Min: "+singleBedMin.toString()+" Max: "+singleBedMax.toString());
+            }
+        });
+		
+		doubleBedRangeSlider.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                RangeSlider slider = (RangeSlider) e.getSource();
+                doubleBedMin = slider.getValue();
+                doubleBedMax = slider.getUpperValue();
+                doubleBedLabel.setText("Number of Double Beds: Min:"+doubleBedMin.toString()+" Max: "+doubleBedMax.toString());
+            }
+        });
+		
 		
 		JLabel filterLabel = new JLabel("Filter By:");
-		starLabel = new JLabel("Number of Stars");
-		priceLabel = new JLabel("Price");
-		singleBedLabel = new JLabel("Number of Single Beds");
-		doubleBedLabel = new JLabel("Number of Double Beds");
+		filterLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
+		filterLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		filterLabel.setPreferredSize(new Dimension(20,20));
+		starLabel.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		starLabel.setText("Stars: Min: "+starMin.toString()+" Max: "+starMax.toString());
+		starLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		priceLabel.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		priceLabel.setText("Price: Min:"+priceMin.toString()+" Max: "+priceMax.toString());
+		priceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		singleBedLabel.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		singleBedLabel.setText("Single Beds: Min: "+singleBedMin.toString()+" Max: "+singleBedMax.toString());
+		singleBedLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		doubleBedLabel.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		doubleBedLabel.setText("Double Beds: Min:"+doubleBedMin.toString()+" Max: "+doubleBedMax.toString());
+		doubleBedLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		bathroomCheckBox = new Checkbox("En Suite Bathroom");
+		bathroomCheckBox.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		
-		starSlider = new JSlider(JSlider.HORIZONTAL, STAR_MIN, STAR_MAX, STAR_INIT);
-		priceSlider = new JSlider(JSlider.HORIZONTAL, PRICE_MIN, PRICE_MAX, PRICE_INIT);
-		singleBedSlider = new JSlider(JSlider.HORIZONTAL, SINGLE_BED_MIN, SINGLE_BED_MAX, SINGLE_BED_INIT);
-		doubleBedSlider = new JSlider(JSlider.HORIZONTAL, DOUBLE_BED_MIN, DOUBLE_BED_MAX, DOUBLE_BED_INIT);
-		
-		//Turn on labels at major tick marks.
-		starSlider.setMajorTickSpacing(1);
-		starSlider.setMinorTickSpacing(1);
-		starSlider.setPaintTicks(true);
-		starSlider.setPaintLabels(true);
+		filterPanel.add(rigidArea_4);
 		
 		// Add components to filter panel
 		filterPanel.add(filterLabel);
+		
+		filterPanel.add(rigidArea_3);
+		filterPanel.add(new JSeparator());
 		filterPanel.add(starLabel);
-		filterPanel.add(starSlider);
+		filterPanel.add(starRangeSlider);
+		
+		filterPanel.add(rigidArea);
 		filterPanel.add(priceLabel);
-		filterPanel.add(priceSlider);
+		filterPanel.add(priceRangeSlider);
+		
+		filterPanel.add(rigidArea_1);
 		filterPanel.add(singleBedLabel);
-		filterPanel.add(singleBedSlider);
+		filterPanel.add(singleBedRangeSlider);
+		
+		filterPanel.add(rigidArea_2);
 		filterPanel.add(doubleBedLabel);
-		filterPanel.add(doubleBedSlider);
+		filterPanel.add(doubleBedRangeSlider);
 		filterPanel.add(bathroomCheckBox);
 		
 		// Add sub panels to searchResultPanel
 		this.add(tablePanel);
 		this.add(filterPanel);
-
-
-		searchTable.addMouseListener(new MouseAdapter() {
-	         public void mouseClicked(MouseEvent e) {
-	            if (e.getClickCount() == 2) {
-	               JTable target = (JTable) e.getSource();
-	               int row = target.getSelectedRow();
-	               ArrayList<Room> rooms = search.getSearchResults();
-	               System.out.println(rooms.get(row));
-	            }
-	         }
-	      });
-
+		
+		filterPanel.add(verticalGlue);
 	}
 	
 	public void setSearch(Search search)
@@ -151,6 +227,16 @@ public class SearchResultPanel extends JPanel
 		}
 	}
 	
+	private void initRangeSlider( RangeSlider rs, int min, int max)
+	{
+		rs.setPreferredSize(new Dimension(240, rs.getPreferredSize().height));
+		rs.setMinimum(min);
+		rs.setMaximum(max);
+		rs.setValue(min);
+		rs.setUpperValue(max);
+	}
+
+
 	public void bookRoom()
 	{
         int row = searchTable.getSelectedRow();
@@ -158,5 +244,12 @@ public class SearchResultPanel extends JPanel
 		MainFrame mf = Utilities.findParent(this, MainFrame.class);
 		mf.openBooking(rooms.get(row));
 	}
-
+	
+	public void showRoom()
+	{
+		int row = searchTable.getSelectedRow();
+        ArrayList<Room> rooms = search.getSearchResults();
+        MainFrame mf = Utilities.findParent(this, MainFrame.class);
+		mf.showRoom(rooms.get(row));
+	}
 }

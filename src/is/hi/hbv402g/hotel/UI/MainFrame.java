@@ -268,5 +268,15 @@ public class MainFrame extends JFrame
 		
 		bookingPanel.newBooking(r);
 	}
+	
+	public void showRoom(Room r)
+	{
+		// Show only room panel
+		searchResultPanel.setVisible(false);
+		bookingPanel.setVisible(false);
+		roomPanel.setVisible(true);
+		
+		roomPanel.setRoom(r);
+	}
 
 }
