@@ -95,7 +95,7 @@ public class SearchTest
 	@Test
 	public void testFindReturnsMockData()
 	{
-		// This test checks to that the mock data manager returns the list of
+		// This test checks that the mock data manager returns the list of
 		// rooms
 
 		// Set up test data
