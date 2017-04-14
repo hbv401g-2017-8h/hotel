@@ -100,7 +100,7 @@ public class RoomPanel extends JPanel
 		lblCity.setText(r.getHotel().getPostalCode() + " " + r.getHotel().getCity());
 		lblCountry.setText(r.getHotel().getCountry());
 		lblStars.setText(String.format("Stars: %d", r.getHotel().getStarCount()));
-		lblCost.setText(String.format("Cost per night: %d", r.getCostPerNight()));
+		lblCost.setText(String.format("Cost per night: %d isk.", r.getCostPerNight()));
 		lblEnSuiteBathroom.setText(r.getEnSuiteBathroom() ? "Bathroom: Yes":"Bathroom: No");
 		lblNumberOfSingle.setText(String.format("Number of single beds: %d", r.getNumberOfSingleBeds()));
 		lblNumberOfDouble.setText(String.format("Number of double beds: %d", r.getNumberOfDoubleBeds()));
