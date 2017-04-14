@@ -10,6 +10,8 @@ import javax.swing.table.DefaultTableModel;
 
 import java.awt.Checkbox;
 import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -115,6 +117,18 @@ public class SearchResultPanel extends JPanel
 		// Add sub panels to searchResultPanel
 		this.add(tablePanel);
 		this.add(filterPanel);
+
+
+		searchTable.addMouseListener(new MouseAdapter() {
+	         public void mouseClicked(MouseEvent e) {
+	            if (e.getClickCount() == 2) {
+	               JTable target = (JTable) e.getSource();
+	               int row = target.getSelectedRow();
+	               ArrayList<Room> rooms = search.getSearchResults();
+	               System.out.println(rooms.get(row));
+	            }
+	         }
+	      });
 
 	}
 	
