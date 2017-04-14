@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS Room;
 DROP TABLE IF EXISTS Hotel;
+DROP TABLE IF EXISTS Guest;
 DROP TABLE IF EXISTS BookingNight;
 
 CREATE TABLE Hotel(
@@ -32,10 +33,10 @@ CREATE TABLE Guest(
 );
 
 CREATE TABLE BookingNight(
-  id INT PRIMARY KEY,
-  roomId INT,
-  guestId INT,
-  date DATE,
+  roomId INT NOT NULL,
+  guestId INT NOT NULL,
+  date DATE NOT NULL,
+  PRIMARY KEY(roomId, date)
   FOREIGN KEY(roomId) REFERENCES Room(id),
   FOREIGN KEY(guestId) REFERENCES Guest(id)
 );
@@ -423,4 +424,19 @@ INSERT INTO Room VALUES(
   1,
   1,
   17000
+);
+
+INSERT INTO Guest VALUES(
+	1,
+	'Jón Jónsson',
+	'jon@jon.is',
+	'5540122',
+	2,
+	0
+);
+
+INSERT INTO BookingNight VALUES(
+	10,
+	1,
+	2017-05-01
 );
