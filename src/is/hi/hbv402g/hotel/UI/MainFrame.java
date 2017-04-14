@@ -11,6 +11,7 @@ import javax.swing.border.EmptyBorder;
 
 import is.hi.hbv402g.hotel.controllers.Search;
 import is.hi.hbv402g.hotel.db.DatabaseManager;
+import is.hi.hbv402g.hotel.models.Room;
 
 import javax.swing.BoxLayout;
 import javax.swing.JTextField;
@@ -38,15 +39,14 @@ public class MainFrame extends JFrame
 
 	private JPanel masterPanel;
 	private JPanel lowerPanel;
-	private SearchResultPanel searchResultPanel;
 	private JTextField textFieldHotel;
 	private JTextField textFieldLocation;
 	private JTextField textFieldDateFrom;
 	private JTextField textFieldDateTo;
-	
-	
-	
-	
+
+	private SearchResultPanel searchResultPanel;
+	private BookingPanel bookingPanel;
+	private RoomPanel roomPanel;
 
 	// Lætur texta hverfa í leitarglugga
     private void hotelFocusGained(java.awt.event.FocusEvent evt, JTextField tf, String text) {                                         
@@ -79,7 +79,7 @@ public class MainFrame extends JFrame
 		
 		JPanel searchTextPanel = new JPanel();
 		masterPanel.add(searchTextPanel);
-		searchTextPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
+		searchTextPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
 		
 		// Define search text fields with input hint text.
 		textFieldHotel = new JTextField();
@@ -167,12 +167,25 @@ public class MainFrame extends JFrame
 		masterPanel.add(lowerPanel);
 		
 		searchResultPanel = new SearchResultPanel();
+		bookingPanel = new BookingPanel();
+		roomPanel = new RoomPanel();
+		
+		lowerPanel.add(bookingPanel);
 		lowerPanel.add(searchResultPanel);
-
+		lowerPanel.add(roomPanel);
+		
+		searchResultPanel.setVisible(false);
+		bookingPanel.setVisible(false);
+		roomPanel.setVisible(false);
 	}
 	
 	private void submitSearch()
 	{
+		// Show only search result panel
+		bookingPanel.setVisible(false);
+		roomPanel.setVisible(false);
+		searchResultPanel.setVisible(true);
+		
 		Search s = new Search(new DatabaseManager());
 		
 		
@@ -239,6 +252,14 @@ public class MainFrame extends JFrame
 				dateTo);
 		
 		searchResultPanel.setSearch(s);
+	}
+	
+	public void openBooking(Room r)
+	{
+		// Show only booking panel
+		roomPanel.setVisible(false);
+		searchResultPanel.setVisible(false);
+		bookingPanel.setVisible(true);
 	}
 
 }

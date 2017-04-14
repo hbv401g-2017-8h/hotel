@@ -1,3 +1,4 @@
+
 package is.hi.hbv402g.hotel.UI;
 
 import javax.swing.JPanel;
@@ -76,10 +77,21 @@ public class SearchResultPanel extends JPanel
 		searchTable.getTableHeader().setReorderingAllowed(false);
 		
 		searchTable.getColumn("Book").setCellRenderer(new ButtonTableRenderer());
-		searchTable.getColumn("Book").setCellEditor(new ButtonTableEditor(new JCheckBox()));
+		searchTable.getColumn("Book").setCellEditor(new ButtonTableEditor(new JCheckBox(), null));
+		
+		searchTable.addMouseListener(new MouseAdapter() {
+	         public void mouseClicked(MouseEvent e) {
+	            if (e.getClickCount() == 2) {
+	               JTable target = (JTable) e.getSource();
+	               int row = target.getSelectedRow();
+	               ArrayList<Room> rooms = search.getSearchResults();
+	               System.out.println(rooms.get(row));
+	            }
+	         }
+	      });
 		
 		searchScrollPane.setViewportView(searchTable);
-		
+
 		filterPanel = new JPanel();
 		filterPanel.setLayout(new BoxLayout(filterPanel, BoxLayout.Y_AXIS));
 		filterPanel.setMaximumSize(new Dimension(50, Integer.MAX_VALUE));
@@ -163,18 +175,7 @@ public class SearchResultPanel extends JPanel
 		this.add(tablePanel);
 		this.add(filterPanel);
 
-
-		searchTable.addMouseListener(new MouseAdapter() {
-	         public void mouseClicked(MouseEvent e) {
-	            if (e.getClickCount() == 2) {
-	               JTable target = (JTable) e.getSource();
-	               int row = target.getSelectedRow();
-	               ArrayList<Room> rooms = search.getSearchResults();
-	               System.out.println(rooms.get(row));
-	            }
-	         }
-	      });
-
+		
 	}
 	
 	public void setSearch(Search search)
@@ -203,6 +204,13 @@ public class SearchResultPanel extends JPanel
 		rs.setMaximum(max);
 		rs.setValue(min);
 		rs.setUpperValue(max);
+	}
+
+
+	public void bookRoom(Room r)
+	{
+		MainFrame mf = Utilities.findParent(this, MainFrame.class);
+		mf.openBooking(r);
 	}
 
 }
