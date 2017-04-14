@@ -66,7 +66,7 @@ public class DatabaseManager implements IDataManager
 		
 		if (location != null && !location.isEmpty())
 		{
-			conditions.add("(h.streetAddress LIKE ? OR h.city LIKE ? OR h.postalCode LIKE ? or h.country LIKE ?)");
+			conditions.add("(h.streetAddress LIKE ? OR h.city LIKE ? OR h.postalCode LIKE ? OR h.country LIKE ?)");
 		}
 
 		if (availabilityFrom != null || availabilityTo != null)
@@ -80,7 +80,6 @@ public class DatabaseManager implements IDataManager
 			sql += "WHERE " + String.join(" AND ", conditions);
 		}
 
-		System.out.println(sql);
 		int i = 1;
 		try
 		{
@@ -121,11 +120,6 @@ public class DatabaseManager implements IDataManager
 			HashMap<Integer, Hotel> hotels = new HashMap<>();
 			while (results.next())
 			{
-				for (int j = 1; j < rsmd.getColumnCount() + 1; j++)
-				{
-					System.out.println(rsmd.getColumnName(j) + ": " + results.getString(j));
-				}
-				
 				// Read hotel information
 				Hotel h = hotels.get(results.getInt(7));
 				if (h == null)
@@ -153,7 +147,7 @@ public class DatabaseManager implements IDataManager
 		}
 		catch (SQLException exc)
 		{
-			System.out.println(exc.getMessage());
+			System.err.println(exc.getMessage());
 			return null;
 		}
 		return rooms;
@@ -186,7 +180,7 @@ public class DatabaseManager implements IDataManager
 		}
 		catch (SQLException exc)
 		{
-			System.out.println(exc.getMessage());
+			System.err.println(exc.getMessage());
 			return null;
 		}
 	}
@@ -219,7 +213,7 @@ public class DatabaseManager implements IDataManager
 		}
 		catch (SQLException exc)
 		{
-			System.out.println(exc.getMessage());
+			System.err.println(exc.getMessage());
 			return null;
 		}
 	}
@@ -250,7 +244,7 @@ public class DatabaseManager implements IDataManager
 		}
 		catch (SQLException exc)
 		{
-			System.out.println(exc.getMessage());
+			System.err.println(exc.getMessage());
 			return null;
 		}
 	}
