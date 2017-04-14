@@ -25,16 +25,26 @@ import java.util.Date;
 import java.util.Locale;
 import java.awt.event.ActionEvent;
 import java.awt.GridLayout;
+import javax.swing.JSlider;
 
 public class MainFrame extends JFrame
 {
+	
+	static final int PRICE_MIN = 0;
+    static final int PRICE_MAX = 30000;
+    static final int PRICE_INIT = 5000;    //initial frames per second
 
-	private JPanel contentPane;
+	private JPanel masterPanel;
+	private JPanel lowerPanel;
+	private JPanel filterPanel;
+	private SearchResultPanel searchResultPanel;
 	private JTextField textFieldHotel;
 	private JTextField textFieldLocation;
 	private JTextField textFieldDateFrom;
 	private JTextField textFieldDateTo;
-	private SearchResultPanel searchResultPanel;
+	private JLabel priceLabel;
+	private JSlider priceSlider;
+	
 	
 	
 
@@ -54,28 +64,6 @@ public class MainFrame extends JFrame
         }
     }
 	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args)
-	{
-		EventQueue.invokeLater(new Runnable()
-		{
-			public void run()
-			{
-				try
-				{
-					MainFrame frame = new MainFrame();
-					frame.setVisible(true);
-					frame.requestFocusInWindow();
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
@@ -84,13 +72,13 @@ public class MainFrame extends JFrame
 	{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1200, 700);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
+		masterPanel = new JPanel();
+		masterPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(masterPanel);
+		masterPanel.setLayout(new BoxLayout(masterPanel, BoxLayout.Y_AXIS));
 		
 		JPanel searchTextPanel = new JPanel();
-		contentPane.add(searchTextPanel);
+		masterPanel.add(searchTextPanel);
 		searchTextPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
 		
 		// Define search text fields with input hint text.
@@ -154,8 +142,27 @@ public class MainFrame extends JFrame
 		});
 		searchTextPanel.add(btnSearch);
 		
+		lowerPanel = new JPanel();
+		lowerPanel.setLayout(new BoxLayout(lowerPanel, BoxLayout.X_AXIS));
+		masterPanel.add(lowerPanel);
+		
 		searchResultPanel = new SearchResultPanel();
-		contentPane.add(searchResultPanel);
+		lowerPanel.add(searchResultPanel);
+		
+		filterPanel = new JPanel();
+		filterPanel.setLayout(new BoxLayout(filterPanel, BoxLayout.Y_AXIS));
+		filterPanel.setMaximumSize(new Dimension(50, Integer.MAX_VALUE));
+		lowerPanel.add(filterPanel);
+		
+		// Make components to filter panel
+		
+		priceLabel = new JLabel("Price Filter");
+		priceSlider = new JSlider(JSlider.HORIZONTAL, PRICE_MIN, PRICE_MAX, PRICE_INIT);
+		
+		// Add components to filter panel
+		filterPanel.add(priceLabel);
+		filterPanel.add(priceSlider);
+		
 		
 	}
 	
