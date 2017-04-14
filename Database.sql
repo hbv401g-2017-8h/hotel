@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS Guest;
 DROP TABLE IF EXISTS BookingNight;
 
 CREATE TABLE Hotel(
-  id INTEGER PRIMARY KEY,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   name VARCHAR(255) COLLATE NOCASE,
   streetAddress VARCHAR(255) COLLATE NOCASE,
   city VARCHAR(255) COLLATE NOCASE,
@@ -15,21 +15,21 @@ CREATE TABLE Hotel(
 );
 
 CREATE TABLE Room(
-  id int PRIMARY KEY,
-  hotelId INT,
-  numSingleBeds INT,
-  numDoubleBeds INT,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  hotelId INTEGER,
+  numSingleBeds INTEGER,
+  numDoubleBeds INTEGER,
   bathroom BOOLEAN,
-  costPerNight INT,
+  costPerNight INTEGER,
   FOREIGN KEY(hotelId) REFERENCES Hotel(id)
 );
 
 CREATE TABLE Guest(
-    id INT PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR(255) COLLATE NOCASE,
     email VARCHAR(255) COLLATE NOCASE,
     phoneNumber VARCHAR(255) COLLATE NOCASE,
-    numberOfAdults INT,
+    numberOfAdults INTEGER,
     numberOfChildren INT
 );
 
@@ -44,7 +44,7 @@ CREATE TABLE BookingNight(
 
 CREATE TABLE Amenities(
     amenity VARCHAR(255) COLLATE NOCASE,
-    hotelId INT,
+    hotelId INTEGER,
     PRIMARY KEY(amenity, hotelId),
     FOREIGN KEY(hotelId) REFERENCES Hotel(id)
 );

@@ -3,6 +3,8 @@ package is.hi.hbv402g.hotel.db;
 import java.util.ArrayList;
 import java.util.Date;
 
+import is.hi.hbv402g.hotel.models.BookingNight;
+import is.hi.hbv402g.hotel.models.Guest;
 import is.hi.hbv402g.hotel.models.Room;
 
 public class MockDataManager implements IDataManager
@@ -24,6 +26,16 @@ public class MockDataManager implements IDataManager
 			Date availabilityTo)
 	{
 		return this.rooms;
+	}
+	
+	public void saveBookingNights(ArrayList<BookingNight> bookingNights)
+	{
+		
+	}
+	
+	public Integer saveGuest(Guest g)
+	{
+		return null;
 	}
 
 }

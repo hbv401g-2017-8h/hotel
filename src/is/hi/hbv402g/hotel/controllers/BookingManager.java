@@ -5,13 +5,16 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 
+import is.hi.hbv402g.hotel.db.DatabaseManager;
 import is.hi.hbv402g.hotel.db.IDataManager;
 import is.hi.hbv402g.hotel.models.BookingNight;
 import is.hi.hbv402g.hotel.models.Guest;
 import is.hi.hbv402g.hotel.models.Payment;
+import is.hi.hbv402g.hotel.models.Room;
 
 public class BookingManager
 {
+	private IDataManager db;
 	private Date dateFrom;
 	private Date dateTo;
 	private ArrayList<BookingNight> bookingNights;
@@ -20,7 +23,7 @@ public class BookingManager
 	
 	public BookingManager(IDataManager db)
 	{
-		
+		this.db = db;
 	}
 	
 	public Date getDateFrom()
@@ -78,21 +81,26 @@ public class BookingManager
 		
 	}
 	
-	public ArrayList<BookingNight> book(Guest guest, Payment payment, Date dateFrom, Date dateTo)
+	public ArrayList<BookingNight> book(Guest guest, Room room, Payment payment, Date dateFrom, Date dateTo)
 	{
-		System.out.println("A book is booking");
-		System.out.println("Guest: " + guest);
-		System.out.println("Payment: " + payment);
-		System.out.println("Date from: " + dateFrom);
-		System.out.println("Date to: " + dateTo);
-		
 		LocalDate start = dateFrom.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 		LocalDate end = dateTo.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 		
+		Integer guestId = db.saveGuest(guest);
+		if (guestId != null)
+			guest.setId(guestId.intValue());
+		
+		ArrayList<BookingNight> bookingNights = new ArrayList<>();
 		for (LocalDate date = start; date.isBefore(end); date = date.plusDays(1))
 		{
-			System.out.println(date);
+			BookingNight bn = new BookingNight();
+			bn.setGuest(guest);
+			bn.setRoom(room);
+			bn.setDate(java.sql.Date.valueOf(date));
+			bookingNights.add(bn);
 		}
+		
+		db.saveBookingNights(bookingNights);
 		
 		return bookingNights;
 	}

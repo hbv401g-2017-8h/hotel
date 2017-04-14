@@ -8,6 +8,8 @@ public class BookingNight
 	private int id;
 	private Date date;
 	private ArrayList<BookingNight> associatedBookings;
+	private int roomId;
+	private Room room;
 	private int guestId;
 	private Guest guest;
 	private int paymentId;
@@ -77,5 +79,25 @@ public class BookingNight
 	public void setCancelled(boolean cancelled)
 	{
 		this.cancelled = cancelled;
+	}
+
+	public int getRoomId()
+	{
+		return roomId;
+	}
+
+	public void setRoomId(int roomId)
+	{
+		this.roomId = roomId;
+	}
+
+	public Room getRoom()
+	{
+		return room;
+	}
+
+	public void setRoom(Room room)
+	{
+		this.room = room;
 	}
 }

@@ -22,10 +22,17 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Properties;
 import java.awt.event.ActionEvent;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
+import org.jdatepicker.impl.JDatePanelImpl;
+import javax.swing.JFormattedTextField.AbstractFormatter;
 
 public class BookingPanel extends JPanel
 {
+	private Room room;
+	
 	private JLabel lblHeader;
 	private JLabel lblDisclaimerText;
 	
@@ -34,8 +41,13 @@ public class BookingPanel extends JPanel
 	private JTextField guestPhoneNumberTextField;
 	private JTextField numberOfAdultsTextField;
 	private JTextField numberOfChildrenTextField;
-	private JTextField bookingDateFrom;
-	private JTextField bookingDateTo;
+
+	private JDatePickerImpl datePickerFrom;
+	private UtilDateModel dateModelFrom;
+	private JDatePanelImpl datePanelFrom;
+	private JDatePickerImpl datePickerTo;
+	private UtilDateModel dateModelTo;
+	private JDatePanelImpl datePanelTo;
 	
 	private final String headerText = "Booking a room in %s";
 	private final String disclaimerText = "<html>Check-in is at 12:00 to " +
@@ -89,16 +101,23 @@ public class BookingPanel extends JPanel
 		numberOfChildrenTextField.setBounds(193, 222, 245, 19);
 		panel.add(numberOfChildrenTextField);
 		numberOfChildrenTextField.setColumns(10);
+
+		Properties p = new Properties();
+		p.put("text.today", "Today");
+		p.put("text.month", "Month");
+		p.put("text.year", "Year");
 		
-		bookingDateFrom = new JTextField();
-		bookingDateFrom.setBounds(193, 253, 245, 19);
-		panel.add(bookingDateFrom);
-		bookingDateFrom.setColumns(10);
+		dateModelFrom = new UtilDateModel();
+		datePanelFrom = new JDatePanelImpl(dateModelFrom, p);
+		datePickerFrom = new JDatePickerImpl(datePanelFrom, new DateLabelFormatter());
+		datePickerFrom.setBounds(193, 253, 245, 25);
+		panel.add(datePickerFrom);
 		
-		bookingDateTo = new JTextField();
-		bookingDateTo.setBounds(193, 284, 245, 19);
-		panel.add(bookingDateTo);
-		bookingDateTo.setColumns(10);
+		dateModelTo = new UtilDateModel();
+		datePanelTo = new JDatePanelImpl(dateModelTo, p);
+		datePickerTo = new JDatePickerImpl(datePanelTo, new DateLabelFormatter());
+		datePickerTo.setBounds(193, 290, 245, 25);
+		panel.add(datePickerTo);
 		
 		JLabel lblGuestName = new JLabel("Guest name");
 		lblGuestName.setFont(new Font("Dialog", Font.PLAIN, 12));
@@ -127,12 +146,12 @@ public class BookingPanel extends JPanel
 		
 		JLabel lblBookingDateFrom = new JLabel("Booking date from");
 		lblBookingDateFrom.setFont(new Font("Dialog", Font.PLAIN, 12));
-		lblBookingDateFrom.setBounds(12, 255, 163, 15);
+		lblBookingDateFrom.setBounds(12, 257, 163, 15);
 		panel.add(lblBookingDateFrom);
 		
-		JLabel lblBookingDateTo = new JLabel("Booking date To");
+		JLabel lblBookingDateTo = new JLabel("Booking date to");
 		lblBookingDateTo.setFont(new Font("Dialog", Font.PLAIN, 12));
-		lblBookingDateTo.setBounds(12, 286, 163, 15);
+		lblBookingDateTo.setBounds(12, 294, 163, 15);
 		panel.add(lblBookingDateTo);
 		
 		JButton btnBook = new JButton("Complete booking");
@@ -141,7 +160,7 @@ public class BookingPanel extends JPanel
 				completeBooking();
 			}
 		});
-		btnBook.setBounds(263, 315, 175, 25);
+		btnBook.setBounds(263, 327, 175, 25);
 		panel.add(btnBook);
 		
 		JButton btnBack = new JButton("Back to search");
@@ -150,7 +169,7 @@ public class BookingPanel extends JPanel
 				backToSearch();
 			}
 		});
-		btnBack.setBounds(12, 315, 175, 25);
+		btnBack.setBounds(12, 327, 175, 25);
 		panel.add(btnBack);
 		
 		Double width = btnBook.getBounds().x + btnBook.getBounds().getWidth() + 12;
@@ -160,6 +179,8 @@ public class BookingPanel extends JPanel
 	
 	public void newBooking(Room r)
 	{
+		this.room = r;
+		
 		lblHeader.setText(String.format(headerText, r.getHotel().getName()));
 		lblDisclaimerText.setText(String.format(disclaimerText, r.getCostPerNight()));
 	}
@@ -179,40 +200,12 @@ public class BookingPanel extends JPanel
 		g.setNumberOfAdults(Integer.valueOf(numberOfAdultsTextField.getText()));
 		g.setNumberOfChildren(Integer.valueOf(numberOfChildrenTextField.getText()));
 		
-		DateFormat df = new SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH);
-		Date dateFrom = null;
-		try
-		{
-			dateFrom = df.parse(bookingDateFrom.getText());
-		}
-		catch (ParseException e)
-		{
-			//custom title, error icon
-			MainFrame mf = Utilities.findParent(this, MainFrame.class);
-			JOptionPane.showMessageDialog(mf,
-		    "Starting date should be in the format: DD.MM.YYYY",
-		    "Date from error",
-		    JOptionPane.ERROR_MESSAGE);
-		}
-
-		Date dateTo = null;
-		try
-		{
-			dateTo = df.parse(bookingDateTo.getText());
-		}
-		catch (ParseException e)
-		{
-			//custom title, error icon
-			MainFrame mf = Utilities.findParent(this, MainFrame.class);
-			JOptionPane.showMessageDialog(mf,
-		    "End date should be in the format: DD.MM.YYYY",
-		    "Date to error",
-		    JOptionPane.ERROR_MESSAGE);
-		}
+		Date dateFrom = dateModelFrom.getValue();
+		Date dateTo = dateModelTo.getValue();
 		
 		DatabaseManager dm = new DatabaseManager();
 		BookingManager bm = new BookingManager(dm);
 		
-		bm.book(g, null, dateFrom, dateTo);
+		bm.book(g, room, null, dateFrom, dateTo);
 	}
 }

@@ -73,6 +73,11 @@ public class Guest
 	{
 		return id;
 	}
+	
+	public void setId(int id)
+	{
+		this.id = id;
+	}
 
 	public String toString()
 	{

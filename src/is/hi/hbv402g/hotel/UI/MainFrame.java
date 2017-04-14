@@ -9,6 +9,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
+
 import is.hi.hbv402g.hotel.controllers.Search;
 import is.hi.hbv402g.hotel.db.DatabaseManager;
 import is.hi.hbv402g.hotel.models.Room;
@@ -24,6 +28,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Properties;
 import java.awt.event.ActionEvent;
 import java.awt.GridLayout;
 import javax.swing.JSlider;
@@ -41,8 +46,15 @@ public class MainFrame extends JFrame
 	private JPanel lowerPanel;
 	private JTextField textFieldHotel;
 	private JTextField textFieldLocation;
-	private JTextField textFieldDateFrom;
-	private JTextField textFieldDateTo;
+
+	private JDatePickerImpl datePickerFrom;
+	private UtilDateModel dateModelFrom;
+	private JDatePanelImpl datePanelFrom;
+	private JDatePickerImpl datePickerTo;
+	private UtilDateModel dateModelTo;
+	private JDatePanelImpl datePanelTo;
+	//private JTextField textFieldDateFrom;
+	//private JTextField textFieldDateTo;
 
 	private SearchResultPanel searchResultPanel;
 	private BookingPanel bookingPanel;
@@ -117,7 +129,25 @@ public class MainFrame extends JFrame
                 hotelFocusLost(evt, textFieldLocation, locationHintText);
             }
         });
+
+		Properties p = new Properties();
+		p.put("text.today", "Today");
+		p.put("text.month", "Month");
+		p.put("text.year", "Year");
 		
+		dateModelFrom = new UtilDateModel();
+		datePanelFrom = new JDatePanelImpl(dateModelFrom, p);
+		datePickerFrom = new JDatePickerImpl(datePanelFrom, new DateLabelFormatter());
+		//datePickerFrom.setBounds(193, 253, 245, 25);
+		searchTextPanel.add(datePickerFrom);
+		
+		dateModelTo = new UtilDateModel();
+		datePanelTo = new JDatePanelImpl(dateModelTo, p);
+		datePickerTo = new JDatePickerImpl(datePanelTo, new DateLabelFormatter());
+		//datePickerTo.setBounds(193, 290, 245, 25);
+		searchTextPanel.add(datePickerTo);
+		
+		/*
 		textFieldDateFrom = new JTextField();
 		textFieldDateFrom.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -153,6 +183,7 @@ public class MainFrame extends JFrame
                 hotelFocusLost(evt, textFieldDateTo, dateToHintText);
             }
         });
+        */
 		
 		JButton btnSearch = new JButton("Search");
 		btnSearch.addActionListener(new ActionListener() {
@@ -184,56 +215,9 @@ public class MainFrame extends JFrame
 		showSearch();
 		
 		Search s = new Search(new DatabaseManager());
-		
-		
-		// Parse date strings to Date objects
-		String dateFromString = textFieldDateFrom.getText();
-		String dateToString = textFieldDateTo.getText();
-		
-		DateFormat df = new SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH);
-		
-		Date dateFrom = null;
-		Component frame = null;
-		if(!dateFromString.equals(dateFromHintText))
-		{
-	    
-			try
-			{
-				dateFrom = df.parse(dateFromString);
-			}
-			catch (ParseException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				
-				//custom title, error icon
-				JOptionPane.showMessageDialog(frame,
-			    "Starting date should be in the format: DD.MM.YYYY",
-			    "Date from error",
-			    JOptionPane.ERROR_MESSAGE);
-				
-			}
-		}
-		
-	    Date dateTo = null;
-	    if(!dateToString.equals(dateToHintText))
-		{
-			try
-			{
-				dateTo = df.parse(dateToString);
-			}
-			catch (ParseException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				
-				//custom title, error icon
-				JOptionPane.showMessageDialog(frame,
-			    "End date should be in the format: DD.MM.YYYY",
-			    "Date to error",
-			    JOptionPane.ERROR_MESSAGE);
-			}
-		}
+
+		Date dateFrom = dateModelFrom.getValue();
+		Date dateTo = dateModelTo.getValue();
 		
 	    String hotelName = null;
 	    if (!textFieldHotel.getText().equals(hotelHintText))

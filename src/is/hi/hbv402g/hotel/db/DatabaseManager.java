@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import is.hi.hbv402g.hotel.models.BookingNight;
 import is.hi.hbv402g.hotel.models.Guest;
 import is.hi.hbv402g.hotel.models.Hotel;
 import is.hi.hbv402g.hotel.models.Room;
@@ -114,7 +115,6 @@ public class DatabaseManager implements IDataManager
 			}
 			
 			ResultSet results = statement.executeQuery();
-			ResultSetMetaData rsmd = results.getMetaData();
 	
 			// Create the hotels and the room instances
 			HashMap<Integer, Hotel> hotels = new HashMap<>();
@@ -151,6 +151,63 @@ public class DatabaseManager implements IDataManager
 			return null;
 		}
 		return rooms;
+	}
+	
+	public void saveBookingNights(ArrayList<BookingNight> bookingNights)
+	{
+		try
+		{
+			Connection connection = getConnection();
+			for (BookingNight bn : bookingNights)
+			{
+				PreparedStatement statement = connection.prepareStatement(
+						"INSERT INTO BookingNight (roomId, guestId, date) VALUES (?, ?, ?)");
+				statement.setInt(1, bn.getRoom().getId());
+				statement.setInt(2, bn.getGuest().getId());
+				SimpleDateFormat iso8601DateFormat = new SimpleDateFormat("yyyy-MM-dd");
+				statement.setString(3, iso8601DateFormat.format(bn.getDate()));
+
+				statement.executeUpdate();
+			}
+		}
+		catch (SQLException exc)
+		{
+			System.err.println(exc.getMessage());
+			return;
+		}
+	}
+	
+	public Integer saveGuest(Guest g)
+	{
+		Integer id = null;
+		try
+		{
+			Connection connection = getConnection();
+
+			PreparedStatement statement = connection.prepareStatement(
+					"INSERT INTO Guest (name, email, phoneNumber, numberOfAdults, " +
+					"numberOfChildren) VALUES (?, ?, ?, ?, ?)");
+			statement.setString(1, g.getName());
+			statement.setString(2, g.getEmail());
+			statement.setString(3, g.getPhoneNumber());
+			statement.setInt(4, g.getNumberOfAdults());
+			statement.setInt(5, g.getNumberOfChildren());
+
+			statement.executeUpdate();
+			
+			ResultSet rs = statement.getGeneratedKeys();
+			while (rs.next())
+			{
+				id = rs.getInt(1);
+			}
+		}
+		catch (SQLException exc)
+		{
+			System.err.println(exc.getMessage());
+			return null;
+		}
+		
+		return id;
 	}
 
 	public static Hotel getHotelById(int id)

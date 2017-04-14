@@ -14,9 +14,18 @@ public class Application
 
 	public static void main(String[] args)
 	{
-		IDataManager dataManager = new DatabaseManager();
+		Guest g = new Guest();
+		g.setName("Viktor");
+		g.setEmail("Email");
+		g.setPhoneNumber("1234567");
+		g.setNumberOfAdults(1);
+		g.setNumberOfChildren(2);
 		
-		Calendar calFrom = Calendar.getInstance();
+		IDataManager dataManager = new DatabaseManager();
+		Integer gId = dataManager.saveGuest(g);
+		System.out.println(gId);
+		
+		/*Calendar calFrom = Calendar.getInstance();
 		calFrom.set(2017, Calendar.APRIL, 25);
 
 		Calendar calTo = Calendar.getInstance();
@@ -29,7 +38,7 @@ public class Application
 		for (Room r : rooms)
 		{
 			System.out.println(r.getHotel() + " - " + r);
-		}
+		}*/
 	}
 
 }
