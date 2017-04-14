@@ -151,10 +151,12 @@ public class SearchResultPanel extends JPanel
 		}
 	}
 	
-	public void bookRoom(Room r)
+	public void bookRoom()
 	{
+        int row = searchTable.getSelectedRow();
+        ArrayList<Room> rooms = search.getSearchResults();
 		MainFrame mf = Utilities.findParent(this, MainFrame.class);
-		mf.openBooking(r);
+		mf.openBooking(rooms.get(row));
 	}
 
 }

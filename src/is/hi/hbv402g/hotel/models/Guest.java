@@ -73,4 +73,14 @@ public class Guest
 	{
 		return id;
 	}
+
+	public String toString()
+	{
+		return "[Guest id=" + this.id + 
+				", name=" + this.getName() + 
+				", email=" + this.getEmail() + 
+				", phoneNumber=" + this.getPhoneNumber() + 
+				", numberOfAdults=" + this.getNumberOfAdults() + 
+				", numberOfChildren=" + this.getNumberOfChildren() + "]";
+	}
 }
