@@ -96,6 +96,11 @@ public class MainFrame extends JFrame
 		
 		// Define search text fields with input hint text.
 		textFieldHotel = new JTextField();
+		textFieldHotel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				submitSearch();
+			}
+		});
 		searchTextPanel.add(textFieldHotel);
 		textFieldHotel.setColumns(20);
 		textFieldHotel.setText(hotelHintText);
@@ -109,6 +114,11 @@ public class MainFrame extends JFrame
         });
 		
 		textFieldLocation = new JTextField();
+		textFieldLocation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				submitSearch();
+			}
+		});
 		searchTextPanel.add(textFieldLocation);
 		textFieldLocation.setColumns(20);
 		textFieldLocation.setText(locationHintText);
@@ -122,6 +132,11 @@ public class MainFrame extends JFrame
         });
 		
 		textFieldDateFrom = new JTextField();
+		textFieldDateFrom.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				submitSearch();
+			}
+		});
 		searchTextPanel.add(textFieldDateFrom);
 		textFieldDateFrom.setColumns(15);
 		textFieldDateFrom.setText(dateFromHintText);
@@ -135,6 +150,11 @@ public class MainFrame extends JFrame
         });
 		
 		textFieldDateTo = new JTextField();
+		textFieldDateTo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				submitSearch();
+			}
+		});
 		searchTextPanel.add(textFieldDateTo);
 		textFieldDateTo.setColumns(15);
 		textFieldDateTo.setText(dateToHintText);
