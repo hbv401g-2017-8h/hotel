@@ -128,6 +128,10 @@ public class SearchResultPanel extends JPanel
                 starMin = slider.getValue();
                 starMax = slider.getUpperValue();
                 starLabel.setText("Number of Stars: Min: "+starMin.toString()+" Max: "+starMax.toString());
+                
+                search.setPriceRange(starMin, starMax);
+                //search.filter();
+                setSearch(search);
             }
         });
 		
