@@ -3,7 +3,6 @@ package is.hi.hbv402g.hotel.UI;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.table.*;
 
 /**
  * @version 1.0 11/09/98 Retrieved from: http://esus.com/jbutton-cell-jtable/
@@ -52,7 +51,7 @@ public class ButtonTableEditor extends DefaultCellEditor
 	{
 		if (isPushed)
 		{
-			this.parentPanel.bookRoom(null);
+			this.parentPanel.bookRoom();
 		}
 		isPushed = false;
 		return new String(label);

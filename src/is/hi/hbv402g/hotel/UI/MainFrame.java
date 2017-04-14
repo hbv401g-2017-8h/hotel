@@ -181,10 +181,7 @@ public class MainFrame extends JFrame
 	
 	private void submitSearch()
 	{
-		// Show only search result panel
-		bookingPanel.setVisible(false);
-		roomPanel.setVisible(false);
-		searchResultPanel.setVisible(true);
+		showSearch();
 		
 		Search s = new Search(new DatabaseManager());
 		
@@ -254,12 +251,32 @@ public class MainFrame extends JFrame
 		searchResultPanel.setSearch(s);
 	}
 	
+	public void showSearch()
+	{
+		// Show only search result panel
+		bookingPanel.setVisible(false);
+		roomPanel.setVisible(false);
+		searchResultPanel.setVisible(true);
+	}
+	
 	public void openBooking(Room r)
 	{
 		// Show only booking panel
 		roomPanel.setVisible(false);
 		searchResultPanel.setVisible(false);
 		bookingPanel.setVisible(true);
+		
+		bookingPanel.newBooking(r);
+	}
+	
+	public void showRoom(Room r)
+	{
+		// Show only room panel
+		searchResultPanel.setVisible(false);
+		bookingPanel.setVisible(false);
+		roomPanel.setVisible(true);
+		
+		roomPanel.setRoom(r);
 	}
 
 }

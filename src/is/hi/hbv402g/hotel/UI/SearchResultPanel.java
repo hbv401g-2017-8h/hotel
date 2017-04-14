@@ -87,15 +87,12 @@ public class SearchResultPanel extends JPanel
 		searchTable.getTableHeader().setReorderingAllowed(false);
 		
 		searchTable.getColumn("Book").setCellRenderer(new ButtonTableRenderer());
-		searchTable.getColumn("Book").setCellEditor(new ButtonTableEditor(new JCheckBox(), null));
+		searchTable.getColumn("Book").setCellEditor(new ButtonTableEditor(new JCheckBox(), this));
 		
 		searchTable.addMouseListener(new MouseAdapter() {
 	         public void mouseClicked(MouseEvent e) {
 	            if (e.getClickCount() == 2) {
-	               JTable target = (JTable) e.getSource();
-	               int row = target.getSelectedRow();
-	               ArrayList<Room> rooms = search.getSearchResults();
-	               System.out.println(rooms.get(row));
+	            	showRoom();
 	            }
 	         }
 	      });
@@ -213,8 +210,6 @@ public class SearchResultPanel extends JPanel
 		this.add(filterPanel);
 		
 		filterPanel.add(verticalGlue);
-
-		
 	}
 	
 	public void setSearch(Search search)
@@ -246,10 +241,19 @@ public class SearchResultPanel extends JPanel
 	}
 
 
-	public void bookRoom(Room r)
+	public void bookRoom()
 	{
+        int row = searchTable.getSelectedRow();
+        ArrayList<Room> rooms = search.getSearchResults();
 		MainFrame mf = Utilities.findParent(this, MainFrame.class);
-		mf.openBooking(r);
+		mf.openBooking(rooms.get(row));
 	}
-
+	
+	public void showRoom()
+	{
+		int row = searchTable.getSelectedRow();
+        ArrayList<Room> rooms = search.getSearchResults();
+        MainFrame mf = Utilities.findParent(this, MainFrame.class);
+		mf.showRoom(rooms.get(row));
+	}
 }
