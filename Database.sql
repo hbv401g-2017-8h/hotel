@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS Room;
+DROP TABLE IF EXISTS Amenities;
 DROP TABLE IF EXISTS Hotel;
 DROP TABLE IF EXISTS Guest;
 DROP TABLE IF EXISTS BookingNight;
@@ -39,6 +40,13 @@ CREATE TABLE BookingNight(
   PRIMARY KEY(roomId, date)
   FOREIGN KEY(roomId) REFERENCES Room(id),
   FOREIGN KEY(guestId) REFERENCES Guest(id)
+);
+
+CREATE TABLE Amenities(
+    amenity VARCHAR(255) COLLATE NOCASE,
+    hotelId INT,
+    PRIMARY KEY(amenity, hotelId),
+    FOREIGN KEY(hotelId) REFERENCES Hotel(id)
 );
 
 INSERT INTO Hotel VALUES(
@@ -439,4 +447,129 @@ INSERT INTO BookingNight VALUES(
 	10,
 	1,
 	'2017-05-01'
+);
+
+INSERT INTO Amenities VALUES(
+	'Wifi',
+	0001
+);
+
+INSERT INTO Amenities VALUES(
+	'Wifi',
+	0002
+);
+
+INSERT INTO Amenities VALUES(
+	'Wifi',
+	0003
+);
+
+INSERT INTO Amenities VALUES(
+	'Wifi',
+	0004
+);
+
+INSERT INTO Amenities VALUES(
+	'Wifi',
+	0006
+);
+
+INSERT INTO Amenities VALUES(
+	'Wifi',
+	0007
+);
+
+INSERT INTO Amenities VALUES(
+	'Continental breakfast',
+	0001
+);
+
+INSERT INTO Amenities VALUES(
+	'Continental breakfast',
+	0002
+);
+
+INSERT INTO Amenities VALUES(
+	'Continental breakfast',
+	0004
+);
+
+INSERT INTO Amenities VALUES(
+	'Continental breakfast',
+	0005
+);
+
+INSERT INTO Amenities VALUES(
+	'Continental breakfast',
+	0007
+);
+
+INSERT INTO Amenities VALUES(
+	'Cable TV',
+	0004
+);
+
+INSERT INTO Amenities VALUES(
+	'Cable TV',
+	0002
+);
+
+INSERT INTO Amenities VALUES(
+	'Cable TV',
+	0007
+);
+
+INSERT INTO Amenities VALUES(
+	'Room service',
+	0001
+);
+
+INSERT INTO Amenities VALUES(
+	'Room service',
+	0002
+);
+
+INSERT INTO Amenities VALUES(
+	'Room service',
+	0004
+);
+
+INSERT INTO Amenities VALUES(
+	'Room service',
+	0005
+);
+
+INSERT INTO Amenities VALUES(
+	'Room service',
+	0006
+);
+
+INSERT INTO Amenities VALUES(
+	'Room service',
+	0007
+);
+
+INSERT INTO Amenities VALUES(
+	'24 hour service desk',
+	0001
+);
+
+INSERT INTO Amenities VALUES(
+	'24 hour service desk',
+	0003
+);
+
+INSERT INTO Amenities VALUES(
+	'24 hour service desk',
+	0004
+);
+
+INSERT INTO Amenities VALUES(
+	'24 hour service desk',
+	0006
+);
+
+INSERT INTO Amenities VALUES(
+	'24 hour service desk',
+	0007
 );
