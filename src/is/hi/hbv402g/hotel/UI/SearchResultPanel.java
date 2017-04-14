@@ -129,7 +129,6 @@ public class SearchResultPanel extends JPanel
                 starMax = slider.getUpperValue();
                 starLabel.setText("Stars: Min: "+starMin.toString()+" Max: "+starMax.toString());
                 
-                search.setStarCount(starMin, starMax);
                 setSearch(search);
             }
         });
@@ -141,7 +140,6 @@ public class SearchResultPanel extends JPanel
                 priceMax = slider.getUpperValue();
                 priceLabel.setText("Price: Min:"+priceMin.toString()+" Max: "+priceMax.toString());
                 
-                search.setPriceRange(priceMin, priceMax);
                 setSearch(search);
             }
         });
@@ -153,7 +151,6 @@ public class SearchResultPanel extends JPanel
                 singleBedMax = slider.getUpperValue();
                 singleBedLabel.setText("Single Beds: Min: "+singleBedMin.toString()+" Max: "+singleBedMax.toString());
                 
-                search.setNumberOfSingleBeds(singleBedMin, singleBedMax);
                 setSearch(search);
             }
         });
@@ -165,7 +162,6 @@ public class SearchResultPanel extends JPanel
                 doubleBedMax = slider.getUpperValue();
                 doubleBedLabel.setText("Double Beds: Min:"+doubleBedMin.toString()+" Max: "+doubleBedMax.toString());
                 
-                search.setNumberOfDoubleBeds(doubleBedMin, doubleBedMax);
                 setSearch(search);
             }
         });
@@ -222,6 +218,11 @@ public class SearchResultPanel extends JPanel
 	
 	public void setSearch(Search search)
 	{
+		search.setStarCount(starMin, starMax);
+		search.setPriceRange(priceMin, priceMax);
+		search.setNumberOfSingleBeds(singleBedMin, singleBedMax);
+		search.setNumberOfDoubleBeds(doubleBedMin, doubleBedMax);
+		
 		search.filter();
 		this.search = search;
 		showSearchResults();
