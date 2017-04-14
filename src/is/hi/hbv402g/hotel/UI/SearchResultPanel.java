@@ -74,7 +74,7 @@ public class SearchResultPanel extends JPanel
 		searchTable.getTableHeader().setReorderingAllowed(false);
 		
 		searchTable.getColumn("Book").setCellRenderer(new ButtonTableRenderer());
-		searchTable.getColumn("Book").setCellEditor(new ButtonTableEditor(new JCheckBox()));
+		searchTable.getColumn("Book").setCellEditor(new ButtonTableEditor(new JCheckBox(), this));
 		
 		searchScrollPane.setViewportView(searchTable);
 		
@@ -149,6 +149,12 @@ public class SearchResultPanel extends JPanel
 			searchTableModel.addRow(new Object[] { r.getHotel().getName(), r.getNumberOfSingleBeds(), r.getNumberOfDoubleBeds(), (r.getEnSuiteBathroom()? "Yes": "No"), r.getCostPerNight(), "Book"});
 		
 		}
+	}
+	
+	public void bookRoom(Room r)
+	{
+		MainFrame mf = Utilities.findParent(this, MainFrame.class);
+		mf.openBooking(r);
 	}
 
 }
