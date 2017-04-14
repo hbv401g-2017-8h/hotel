@@ -30,8 +30,11 @@ import java.awt.Checkbox;
 
 public class MainFrame extends JFrame
 {
-	
     
+    static final String hotelHintText = "Hotel";
+    static final String locationHintText = "Location";
+    static final String dateFromHintText = "From: DD.MM.YYYY";
+    static final String dateToHintText = "To: DD.MM.YYYY";
 
 	private JPanel masterPanel;
 	private JPanel lowerPanel;
@@ -80,54 +83,74 @@ public class MainFrame extends JFrame
 		
 		// Define search text fields with input hint text.
 		textFieldHotel = new JTextField();
+		textFieldHotel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				submitSearch();
+			}
+		});
 		searchTextPanel.add(textFieldHotel);
 		textFieldHotel.setColumns(20);
-		textFieldHotel.setText("Hotel");
+		textFieldHotel.setText(hotelHintText);
 		textFieldHotel.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                hotelFocusGained(evt, textFieldHotel, "Hotel");
+                hotelFocusGained(evt, textFieldHotel, hotelHintText);
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
-                hotelFocusLost(evt, textFieldHotel, "Hotel");
+                hotelFocusLost(evt, textFieldHotel, hotelHintText);
             }
         });
 		
 		textFieldLocation = new JTextField();
+		textFieldLocation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				submitSearch();
+			}
+		});
 		searchTextPanel.add(textFieldLocation);
 		textFieldLocation.setColumns(20);
-		textFieldLocation.setText("Location");
+		textFieldLocation.setText(locationHintText);
 		textFieldLocation.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                hotelFocusGained(evt, textFieldLocation, "Location");
+                hotelFocusGained(evt, textFieldLocation, locationHintText);
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
-                hotelFocusLost(evt, textFieldLocation, "Location");
+                hotelFocusLost(evt, textFieldLocation, locationHintText);
             }
         });
 		
 		textFieldDateFrom = new JTextField();
+		textFieldDateFrom.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				submitSearch();
+			}
+		});
 		searchTextPanel.add(textFieldDateFrom);
 		textFieldDateFrom.setColumns(15);
-		textFieldDateFrom.setText("From: DD.MM.YYYY");
+		textFieldDateFrom.setText(dateFromHintText);
 		textFieldDateFrom.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                hotelFocusGained(evt, textFieldDateFrom, "From: DD.MM.YYYY");
+                hotelFocusGained(evt, textFieldDateFrom, dateFromHintText);
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
-                hotelFocusLost(evt, textFieldDateFrom, "From: DD.MM.YYYY");
+                hotelFocusLost(evt, textFieldDateFrom, dateFromHintText);
             }
         });
 		
 		textFieldDateTo = new JTextField();
+		textFieldDateTo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				submitSearch();
+			}
+		});
 		searchTextPanel.add(textFieldDateTo);
 		textFieldDateTo.setColumns(15);
-		textFieldDateTo.setText("To: DD.MM.YYYY");
+		textFieldDateTo.setText(dateToHintText);
 		textFieldDateTo.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                hotelFocusGained(evt, textFieldDateTo, "To: DD.MM.YYYY");
+                hotelFocusGained(evt, textFieldDateTo, dateToHintText);
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
-                hotelFocusLost(evt, textFieldDateTo, "To: DD.MM.YYYY");
+                hotelFocusLost(evt, textFieldDateTo, dateToHintText);
             }
         });
 		
@@ -161,7 +184,7 @@ public class MainFrame extends JFrame
 		
 		Date dateFrom = null;
 		Component frame = null;
-		if(!dateFromString.equals("From: DD.MM.YYYY"))
+		if(!dateFromString.equals(dateFromHintText))
 		{
 	    
 			try
@@ -183,7 +206,7 @@ public class MainFrame extends JFrame
 		}
 		
 	    Date dateTo = null;
-	    if(!dateToString.equals("To: DD.MM.YYYY"))
+	    if(!dateToString.equals(dateToHintText))
 		{
 			try
 			{
@@ -202,9 +225,16 @@ public class MainFrame extends JFrame
 			}
 		}
 		
+	    String hotelName = null;
+	    if (!textFieldHotel.getText().equals(hotelHintText))
+	    	hotelName = textFieldHotel.getText();
+	    
+	    String location = null;
+	    if (!textFieldLocation.getText().equals(locationHintText))
+	    	location = textFieldLocation.getText();
 		
-		s.find(textFieldHotel.getText(), 
-				textFieldLocation.getText(),
+		s.find(hotelName, 
+				location,
 				dateFrom,
 				dateTo);
 		
