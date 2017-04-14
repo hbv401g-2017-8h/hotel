@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -34,6 +35,7 @@ public class DatabaseManager implements IDataManager
 		sql += "r.id, r.hotelId, r.numSingleBeds, r.numDoubleBeds, r.bathroom, r.costPerNight, ";
 		sql += "h.id, h.name, h.streetAddress, h.city, h.postalCode, h.country, h.starCount ";
 		
+		// Count number of booked nights if availability is specified
 		if (availabilityFrom != null || availabilityTo != null)
 		{
 			ArrayList<String> availabilityCond = new ArrayList<>();
@@ -46,13 +48,14 @@ public class DatabaseManager implements IDataManager
 				availabilityCond.add("bn.date <= ?");
 			}
 			
-			//sql += ",(SELECT count(*) FROM BookingNight as bn WHERE " + String.join(" AND ", availabilityCond) + " AND bn.roomId = r.id) as bookedNights ";
-			sql += ",(SELECT count(*) FROM BookingNight as bn WHERE bn.roomId = r.id) as bookedNights ";
+			if (availabilityCond.size() > 0)
+				sql += ",(SELECT count(*) FROM BookingNight as bn WHERE " + String.join(" AND ", availabilityCond) + " AND bn.roomId = r.id) as bookedNights ";
+			else
+				sql += ",(SELECT count(*) FROM BookingNight as bn WHERE bn.roomId = r.id) as bookedNights ";
 		}
 		
 		sql += "FROM Room as r ";
 		sql += "INNER JOIN Hotel as h ON (r.hotelId = h.id) ";
-		//sql += "LEFT OUTER JOIN BookingNight as bn ON (bn.roomId = r.id) ";
 		
 		// Collect search constraints
 		ArrayList<String> conditions = new ArrayList<>();
@@ -65,20 +68,17 @@ public class DatabaseManager implements IDataManager
 		{
 			conditions.add("(h.streetAddress LIKE ? OR h.city LIKE ? OR h.postalCode LIKE ? or h.country LIKE ?)");
 		}
-		
-		/*
+
 		if (availabilityFrom != null || availabilityTo != null)
 		{
-			conditions.add("bookedNights > 0");
+			conditions.add("bookedNights == 0 ");
 		}
-		*/
-		/*
+		
 		// Add the search constraints to the sql query
 		if (conditions.size() > 0)
 		{
 			sql += "WHERE " + String.join(" AND ", conditions);
 		}
-		*/
 
 		System.out.println(sql);
 		int i = 1;
@@ -88,27 +88,22 @@ public class DatabaseManager implements IDataManager
 			Connection connection = getConnection();
 			PreparedStatement statement = connection.prepareStatement(sql);
 			
-			
-			// Add the search constraints to the prepared statement
-			/*
+			// Limit the booked nights count check
+			SimpleDateFormat iso8601DateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			if (availabilityFrom != null)
 			{
-				statement.setDate(i++, new java.sql.Date(availabilityFrom.getTime()));
+				statement.setString(i++, iso8601DateFormat.format(availabilityFrom));
 			}
 			
 			if (availabilityTo != null)
 			{
-				statement.setDate(i++, new java.sql.Date(availabilityTo.getTime()));
+				statement.setString(i++, iso8601DateFormat.format(availabilityTo));
 			}
-			*/
-			/*
+
+			// Add the search constraints to the prepared statement
 			if(hotelName != null && !hotelName.isEmpty())
 			{
 				statement.setString(i++, "%"+hotelName+"%");
-			}
-			else
-			{
-				i++;
 			}
 			
 			if(location != null && !location.isEmpty())
@@ -118,14 +113,6 @@ public class DatabaseManager implements IDataManager
 				statement.setString(i++, "%"+location+"%");
 				statement.setString(i++, "%"+location+"%");
 			}
-			
-			if (location != null && !location.isEmpty())
-			{
-				statement.setString(i++, "%"+location+"%");
-				statement.setString(i++, "%"+location+"%");
-				statement.setString(i++, "%"+location+"%");
-				statement.setString(i++, "%"+location+"%");
-			}*/
 			
 			ResultSet results = statement.executeQuery();
 			ResultSetMetaData rsmd = results.getMetaData();
@@ -139,6 +126,7 @@ public class DatabaseManager implements IDataManager
 					System.out.println(rsmd.getColumnName(j) + ": " + results.getString(j));
 				}
 				
+				// Read hotel information
 				Hotel h = hotels.get(results.getInt(7));
 				if (h == null)
 				{
@@ -152,6 +140,7 @@ public class DatabaseManager implements IDataManager
 					hotels.put(h.getId(), h);
 				}
 				
+				// Read room information
 				Room r = new Room(results.getInt(1));
 				r.setHotel(h);
 				r.setNumberOfSingleBeds(results.getInt(3));
