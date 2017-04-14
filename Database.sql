@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS Room;
 DROP TABLE IF EXISTS Hotel;
+DROP TABLE IF EXISTS BookingNight;
 
 CREATE TABLE Hotel(
   id INTEGER PRIMARY KEY,
@@ -13,19 +14,30 @@ CREATE TABLE Hotel(
 
 CREATE TABLE Room(
   id int PRIMARY KEY,
-  hotelId int,
-  numSingleBeds int,
-  numDoubleBeds int,
-  bathroom boolean,
-  costPerNight int,
+  hotelId INT,
+  numSingleBeds INT,
+  numDoubleBeds INT,
+  bathroom BOOLEAN,
+  costPerNight INT,
   FOREIGN KEY(hotelId) REFERENCES Hotel(id)
 );
 
+CREATE TABLE Guest(
+    id INT PRIMARY KEY,
+    name VARCHAR(255) COLLATE NOCASE,
+    email VARCHAR(255) COLLATE NOCASE,
+    phoneNumber VARCHAR(255) COLLATE NOCASE,
+    numberOfAdults INT,
+    numberOfChildren INT
+);
+
 CREATE TABLE BookingNight(
-  id int PRIMARY KEY,
-  roomId int,
+  id INT PRIMARY KEY,
+  roomId INT,
+  guestId INT,
   date DATE,
-  FOREIGN KEY(roomId) REFERENCES Room(id)
+  FOREIGN KEY(roomId) REFERENCES Room(id),
+  FOREIGN KEY(guestId) REFERENCES Guest(id)
 );
 
 INSERT INTO Hotel VALUES(
