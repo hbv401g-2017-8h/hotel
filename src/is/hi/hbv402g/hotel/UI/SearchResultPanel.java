@@ -30,7 +30,7 @@ import java.awt.Font;
 public class SearchResultPanel extends JPanel
 {
 	
-	static final int STAR_MIN = 0;
+	static final int STAR_MIN = 1;
     static final int STAR_MAX = 5;
 	static final int PRICE_MIN = 0;
     static final int PRICE_MAX = 30000;
@@ -127,10 +127,9 @@ public class SearchResultPanel extends JPanel
                 RangeSlider slider = (RangeSlider) e.getSource();
                 starMin = slider.getValue();
                 starMax = slider.getUpperValue();
-                starLabel.setText("Number of Stars: Min: "+starMin.toString()+" Max: "+starMax.toString());
+                starLabel.setText("Stars: Min: "+starMin.toString()+" Max: "+starMax.toString());
                 
-                search.setPriceRange(starMin, starMax);
-                //search.filter();
+                search.setStarCount(starMin, starMax);
                 setSearch(search);
             }
         });
@@ -141,6 +140,9 @@ public class SearchResultPanel extends JPanel
                 priceMin = slider.getValue();
                 priceMax = slider.getUpperValue();
                 priceLabel.setText("Price: Min:"+priceMin.toString()+" Max: "+priceMax.toString());
+                
+                search.setPriceRange(priceMin, priceMax);
+                setSearch(search);
             }
         });
 		
@@ -149,7 +151,10 @@ public class SearchResultPanel extends JPanel
                 RangeSlider slider = (RangeSlider) e.getSource();
                 singleBedMin = slider.getValue();
                 singleBedMax = slider.getUpperValue();
-                singleBedLabel.setText("Number of Single Beds: Min: "+singleBedMin.toString()+" Max: "+singleBedMax.toString());
+                singleBedLabel.setText("Single Beds: Min: "+singleBedMin.toString()+" Max: "+singleBedMax.toString());
+                
+                search.setNumberOfSingleBeds(singleBedMin, singleBedMax);
+                setSearch(search);
             }
         });
 		
@@ -158,7 +163,10 @@ public class SearchResultPanel extends JPanel
                 RangeSlider slider = (RangeSlider) e.getSource();
                 doubleBedMin = slider.getValue();
                 doubleBedMax = slider.getUpperValue();
-                doubleBedLabel.setText("Number of Double Beds: Min:"+doubleBedMin.toString()+" Max: "+doubleBedMax.toString());
+                doubleBedLabel.setText("Double Beds: Min:"+doubleBedMin.toString()+" Max: "+doubleBedMax.toString());
+                
+                search.setNumberOfDoubleBeds(doubleBedMin, doubleBedMax);
+                setSearch(search);
             }
         });
 		
@@ -214,6 +222,7 @@ public class SearchResultPanel extends JPanel
 	
 	public void setSearch(Search search)
 	{
+		search.filter();
 		this.search = search;
 		showSearchResults();
 	}
