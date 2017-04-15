@@ -115,8 +115,9 @@ public class SearchResultPanel extends JPanel
 		initRangeSlider(priceRangeSlider, PRICE_MIN, PRICE_MAX);
 		initRangeSlider(singleBedRangeSlider, SINGLE_BED_MIN, SINGLE_BED_MAX);
 		initRangeSlider(doubleBedRangeSlider, DOUBLE_BED_MIN, DOUBLE_BED_MAX);
+		priceRangeSlider.setSnapToTicks(true);
 		
-		priceRangeSlider.setMinorTickSpacing(10000);
+		priceRangeSlider.setMinorTickSpacing(500);
         
 		starMin = starRangeSlider.getValue();
         starMax = starRangeSlider.getUpperValue();
@@ -150,6 +151,7 @@ public class SearchResultPanel extends JPanel
                 setSearch(search);
             }
         });
+		singleBedRangeSlider.setSnapToTicks(true);
 		
 		singleBedRangeSlider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
@@ -161,6 +163,7 @@ public class SearchResultPanel extends JPanel
                 setSearch(search);
             }
         });
+		doubleBedRangeSlider.setSnapToTicks(true);
 		
 		doubleBedRangeSlider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
@@ -191,7 +194,7 @@ public class SearchResultPanel extends JPanel
 		doubleBedLabel.setText("Double Beds: Min:"+doubleBedMin.toString()+" Max: "+doubleBedMax.toString());
 		doubleBedLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		bathroomCheckBox = new Checkbox("En Suite Bathroom");
-		bathroomCheckBox.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		bathroomCheckBox.setFont(new Font("Dialog", Font.PLAIN, 12));
 		
 		
 		bathroomCheckBox.addItemListener(new BathroomItemListener());
