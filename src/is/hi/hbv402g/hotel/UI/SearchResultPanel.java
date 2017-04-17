@@ -41,7 +41,7 @@ public class SearchResultPanel extends JPanel
 	static final int STAR_MIN = 1;
     static final int STAR_MAX = 5;
 	static final int PRICE_MIN = 0;
-    static final int PRICE_MAX = 30000;
+    static final int PRICE_MAX = 20000;
     static final int SINGLE_BED_MIN = 0;
     static final int SINGLE_BED_MAX = 5;
     static final int DOUBLE_BED_MIN = 0;
@@ -65,12 +65,19 @@ public class SearchResultPanel extends JPanel
 	private Integer singleBedMax;
 	private Integer doubleBedMin;
 	private Integer doubleBedMax;
+	private Boolean isBathroom = false;
+	private Boolean isWiFi = false;
+	private Boolean isBreakfast = false;
+	private Boolean isCableTV = false;
+	private Boolean isRoomService = false;
+	private Boolean isServiceDesk = false;
 	private RangeSlider starRangeSlider = new RangeSlider();
 	private RangeSlider priceRangeSlider = new RangeSlider();
 	private RangeSlider singleBedRangeSlider = new RangeSlider();
 	private RangeSlider doubleBedRangeSlider = new RangeSlider();
 	private Checkbox bathroomCheckBox;
 	private final JLabel lblOrderBy = new JLabel("Order by:");
+	private JComboBox comboBox = new JComboBox();
 
 	public SearchResultPanel()
 	{
@@ -181,23 +188,9 @@ public class SearchResultPanel extends JPanel
 		
 		filterAndSortPanel.add(lblOrderBy);
 		
-		JComboBox comboBox = new JComboBox();
 		comboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (String.valueOf(comboBox.getSelectedItem()).equals("A to Z"))
-					search.sort(SortBy.HOTEL_NAME_AZ);
-				if (String.valueOf(comboBox.getSelectedItem()).equals("Z to A"))
-					search.sort(SortBy.HOTEL_NAME_ZA);
-				if (String.valueOf(comboBox.getSelectedItem()).equals("Price: Low to high"))
-					search.sort(SortBy.PRICE_ASCENDING);
-				if (String.valueOf(comboBox.getSelectedItem()).equals("Price: High to low"))
-					search.sort(SortBy.PRICE_DESCENDING);
-				if (String.valueOf(comboBox.getSelectedItem()).equals("Stars: Low to high"))
-					search.sort(SortBy.STARCOUNT_ASCENDING);
-				if (String.valueOf(comboBox.getSelectedItem()).equals("Stars: High to low"))
-					search.sort(SortBy.STARCOUNT_DESCENDING);
-				if (String.valueOf(comboBox.getSelectedItem()).equals("(None)"))
-					search.sort(SortBy.NONE);
+				orderBy();
 				showSearchResults();
 			}
 		});
@@ -262,9 +255,11 @@ public class SearchResultPanel extends JPanel
 		search.setPriceRange(priceMin, priceMax);
 		search.setNumberOfSingleBeds(singleBedMin, singleBedMax);
 		search.setNumberOfDoubleBeds(doubleBedMin, doubleBedMax);
-		
+		search.setEnSuiteBathroom(isBathroom);
+				
 		search.filter();
 		this.search = search;
+		orderBy();
 		showSearchResults();
 	}
 	
@@ -277,8 +272,25 @@ public class SearchResultPanel extends JPanel
 		for(Room r : hotelRooms)
 		{
 			searchTableModel.addRow(new Object[] { r.getHotel().getName(), r.getNumberOfSingleBeds(), r.getNumberOfDoubleBeds(), (r.getEnSuiteBathroom()? "Yes": "No"), r.getCostPerNight(), "Book"});
-		
 		}
+	}
+	
+	private void orderBy()
+	{
+		if (String.valueOf(comboBox.getSelectedItem()).equals("A to Z"))
+			search.sort(SortBy.HOTEL_NAME_AZ);
+		if (String.valueOf(comboBox.getSelectedItem()).equals("Z to A"))
+			search.sort(SortBy.HOTEL_NAME_ZA);
+		if (String.valueOf(comboBox.getSelectedItem()).equals("Price: Low to high"))
+			search.sort(SortBy.PRICE_ASCENDING);
+		if (String.valueOf(comboBox.getSelectedItem()).equals("Price: High to low"))
+			search.sort(SortBy.PRICE_DESCENDING);
+		if (String.valueOf(comboBox.getSelectedItem()).equals("Stars: Low to high"))
+			search.sort(SortBy.STARCOUNT_ASCENDING);
+		if (String.valueOf(comboBox.getSelectedItem()).equals("Stars: High to low"))
+			search.sort(SortBy.STARCOUNT_DESCENDING);
+		if (String.valueOf(comboBox.getSelectedItem()).equals("(None)"))
+			search.sort(SortBy.NONE);
 	}
 	
 	private void initRangeSlider( RangeSlider rs, int min, int max)
@@ -289,7 +301,6 @@ public class SearchResultPanel extends JPanel
 		rs.setValue(min);
 		rs.setUpperValue(max);
 	}
-
 
 	public void bookRoom()
 	{
