@@ -38,7 +38,7 @@ public class SearchResultPanel extends JPanel
 	static final int STAR_MIN = 1;
     static final int STAR_MAX = 5;
 	static final int PRICE_MIN = 0;
-    static final int PRICE_MAX = 30000;
+    static final int PRICE_MAX = 20000;
     static final int SINGLE_BED_MIN = 0;
     static final int SINGLE_BED_MAX = 5;
     static final int DOUBLE_BED_MIN = 0;
@@ -61,11 +61,22 @@ public class SearchResultPanel extends JPanel
 	private Integer singleBedMax;
 	private Integer doubleBedMin;
 	private Integer doubleBedMax;
+	private Boolean isBathroom = false;
+	private Boolean isWiFi = false;
+	private Boolean isBreakfast = false;
+	private Boolean isCableTV = false;
+	private Boolean isRoomService = false;
+	private Boolean isServiceDesk = false;
 	private RangeSlider starRangeSlider = new RangeSlider();
 	private RangeSlider priceRangeSlider = new RangeSlider();
 	private RangeSlider singleBedRangeSlider = new RangeSlider();
 	private RangeSlider doubleBedRangeSlider = new RangeSlider();
 	private Checkbox bathroomCheckBox;
+	private Checkbox wifiCheckBox;
+	private Checkbox breakfastCheckBox;
+	private Checkbox cableTvCheckBox;
+	private Checkbox roomServiceCheckBox;
+	private Checkbox serviceDeskCheckBox;
 	private final Component verticalGlue = Box.createVerticalGlue();
 	private final Component rigidArea = Box.createRigidArea(new Dimension(0, 40));
 	private final Component rigidArea_1 = Box.createRigidArea(new Dimension(0, 40));
@@ -194,10 +205,22 @@ public class SearchResultPanel extends JPanel
 		doubleBedLabel.setText("Double Beds: Min:"+doubleBedMin.toString()+" Max: "+doubleBedMax.toString());
 		doubleBedLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		bathroomCheckBox = new Checkbox("En Suite Bathroom");
-		bathroomCheckBox.setFont(new Font("Dialog", Font.PLAIN, 12));
+		bathroomCheckBox.setFont(new Font("Dialog", Font.PLAIN, 14));
+		wifiCheckBox = new Checkbox("WiFi");
+		wifiCheckBox.setFont(new Font("Dialog", Font.PLAIN, 14));
+		breakfastCheckBox = new Checkbox("Continental Breakfast");
+		breakfastCheckBox.setFont(new Font("Dialog", Font.PLAIN, 14));
+		cableTvCheckBox = new Checkbox("Cable TV");
+		cableTvCheckBox.setFont(new Font("Dialog", Font.PLAIN, 14));
+		roomServiceCheckBox = new Checkbox("Room Service");
+		roomServiceCheckBox.setFont(new Font("Dialog", Font.PLAIN, 14));
+		serviceDeskCheckBox = new Checkbox("24 Hour Service Desk");
+		serviceDeskCheckBox.setFont(new Font("Dialog", Font.PLAIN, 14));
+		
 		
 		
 		bathroomCheckBox.addItemListener(new BathroomItemListener());
+		wifiCheckBox.addItemListener(new WiFiItemListener());
 		
 		
 		filterPanel.add(rigidArea_4);
@@ -222,12 +245,19 @@ public class SearchResultPanel extends JPanel
 		filterPanel.add(doubleBedLabel);
 		filterPanel.add(doubleBedRangeSlider);
 		filterPanel.add(bathroomCheckBox);
+		filterPanel.add(wifiCheckBox);
+		filterPanel.add(breakfastCheckBox);
+		filterPanel.add(cableTvCheckBox);
+		filterPanel.add(roomServiceCheckBox);
+		filterPanel.add(serviceDeskCheckBox);
+		
+		filterPanel.add(verticalGlue);
 		
 		// Add sub panels to searchResultPanel
 		this.add(tablePanel);
 		this.add(filterPanel);
 		
-		filterPanel.add(verticalGlue);
+		
 	}
 	
 	public void setSearch(Search search)
@@ -236,8 +266,20 @@ public class SearchResultPanel extends JPanel
 		search.setPriceRange(priceMin, priceMax);
 		search.setNumberOfSingleBeds(singleBedMin, singleBedMax);
 		search.setNumberOfDoubleBeds(doubleBedMin, doubleBedMax);
+		search.setEnSuiteBathroom(isBathroom);
+		if(isWiFi)
+		{
+			System.out.println("hallo1");
+			search.addAmenity("Wifi");
+			System.out.println("hallo2");
+		}
+		else
+		{
+			search.removeAmenity("Wifi");
+		}
 		
 		search.filter();
+		System.out.println("hallo3");
 		this.search = search;
 		showSearchResults();
 	}
@@ -285,12 +327,30 @@ public class SearchResultPanel extends JPanel
 		public void itemStateChanged(ItemEvent e) {
 		    if (e.getStateChange() == ItemEvent.SELECTED)
 		    {
-		    	System.out.println("Selected");
+		    	isBathroom = true;
 		    }
 		    else 
 		    {
-		    	System.out.println("UnSelected");
+		    	isBathroom = false;
 		    }
+		    setSearch(search);
+		}
+	}
+	
+	class WiFiItemListener implements ItemListener {
+		public void itemStateChanged(ItemEvent e) {
+		    if (e.getStateChange() == ItemEvent.SELECTED)
+		    {
+		    	System.out.println("selected");
+		    	isWiFi = true;
+		    }
+		    else 
+		    {
+		    	isWiFi = false;
+		    }
+		    System.out.println("hallo");
+		    setSearch(search);
+		    System.out.println("hallo0");
 		}
 	}
 }
