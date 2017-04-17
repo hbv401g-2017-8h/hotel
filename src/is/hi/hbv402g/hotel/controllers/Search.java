@@ -13,7 +13,7 @@ public class Search
 	private IDataManager db;
 	private ArrayList<Room> availableRooms;
 	private ArrayList<Room> filteredRooms;
-	private ArrayList<String> amenities;
+	private ArrayList<String> amenities  = new ArrayList<>();
 	private Integer minimumSingleBeds;
 	private Integer maximumSingleBeds;
 	private Integer minimumDoubleBeds;

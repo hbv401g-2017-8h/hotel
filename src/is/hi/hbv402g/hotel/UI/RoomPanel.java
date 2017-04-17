@@ -13,6 +13,10 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import java.awt.Color;
+import javax.swing.UIManager;
 
 public class RoomPanel extends JPanel
 {
@@ -30,6 +34,9 @@ public class RoomPanel extends JPanel
 	private JLabel lblCountry;
 	private JButton btnBack;
 	private JPanel panel;
+	private JLabel lblAmenities;
+	private DefaultListModel<String> amenitiesModel;
+	private JList<String> amenitiesList;
 	
 	/**
 	 * Create the panel.
@@ -98,11 +105,11 @@ public class RoomPanel extends JPanel
 		panel.add(lblCountry);
 		
 		JButton btnBookNow = new JButton("Book now");
-		btnBookNow.setBounds(300, 255, 130, 23);
+		btnBookNow.setBounds(306, 291, 130, 23);
 		panel.add(btnBookNow);
 		
 		btnBack = new JButton("Back");
-		btnBack.setBounds(12, 255, 130, 23);
+		btnBack.setBounds(12, 291, 130, 23);
 		panel.add(btnBack);
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -119,6 +126,18 @@ public class RoomPanel extends JPanel
 		Double width = btnBookNow.getBounds().x + btnBookNow.getBounds().getWidth() + 12;
 		Double height = btnBookNow.getBounds().y + btnBookNow.getBounds().getHeight() + 12;
 		panel.setMaximumSize(new Dimension(width.intValue(), height.intValue() * 2));
+		
+		lblAmenities = new JLabel("Amenities:");
+		lblAmenities.setFont(new Font("Dialog", Font.PLAIN, 12));
+		lblAmenities.setBounds(12, 163, 195, 14);
+		panel.add(lblAmenities);
+		
+		amenitiesModel = new DefaultListModel<>();
+		amenitiesList = new JList<>( amenitiesModel );
+		amenitiesList.setFont(new Font("Dialog", Font.PLAIN, 12));
+		amenitiesList.setBackground(UIManager.getColor("Button.background"));
+		amenitiesList.setBounds(12, 180, 195, 98);
+		panel.add(amenitiesList);
 	}
 	
 	public void setRoom(Room r)
@@ -134,6 +153,10 @@ public class RoomPanel extends JPanel
 		lblEnSuiteBathroom.setText(r.getEnSuiteBathroom() ? "Bathroom: Yes":"Bathroom: No");
 		lblNumberOfSingle.setText(String.format("Number of single beds: %d", r.getNumberOfSingleBeds()));
 		lblNumberOfDouble.setText(String.format("Number of double beds: %d", r.getNumberOfDoubleBeds()));
+		for(String amenity : r.getHotel().getAmenities())
+		{
+			amenitiesModel.addElement(amenity);
+		}
 	}
 	
 	private void backToSearch()

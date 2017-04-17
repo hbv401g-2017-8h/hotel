@@ -8,6 +8,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -34,7 +35,7 @@ public class DatabaseManager implements IDataManager
 		String sql = "";
 		sql += "SELECT ";
 		sql += "r.id, r.hotelId, r.numSingleBeds, r.numDoubleBeds, r.bathroom, r.costPerNight, ";
-		sql += "h.id, h.name, h.streetAddress, h.city, h.postalCode, h.country, h.starCount ";
+		sql += "h.id, h.name, h.streetAddress, h.city, h.postalCode, h.country, h.starCount, GROUP_CONCAT(a.amenity) ";
 		
 		// Count number of booked nights if availability is specified
 		if (availabilityFrom != null || availabilityTo != null)
@@ -57,17 +58,18 @@ public class DatabaseManager implements IDataManager
 		
 		sql += "FROM Room as r ";
 		sql += "INNER JOIN Hotel as h ON (r.hotelId = h.id) ";
+		sql += "LEFT OUTER JOIN Amenities as a ON (a.hotelId = h.id) ";
 		
 		// Collect search constraints
 		ArrayList<String> conditions = new ArrayList<>();
 		if(hotelName != null && !hotelName.isEmpty())
 		{
-			conditions.add("h.name LIKE ?");
+			conditions.add("h.name LIKE ? ");
 		}
 		
 		if (location != null && !location.isEmpty())
 		{
-			conditions.add("(h.streetAddress LIKE ? OR h.city LIKE ? OR h.postalCode LIKE ? OR h.country LIKE ?)");
+			conditions.add("(h.streetAddress LIKE ? OR h.city LIKE ? OR h.postalCode LIKE ? OR h.country LIKE ?) ");
 		}
 
 		if (availabilityFrom != null || availabilityTo != null)
@@ -80,6 +82,10 @@ public class DatabaseManager implements IDataManager
 		{
 			sql += "WHERE " + String.join(" AND ", conditions);
 		}
+		
+		sql += "GROUP BY ";
+		sql += "r.id, r.hotelId, r.numSingleBeds, r.numDoubleBeds, r.bathroom, r.costPerNight, ";
+		sql += "h.id, h.name, h.streetAddress, h.city, h.postalCode, h.country, h.starCount "; 
 
 		int i = 1;
 		try
@@ -120,6 +126,11 @@ public class DatabaseManager implements IDataManager
 			HashMap<Integer, Hotel> hotels = new HashMap<>();
 			while (results.next())
 			{
+				for(int j = 1; j < 15; j++)
+				{
+					System.out.println(results.getString(j));
+				}
+				
 				// Read hotel information
 				Hotel h = hotels.get(results.getInt(7));
 				if (h == null)
@@ -131,6 +142,7 @@ public class DatabaseManager implements IDataManager
 					h.setPostalCode(results.getString(11));
 					h.setCountry(results.getString(12));
 					h.setStarCount(results.getInt(13));
+					h.setAmenities(new ArrayList<String>(Arrays.asList(results.getString(14).split(","))));
 					hotels.put(h.getId(), h);
 				}
 				

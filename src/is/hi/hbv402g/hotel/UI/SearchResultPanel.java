@@ -4,6 +4,7 @@ package is.hi.hbv402g.hotel.UI;
 import javax.swing.JPanel;
 
 import is.hi.hbv402g.hotel.controllers.Search;
+import is.hi.hbv402g.hotel.controllers.Search.SortBy;
 import is.hi.hbv402g.hotel.models.Room;
 
 import javax.swing.JTable;
@@ -31,6 +32,8 @@ import java.awt.Component;
 import javax.swing.Box;
 import java.awt.Font;
 import java.awt.SystemColor;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class SearchResultPanel extends JPanel
 {
@@ -38,7 +41,7 @@ public class SearchResultPanel extends JPanel
 	static final int STAR_MIN = 1;
     static final int STAR_MAX = 5;
 	static final int PRICE_MIN = 0;
-    static final int PRICE_MAX = 30000;
+    static final int PRICE_MAX = 20000;
     static final int SINGLE_BED_MIN = 0;
     static final int SINGLE_BED_MAX = 5;
     static final int DOUBLE_BED_MIN = 0;
@@ -46,6 +49,7 @@ public class SearchResultPanel extends JPanel
 
 	private JPanel tablePanel;
 	private JPanel filterPanel;
+	private final JPanel filterAndSortPanel = new JPanel();
 	private Search search;
 	private JTable searchTable;
 	private SearchTableModel searchTableModel;
@@ -61,17 +65,19 @@ public class SearchResultPanel extends JPanel
 	private Integer singleBedMax;
 	private Integer doubleBedMin;
 	private Integer doubleBedMax;
+	private Boolean isBathroom = false;
+	private Boolean isWiFi = false;
+	private Boolean isBreakfast = false;
+	private Boolean isCableTV = false;
+	private Boolean isRoomService = false;
+	private Boolean isServiceDesk = false;
 	private RangeSlider starRangeSlider = new RangeSlider();
 	private RangeSlider priceRangeSlider = new RangeSlider();
 	private RangeSlider singleBedRangeSlider = new RangeSlider();
 	private RangeSlider doubleBedRangeSlider = new RangeSlider();
 	private Checkbox bathroomCheckBox;
-	private final Component verticalGlue = Box.createVerticalGlue();
-	private final Component rigidArea = Box.createRigidArea(new Dimension(0, 40));
-	private final Component rigidArea_1 = Box.createRigidArea(new Dimension(0, 40));
-	private final Component rigidArea_2 = Box.createRigidArea(new Dimension(0, 40));
-	private final Component rigidArea_3 = Box.createRigidArea(new Dimension(0, 20));
-	private final Component rigidArea_4 = Box.createRigidArea(new Dimension(0, 40));
+	private final JLabel lblOrderBy = new JLabel("Order by:");
+	private JComboBox comboBox = new JComboBox();
 
 	public SearchResultPanel()
 	{
@@ -105,47 +111,103 @@ public class SearchResultPanel extends JPanel
 		
 		searchScrollPane.setViewportView(searchTable);
 
+		// Make components to filter panel
+		// Initialize sliders
+		initRangeSlider(starRangeSlider, STAR_MIN, STAR_MAX);	
+		initRangeSlider(priceRangeSlider, PRICE_MIN, PRICE_MAX);
+		initRangeSlider(singleBedRangeSlider, SINGLE_BED_MIN, SINGLE_BED_MAX);
+		initRangeSlider(doubleBedRangeSlider, DOUBLE_BED_MIN, DOUBLE_BED_MAX);
+		starMin = starRangeSlider.getValue();
+		starMax = starRangeSlider.getUpperValue();
+		priceMin = priceRangeSlider.getValue();
+		priceMax = priceRangeSlider.getUpperValue();
+		singleBedMin = singleBedRangeSlider.getValue();
+		singleBedMax = singleBedRangeSlider.getUpperValue();
+		doubleBedMin = doubleBedRangeSlider.getValue();
+		doubleBedMax = doubleBedRangeSlider.getUpperValue();
+		
 		filterPanel = new JPanel();
 		filterPanel.setLayout(new BoxLayout(filterPanel, BoxLayout.Y_AXIS));
 		filterPanel.setMaximumSize(new Dimension(50, Integer.MAX_VALUE));
 		
-		// Make components to filter panel
-		// Initialize sliders
-		initRangeSlider(starRangeSlider, STAR_MIN, STAR_MAX);
-		initRangeSlider(priceRangeSlider, PRICE_MIN, PRICE_MAX);
-		initRangeSlider(singleBedRangeSlider, SINGLE_BED_MIN, SINGLE_BED_MAX);
-		initRangeSlider(doubleBedRangeSlider, DOUBLE_BED_MIN, DOUBLE_BED_MAX);
+		// Add sub panels to searchResultPanel
+		this.add(tablePanel);
+		filterAndSortPanel.setMinimumSize(new Dimension(220, 300));
+		filterAndSortPanel.setMaximumSize(new Dimension(220, Integer.MAX_VALUE));
+		filterAndSortPanel.setPreferredSize(new Dimension(220, 300));
+		add(filterAndSortPanel);
+		filterAndSortPanel.setLayout(null);
 		
-		priceRangeSlider.setMinorTickSpacing(10000);
-        
-		starMin = starRangeSlider.getValue();
-        starMax = starRangeSlider.getUpperValue();
-        priceMin = priceRangeSlider.getValue();
-    	priceMax = priceRangeSlider.getUpperValue();
-    	singleBedMin = singleBedRangeSlider.getValue();
-    	singleBedMax = singleBedRangeSlider.getUpperValue();
-    	doubleBedMin = doubleBedRangeSlider.getValue();
-    	doubleBedMax = doubleBedRangeSlider.getUpperValue();
+		JLabel filterLabel = new JLabel("Filter By:");
+		filterLabel.setBounds(12, 88, 103, 20);
+		filterAndSortPanel.add(filterLabel);
+		filterLabel.setFont(new Font("Dialog", Font.BOLD, 14));
+		filterLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		filterLabel.setPreferredSize(new Dimension(20,20));
+		starLabel.setBounds(12, 119, 244, 19);
+		filterAndSortPanel.add(starLabel);
+		starLabel.setFont(new Font("Dialog", Font.PLAIN, 14));
+		starLabel.setText("Stars: Min: "+starMin.toString()+" Max: "+starMax.toString());
+		starLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		starRangeSlider.setBounds(10, 149, 200, 16);
+		filterAndSortPanel.add(starRangeSlider);
 		starRangeSlider.setSnapToTicks(true);
+		priceLabel.setBounds(10, 176, 239, 19);
+		filterAndSortPanel.add(priceLabel);
+		priceLabel.setFont(new Font("Dialog", Font.PLAIN, 14));
+		priceLabel.setText("Price: Min:"+priceMin.toString()+" Max: "+priceMax.toString());
+		priceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		// Add listener for filters.
-		starRangeSlider.addChangeListener(new ChangeListener() {
+		priceRangeSlider.setBounds(12, 206, 200, 16);
+		filterAndSortPanel.add(priceRangeSlider);
+		priceRangeSlider.setSnapToTicks(true);
+		
+		priceRangeSlider.setMinorTickSpacing(500);
+		singleBedLabel.setBounds(12, 223, 286, 19);
+		filterAndSortPanel.add(singleBedLabel);
+		singleBedLabel.setFont(new Font("Dialog", Font.PLAIN, 14));
+		singleBedLabel.setText("Single Beds: Min: "+singleBedMin.toString()+" Max: "+singleBedMax.toString());
+		singleBedLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		singleBedRangeSlider.setBounds(12, 253, 200, 16);
+		filterAndSortPanel.add(singleBedRangeSlider);
+		singleBedRangeSlider.setSnapToTicks(true);
+		doubleBedLabel.setBounds(10, 280, 288, 19);
+		filterAndSortPanel.add(doubleBedLabel);
+		doubleBedLabel.setFont(new Font("Dialog", Font.PLAIN, 14));
+		doubleBedLabel.setText("Double Beds: Min:"+doubleBedMin.toString()+" Max: "+doubleBedMax.toString());
+		doubleBedLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		doubleBedRangeSlider.setBounds(12, 299, 200, 16);
+		filterAndSortPanel.add(doubleBedRangeSlider);
+		bathroomCheckBox = new Checkbox("En Suite Bathroom");
+		bathroomCheckBox.setBounds(12, 328, 122, 23);
+		filterAndSortPanel.add(bathroomCheckBox);
+		bathroomCheckBox.setFont(new Font("Dialog", Font.PLAIN, 12));
+		lblOrderBy.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblOrderBy.setBounds(12, 11, 166, 14);
+		
+		filterAndSortPanel.add(lblOrderBy);
+		
+		comboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				orderBy();
+				showSearchResults();
+			}
+		});
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"(None)", "A to Z", "Z to A", "Price: Low to high", "Price: High to low", "Stars: Low to high", "Stars: High to low"}));
+		comboBox.setFont(new Font("Dialog", Font.PLAIN, 12));
+		comboBox.setBounds(12, 36, 166, 20);
+		filterAndSortPanel.add(comboBox);
+		
+		
+		bathroomCheckBox.addItemListener(new BathroomItemListener());
+		
+		doubleBedRangeSlider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
                 RangeSlider slider = (RangeSlider) e.getSource();
-                starMin = slider.getValue();
-                starMax = slider.getUpperValue();
-                starLabel.setText("Stars: Min: "+starMin.toString()+" Max: "+starMax.toString());
-                
-                setSearch(search);
-            }
-        });
-		
-		priceRangeSlider.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                RangeSlider slider = (RangeSlider) e.getSource();
-                priceMin = slider.getValue();
-                priceMax = slider.getUpperValue();
-                priceLabel.setText("Price: Min:"+priceMin.toString()+" Max: "+priceMax.toString());
+                doubleBedMin = slider.getValue();
+                doubleBedMax = slider.getUpperValue();
+                doubleBedLabel.setText("Double Beds: Min:"+doubleBedMin.toString()+" Max: "+doubleBedMax.toString());
                 
                 setSearch(search);
             }
@@ -161,70 +223,30 @@ public class SearchResultPanel extends JPanel
                 setSearch(search);
             }
         });
-		
-		doubleBedRangeSlider.addChangeListener(new ChangeListener() {
+				
+		priceRangeSlider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
                 RangeSlider slider = (RangeSlider) e.getSource();
-                doubleBedMin = slider.getValue();
-                doubleBedMax = slider.getUpperValue();
-                doubleBedLabel.setText("Double Beds: Min:"+doubleBedMin.toString()+" Max: "+doubleBedMax.toString());
+                priceMin = slider.getValue();
+                priceMax = slider.getUpperValue();
+                priceLabel.setText("Price: Min:"+priceMin.toString()+" Max: "+priceMax.toString());
                 
                 setSearch(search);
             }
         });
 		
-		
-		JLabel filterLabel = new JLabel("Filter By:");
-		filterLabel.setFont(new Font("Dialog", Font.BOLD, 14));
-		filterLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		filterLabel.setPreferredSize(new Dimension(20,20));
-		starLabel.setFont(new Font("Dialog", Font.PLAIN, 14));
-		starLabel.setText("Stars: Min: "+starMin.toString()+" Max: "+starMax.toString());
-		starLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		priceLabel.setFont(new Font("Dialog", Font.PLAIN, 14));
-		priceLabel.setText("Price: Min:"+priceMin.toString()+" Max: "+priceMax.toString());
-		priceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		singleBedLabel.setFont(new Font("Dialog", Font.PLAIN, 14));
-		singleBedLabel.setText("Single Beds: Min: "+singleBedMin.toString()+" Max: "+singleBedMax.toString());
-		singleBedLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		doubleBedLabel.setFont(new Font("Dialog", Font.PLAIN, 14));
-		doubleBedLabel.setText("Double Beds: Min:"+doubleBedMin.toString()+" Max: "+doubleBedMax.toString());
-		doubleBedLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		bathroomCheckBox = new Checkbox("En Suite Bathroom");
-		bathroomCheckBox.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		
-		
-		bathroomCheckBox.addItemListener(new BathroomItemListener());
-		
-		
-		filterPanel.add(rigidArea_4);
-		
-		// Add components to filter panel
-		filterPanel.add(filterLabel);
-		
-		filterPanel.add(rigidArea_3);
-		filterPanel.add(new JSeparator());
-		filterPanel.add(starLabel);
-		filterPanel.add(starRangeSlider);
-		
-		filterPanel.add(rigidArea);
-		filterPanel.add(priceLabel);
-		filterPanel.add(priceRangeSlider);
-		
-		filterPanel.add(rigidArea_1);
-		filterPanel.add(singleBedLabel);
-		filterPanel.add(singleBedRangeSlider);
-		
-		filterPanel.add(rigidArea_2);
-		filterPanel.add(doubleBedLabel);
-		filterPanel.add(doubleBedRangeSlider);
-		filterPanel.add(bathroomCheckBox);
-		
-		// Add sub panels to searchResultPanel
-		this.add(tablePanel);
+		// Add listener for filters.
+		starRangeSlider.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                RangeSlider slider = (RangeSlider) e.getSource();
+                starMin = slider.getValue();
+                starMax = slider.getUpperValue();
+                starLabel.setText("Stars: Min: "+starMin.toString()+" Max: "+starMax.toString());
+                
+                setSearch(search);
+            }
+        });
 		this.add(filterPanel);
-		
-		filterPanel.add(verticalGlue);
 	}
 	
 	public void setSearch(Search search)
@@ -233,9 +255,11 @@ public class SearchResultPanel extends JPanel
 		search.setPriceRange(priceMin, priceMax);
 		search.setNumberOfSingleBeds(singleBedMin, singleBedMax);
 		search.setNumberOfDoubleBeds(doubleBedMin, doubleBedMax);
-		
+		search.setEnSuiteBathroom(isBathroom);
+				
 		search.filter();
 		this.search = search;
+		orderBy();
 		showSearchResults();
 	}
 	
@@ -248,8 +272,25 @@ public class SearchResultPanel extends JPanel
 		for(Room r : hotelRooms)
 		{
 			searchTableModel.addRow(new Object[] { r.getHotel().getName(), r.getNumberOfSingleBeds(), r.getNumberOfDoubleBeds(), (r.getEnSuiteBathroom()? "Yes": "No"), r.getCostPerNight(), "Book"});
-		
 		}
+	}
+	
+	private void orderBy()
+	{
+		if (String.valueOf(comboBox.getSelectedItem()).equals("A to Z"))
+			search.sort(SortBy.HOTEL_NAME_AZ);
+		if (String.valueOf(comboBox.getSelectedItem()).equals("Z to A"))
+			search.sort(SortBy.HOTEL_NAME_ZA);
+		if (String.valueOf(comboBox.getSelectedItem()).equals("Price: Low to high"))
+			search.sort(SortBy.PRICE_ASCENDING);
+		if (String.valueOf(comboBox.getSelectedItem()).equals("Price: High to low"))
+			search.sort(SortBy.PRICE_DESCENDING);
+		if (String.valueOf(comboBox.getSelectedItem()).equals("Stars: Low to high"))
+			search.sort(SortBy.STARCOUNT_ASCENDING);
+		if (String.valueOf(comboBox.getSelectedItem()).equals("Stars: High to low"))
+			search.sort(SortBy.STARCOUNT_DESCENDING);
+		if (String.valueOf(comboBox.getSelectedItem()).equals("(None)"))
+			search.sort(SortBy.NONE);
 	}
 	
 	private void initRangeSlider( RangeSlider rs, int min, int max)
@@ -260,7 +301,6 @@ public class SearchResultPanel extends JPanel
 		rs.setValue(min);
 		rs.setUpperValue(max);
 	}
-
 
 	public void bookRoom()
 	{
@@ -280,14 +320,8 @@ public class SearchResultPanel extends JPanel
 	
 	class BathroomItemListener implements ItemListener {
 		public void itemStateChanged(ItemEvent e) {
-		    if (e.getStateChange() == ItemEvent.SELECTED)
-		    {
-		    	System.out.println("Selected");
-		    }
-		    else 
-		    {
-		    	System.out.println("UnSelected");
-		    }
+			search.setEnSuiteBathroom(e.getStateChange() == ItemEvent.SELECTED);
+			showSearchResults();
 		}
 	}
 }
