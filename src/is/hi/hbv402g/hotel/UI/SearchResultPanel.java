@@ -180,7 +180,7 @@ public class SearchResultPanel extends JPanel
 		doubleBedRangeSlider.setBounds(12, 299, 200, 16);
 		filterAndSortPanel.add(doubleBedRangeSlider);
 		bathroomCheckBox = new Checkbox("En Suite Bathroom");
-		bathroomCheckBox.setBounds(12, 328, 122, 23);
+		bathroomCheckBox.setBounds(12, 321, 198, 23);
 		filterAndSortPanel.add(bathroomCheckBox);
 		bathroomCheckBox.setFont(new Font("Dialog", Font.PLAIN, 12));
 		lblOrderBy.setFont(new Font("Dialog", Font.BOLD, 14));
@@ -190,15 +190,14 @@ public class SearchResultPanel extends JPanel
 		
 		comboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				orderBy();
-				showSearchResults();
+				applyOrderAndFilters();
 			}
 		});
+				
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"(None)", "A to Z", "Z to A", "Price: Low to high", "Price: High to low", "Stars: Low to high", "Stars: High to low"}));
 		comboBox.setFont(new Font("Dialog", Font.PLAIN, 12));
 		comboBox.setBounds(12, 36, 166, 20);
 		filterAndSortPanel.add(comboBox);
-		
 		
 		bathroomCheckBox.addItemListener(new BathroomItemListener());
 		
@@ -209,7 +208,7 @@ public class SearchResultPanel extends JPanel
                 doubleBedMax = slider.getUpperValue();
                 doubleBedLabel.setText("Double Beds: Min:"+doubleBedMin.toString()+" Max: "+doubleBedMax.toString());
                 
-                setSearch(search);
+                applyOrderAndFilters();
             }
         });
 		
@@ -220,7 +219,7 @@ public class SearchResultPanel extends JPanel
                 singleBedMax = slider.getUpperValue();
                 singleBedLabel.setText("Single Beds: Min: "+singleBedMin.toString()+" Max: "+singleBedMax.toString());
                 
-                setSearch(search);
+                applyOrderAndFilters();
             }
         });
 				
@@ -231,7 +230,7 @@ public class SearchResultPanel extends JPanel
                 priceMax = slider.getUpperValue();
                 priceLabel.setText("Price: Min:"+priceMin.toString()+" Max: "+priceMax.toString());
                 
-                setSearch(search);
+                applyOrderAndFilters();
             }
         });
 		
@@ -243,7 +242,7 @@ public class SearchResultPanel extends JPanel
                 starMax = slider.getUpperValue();
                 starLabel.setText("Stars: Min: "+starMin.toString()+" Max: "+starMax.toString());
                 
-                setSearch(search);
+                applyOrderAndFilters();
             }
         });
 		this.add(filterPanel);
@@ -251,32 +250,42 @@ public class SearchResultPanel extends JPanel
 	
 	public void setSearch(Search search)
 	{
+		this.search = search;
+		
+		int i = 0;
+		for(String amenity : search.getListOfAmenities())
+		{	
+			Checkbox amenityCheckBox = new Checkbox(amenity);
+			amenityCheckBox.setBounds(12, 321 + (i++)*23, 198, 23);
+			amenityCheckBox.addItemListener(new ItemListener() 
+			{
+				public void itemStateChanged(ItemEvent e) 
+				{
+					if(e.getStateChange() == ItemEvent.SELECTED)
+					{
+						search.addAmenity(amenity);
+					}
+					else
+					{
+						search.removeAmenity(amenity);
+					}
+					applyOrderAndFilters();
+				}
+			});
+			filterAndSortPanel.add(amenityCheckBox);
+		}
+		applyOrderAndFilters();
+	}
+	
+	private void applyOrderAndFilters()
+	{
 		search.setStarCount(starMin, starMax);
 		search.setPriceRange(priceMin, priceMax);
 		search.setNumberOfSingleBeds(singleBedMin, singleBedMax);
 		search.setNumberOfDoubleBeds(doubleBedMin, doubleBedMax);
 		search.setEnSuiteBathroom(isBathroom);
-				
 		search.filter();
-		this.search = search;
-		orderBy();
-		showSearchResults();
-	}
-	
-	private void showSearchResults()
-	{
-		ArrayList<Room> hotelRooms = this.search.getSearchResults();
 		
-		searchTableModel.setRowCount(0);
-		
-		for(Room r : hotelRooms)
-		{
-			searchTableModel.addRow(new Object[] { r.getHotel().getName(), r.getNumberOfSingleBeds(), r.getNumberOfDoubleBeds(), (r.getEnSuiteBathroom()? "Yes": "No"), r.getCostPerNight(), "Book"});
-		}
-	}
-	
-	private void orderBy()
-	{
 		if (String.valueOf(comboBox.getSelectedItem()).equals("A to Z"))
 			search.sort(SortBy.HOTEL_NAME_AZ);
 		if (String.valueOf(comboBox.getSelectedItem()).equals("Z to A"))
@@ -291,6 +300,20 @@ public class SearchResultPanel extends JPanel
 			search.sort(SortBy.STARCOUNT_DESCENDING);
 		if (String.valueOf(comboBox.getSelectedItem()).equals("(None)"))
 			search.sort(SortBy.NONE);
+		
+		showSearchResults();
+	}
+	
+	private void showSearchResults()
+	{
+		ArrayList<Room> hotelRooms = this.search.getSearchResults();
+		
+		searchTableModel.setRowCount(0);
+		
+		for(Room r : hotelRooms)
+		{
+			searchTableModel.addRow(new Object[] { r.getHotel().getName(), r.getNumberOfSingleBeds(), r.getNumberOfDoubleBeds(), (r.getEnSuiteBathroom()? "Yes": "No"), r.getCostPerNight(), "Book"});
+		}
 	}
 	
 	private void initRangeSlider( RangeSlider rs, int min, int max)
@@ -320,8 +343,8 @@ public class SearchResultPanel extends JPanel
 	
 	class BathroomItemListener implements ItemListener {
 		public void itemStateChanged(ItemEvent e) {
-			search.setEnSuiteBathroom(e.getStateChange() == ItemEvent.SELECTED);
-			showSearchResults();
+			isBathroom = e.getStateChange() == ItemEvent.SELECTED;
+			applyOrderAndFilters();
 		}
 	}
 }

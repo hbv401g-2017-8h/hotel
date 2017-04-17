@@ -1,6 +1,7 @@
 package is.hi.hbv402g.hotel.db;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 import is.hi.hbv402g.hotel.models.BookingNight;
@@ -36,6 +37,11 @@ public class MockDataManager implements IDataManager
 	public Integer saveGuest(Guest g)
 	{
 		return null;
+	}
+	
+	public ArrayList<String> getListOfAmenities()
+	{
+		return new ArrayList<String>(Arrays.asList("Wifi", "Room service"));
 	}
 
 }

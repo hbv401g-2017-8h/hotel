@@ -289,4 +289,28 @@ public class Search
 
 		return filteredRooms;
 	}
+	
+	public ArrayList<String> getListOfAmenities()
+	{
+		return db.getListOfAmenities();
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

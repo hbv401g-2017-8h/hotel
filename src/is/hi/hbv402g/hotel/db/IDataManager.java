@@ -12,4 +12,5 @@ public interface IDataManager
 	public ArrayList<Room> findHotelRooms(String hotelName, String location, Date availabilityFrom, Date availabilityTo);
 	public void saveBookingNights(ArrayList<BookingNight> bookingNights);
 	public Integer saveGuest(Guest g);
+	public ArrayList<String> getListOfAmenities();
 }
