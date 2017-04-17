@@ -11,7 +11,7 @@ CREATE TABLE Hotel(
   city VARCHAR(255) COLLATE NOCASE,
   postalCode VARCHAR(255),
   country VARCHAR(255) COLLATE NOCASE,
-  starCount INT
+  starCount INTEGER
 );
 
 CREATE TABLE Room(
@@ -30,12 +30,12 @@ CREATE TABLE Guest(
     email VARCHAR(255) COLLATE NOCASE,
     phoneNumber VARCHAR(255) COLLATE NOCASE,
     numberOfAdults INTEGER,
-    numberOfChildren INT
+    numberOfChildren INTEGER
 );
 
 CREATE TABLE BookingNight(
-  roomId INT NOT NULL,
-  guestId INT NOT NULL,
+  roomId INTEGER NOT NULL,
+  guestId INTEGER NOT NULL,
   date DATE NOT NULL,
   PRIMARY KEY(roomId, date)
   FOREIGN KEY(roomId) REFERENCES Room(id),
