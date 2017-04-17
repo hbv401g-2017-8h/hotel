@@ -20,6 +20,7 @@ import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Properties;
@@ -193,15 +194,158 @@ public class BookingPanel extends JPanel
 	
 	private void completeBooking()
 	{
+		if (guestNameTextField.getText().isEmpty())
+		{
+			JOptionPane.showMessageDialog(this,
+			    "Guest name can't be empty",
+			    "Guest name error",
+			    JOptionPane.ERROR_MESSAGE);
+			guestNameTextField.requestFocus();
+			return;
+		}
+		
+		if (guestEmailTextField.getText().isEmpty())
+		{
+			JOptionPane.showMessageDialog(this,
+				    "Guest email can't be empty",
+				    "Guest email error",
+				    JOptionPane.ERROR_MESSAGE);
+			guestEmailTextField.requestFocus();
+			return;
+		}
+		
+		if (guestPhoneNumberTextField.getText().isEmpty())
+		{
+			JOptionPane.showMessageDialog(this,
+				    "Guest phone number can't be empty",
+				    "Guest phone number error",
+				    JOptionPane.ERROR_MESSAGE);
+			guestPhoneNumberTextField.requestFocus();
+			return;
+		}
+		
+		if (numberOfAdultsTextField.getText().isEmpty())
+		{
+			JOptionPane.showMessageDialog(this,
+				    "Number of adults can't be empty",
+				    "Number of adults number error",
+				    JOptionPane.ERROR_MESSAGE);
+			numberOfAdultsTextField.requestFocus();
+			return;
+		}
+
+		if (numberOfChildrenTextField.getText().isEmpty())
+		{
+			JOptionPane.showMessageDialog(this,
+				    "Number of children can't be empty",
+				    "Number of children error",
+				    JOptionPane.ERROR_MESSAGE);
+			numberOfChildrenTextField.requestFocus();
+			return;
+		}
+
 		Guest g = new Guest();
 		g.setName(guestNameTextField.getText());
 		g.setEmail(guestEmailTextField.getText());
 		g.setPhoneNumber(guestPhoneNumberTextField.getText());
-		g.setNumberOfAdults(Integer.valueOf(numberOfAdultsTextField.getText()));
-		g.setNumberOfChildren(Integer.valueOf(numberOfChildrenTextField.getText()));
+
+		try
+		{
+			g.setNumberOfAdults(Integer.valueOf(numberOfAdultsTextField.getText()));
+		}
+		catch (NumberFormatException exc)
+		{
+			JOptionPane.showMessageDialog(this,
+				    "Number of adults has to be a number",
+				    "Number of adults error",
+				    JOptionPane.ERROR_MESSAGE);
+			numberOfAdultsTextField.requestFocus();
+			return;
+		}
+		
+		try
+		{
+			g.setNumberOfChildren(Integer.valueOf(numberOfChildrenTextField.getText()));
+		}
+		catch (NumberFormatException exc)
+		{
+			JOptionPane.showMessageDialog(this,
+				    "Number of children has to be a number",
+				    "Number of children error",
+				    JOptionPane.ERROR_MESSAGE);
+			numberOfChildrenTextField.requestFocus();
+			return;
+		}
+		
+		// Check if legal number of adults
+		if (g.getNumberOfAdults() < 1)
+		{
+			JOptionPane.showMessageDialog(this,
+				    "Number of adults has to be one or greater",
+				    "Number of adults error",
+				    JOptionPane.ERROR_MESSAGE);
+			numberOfAdultsTextField.requestFocus();
+			return;
+		}
+		
+		// Check if legal number of children
+		if (g.getNumberOfChildren() < 0)
+		{
+			JOptionPane.showMessageDialog(this,
+				    "Number of children has to be zero or greater",
+				    "Number of children error",
+				    JOptionPane.ERROR_MESSAGE);
+			numberOfChildrenTextField.requestFocus();
+			return;
+		}
 		
 		Date dateFrom = dateModelFrom.getValue();
 		Date dateTo = dateModelTo.getValue();
+		
+		if (dateFrom == null)
+		{
+			JOptionPane.showMessageDialog(this,
+				    "Booking date from has to selected",
+				    "Date from error",
+				    JOptionPane.ERROR_MESSAGE);
+			datePickerFrom.requestFocus();
+			return;
+		}
+
+		if (dateTo == null)
+		{
+			JOptionPane.showMessageDialog(this,
+				    "Booking date to has to selected",
+				    "Date to error",
+				    JOptionPane.ERROR_MESSAGE);
+			datePickerTo.requestFocus();
+			return;
+		}
+		
+		// Check if date from is legal
+		Calendar today = Calendar.getInstance();
+		today.set(Calendar.HOUR_OF_DAY, 0);
+		if (dateFrom.compareTo(today.getTime()) == -1)
+				//dateFrom.before(new Date()) && !dateFrom.equals(new Date()))
+		{
+			JOptionPane.showMessageDialog(this,
+				    "Booking date from has to be today's date or after",
+				    "Date from error",
+				    JOptionPane.ERROR_MESSAGE);
+			datePickerFrom.requestFocus();
+			return;
+		}
+		
+		// Check if date to is legal
+		if (dateTo.before(dateFrom))
+		{
+			JOptionPane.showMessageDialog(this,
+				    "Booking date to has to be after date from",
+				    "Date to error",
+				    JOptionPane.ERROR_MESSAGE);
+			datePickerTo.requestFocus();
+			return;
+		}
 		
 		DatabaseManager dm = new DatabaseManager();
 		BookingManager bm = new BookingManager(dm);
