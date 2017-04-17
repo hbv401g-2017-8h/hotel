@@ -1,4 +1,4 @@
-package is.hi.hbv402g.hotel.db;
+ 	package is.hi.hbv402g.hotel.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 
+import is.hi.hbv402g.hotel.exceptions.DoubleBookedException;
 import is.hi.hbv402g.hotel.models.BookingNight;
 import is.hi.hbv402g.hotel.models.Guest;
 import is.hi.hbv402g.hotel.models.Hotel;
@@ -165,7 +166,7 @@ public class DatabaseManager implements IDataManager
 		return rooms;
 	}
 	
-	public void saveBookingNights(ArrayList<BookingNight> bookingNights)
+	public void saveBookingNights(ArrayList<BookingNight> bookingNights) throws DoubleBookedException
 	{
 		try
 		{
@@ -184,6 +185,8 @@ public class DatabaseManager implements IDataManager
 		}
 		catch (SQLException exc)
 		{
+			if (exc.getMessage().startsWith("[SQLITE_CONSTRAINT_PRIMARYKEY]"))
+				throw new DoubleBookedException();
 			System.err.println(exc.getMessage());
 			return;
 		}

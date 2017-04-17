@@ -7,6 +7,7 @@ import java.util.Date;
 
 import is.hi.hbv402g.hotel.db.DatabaseManager;
 import is.hi.hbv402g.hotel.db.IDataManager;
+import is.hi.hbv402g.hotel.exceptions.DoubleBookedException;
 import is.hi.hbv402g.hotel.models.BookingNight;
 import is.hi.hbv402g.hotel.models.Guest;
 import is.hi.hbv402g.hotel.models.Payment;
@@ -81,7 +82,7 @@ public class BookingManager
 		
 	}
 	
-	public ArrayList<BookingNight> book(Guest guest, Room room, Payment payment, Date dateFrom, Date dateTo)
+	public ArrayList<BookingNight> book(Guest guest, Room room, Payment payment, Date dateFrom, Date dateTo) throws DoubleBookedException
 	{
 		LocalDate start = dateFrom.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 		LocalDate end = dateTo.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();

@@ -5,6 +5,7 @@ import javax.swing.BoxLayout;
 
 import is.hi.hbv402g.hotel.controllers.BookingManager;
 import is.hi.hbv402g.hotel.db.DatabaseManager;
+import is.hi.hbv402g.hotel.exceptions.DoubleBookedException;
 import is.hi.hbv402g.hotel.models.Guest;
 import is.hi.hbv402g.hotel.models.Room;
 
@@ -350,6 +351,26 @@ public class BookingPanel extends JPanel
 		DatabaseManager dm = new DatabaseManager();
 		BookingManager bm = new BookingManager(dm);
 		
-		bm.book(g, room, null, dateFrom, dateTo);
+		try
+		{
+			bm.book(g, room, null, dateFrom, dateTo);
+		}
+		catch (DoubleBookedException e)
+		{
+			JOptionPane.showMessageDialog(this,
+				    "Room is already booked for this date",
+				    "Booking error",
+				    JOptionPane.ERROR_MESSAGE);
+			datePickerFrom.requestFocus();
+			return;
+		}
+
+		JOptionPane.showMessageDialog(this,
+			    "Room has been booked!",
+			    "Congratulations!",
+			    JOptionPane.INFORMATION_MESSAGE);
+
+        MainFrame mf = Utilities.findParent(this, MainFrame.class);
+        mf.showSearch();
 	}
 }
