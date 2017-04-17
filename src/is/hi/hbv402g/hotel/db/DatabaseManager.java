@@ -127,11 +127,6 @@ public class DatabaseManager implements IDataManager
 			HashMap<Integer, Hotel> hotels = new HashMap<>();
 			while (results.next())
 			{
-				for(int j = 1; j < 15; j++)
-				{
-					System.out.println(results.getString(j));
-				}
-				
 				// Read hotel information
 				Hotel h = hotels.get(results.getInt(7));
 				if (h == null)
@@ -320,5 +315,29 @@ public class DatabaseManager implements IDataManager
 			return null;
 		}
 	}
+	
+	public ArrayList<String> getListOfAmenities()
+	{
+		ArrayList<String> amenities = new ArrayList<>();
+		try
+		{
+			Connection connection = getConnection();
+			PreparedStatement statement = connection.prepareStatement(
+					"SELECT DISTINCT amenity FROM Amenities");
+			
+			ResultSet results = statement.executeQuery();
 
+			if (results.next())
+			{
+				amenities.add(results.getString("amenity"));
+			}
+
+			return amenities;
+		}
+		catch (SQLException exc)
+		{
+			System.err.println(exc.getMessage());
+			return null;
+		}
+	}
 }
