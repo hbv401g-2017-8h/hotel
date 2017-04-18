@@ -2,8 +2,6 @@ package is.hi.hbv402g.hotel.UI;
 
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-
 public class MainWindow
 {
 

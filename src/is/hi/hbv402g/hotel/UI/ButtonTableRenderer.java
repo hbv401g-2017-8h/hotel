@@ -1,12 +1,16 @@
 package is.hi.hbv402g.hotel.UI;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.table.*;
+import java.awt.Component;
+
+import javax.swing.JButton;
+import javax.swing.JTable;
+import javax.swing.UIManager;
+import javax.swing.table.TableCellRenderer;
   
 /**
  * @version 1.0 11/09/98
  * * Retrieved from: http://esus.com/jbutton-cell-jtable/
  */
+@SuppressWarnings("serial")
 public class ButtonTableRenderer extends JButton implements TableCellRenderer {
   
   public ButtonTableRenderer() {

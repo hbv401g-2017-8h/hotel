@@ -1,12 +1,18 @@
 package is.hi.hbv402g.hotel.UI;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JTable;
 
 /**
  * @version 1.0 11/09/98 Retrieved from: http://esus.com/jbutton-cell-jtable/
  */
+@SuppressWarnings("serial")
 public class ButtonTableEditor extends DefaultCellEditor
 {
 	protected JButton button;

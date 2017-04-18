@@ -1,23 +1,22 @@
 package is.hi.hbv402g.hotel.UI;
 
-import javax.swing.JPanel;
-
-import is.hi.hbv402g.hotel.models.Room;
-
-import javax.swing.JLabel;
-
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JList;
-import java.awt.Color;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 
+import is.hi.hbv402g.hotel.models.Room;
+
+@SuppressWarnings("serial")
 public class RoomPanel extends JPanel
 {
 	private Room r;

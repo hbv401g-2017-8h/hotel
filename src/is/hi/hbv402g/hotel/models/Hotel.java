@@ -15,12 +15,12 @@ public class Hotel
 	private int starCount;
 	private ArrayList<Review> reviews;
 	private ArrayList<Room> rooms;
-	
+
 	public Hotel()
 	{
-		
+
 	}
-	
+
 	public Hotel(int id)
 	{
 		this.id = id;
@@ -128,13 +128,11 @@ public class Hotel
 
 	public String toString()
 	{
-		return "[Hotel id=" + this.id + 
-				", name=" + this.getName() + 
-				", streetAddress=" + this.getStreetAddress() + 
-				", city=" + this.getCity() + 
-				", postalCode=" + this.getPostalCode() + 
-				", country=" + this.getCountry() + 
-				", starCount=" + this.getStarCount() + "]";
+		return "[Hotel id=" + this.id + ", name=" + this.getName()
+				+ ", streetAddress=" + this.getStreetAddress() + ", city="
+				+ this.getCity() + ", postalCode=" + this.getPostalCode()
+				+ ", country=" + this.getCountry() + ", starCount="
+				+ this.getStarCount() + "]";
 	}
 
 	public int getId()
