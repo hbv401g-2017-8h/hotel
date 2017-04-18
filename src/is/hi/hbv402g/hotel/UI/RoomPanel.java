@@ -152,6 +152,7 @@ public class RoomPanel extends JPanel
 		lblEnSuiteBathroom.setText(r.getEnSuiteBathroom() ? "Bathroom: Yes":"Bathroom: No");
 		lblNumberOfSingle.setText(String.format("Number of single beds: %d", r.getNumberOfSingleBeds()));
 		lblNumberOfDouble.setText(String.format("Number of double beds: %d", r.getNumberOfDoubleBeds()));
+		amenitiesModel.clear();
 		for(String amenity : r.getHotel().getAmenities())
 		{
 			amenitiesModel.addElement(amenity);
