@@ -1,5 +1,5 @@
 // Retrieved from https://ernienotes.wordpress.com/2010/12/27/creating-a-java-swing-range-slider/
-package is.hi.hbv402g.hotel.UI;
+package is.hi.hbv402g.hotel.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;

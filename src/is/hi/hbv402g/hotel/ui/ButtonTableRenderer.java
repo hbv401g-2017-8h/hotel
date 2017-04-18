@@ -1,4 +1,4 @@
-package is.hi.hbv402g.hotel.UI;
+package is.hi.hbv402g.hotel.ui;
 import java.awt.Component;
 
 import javax.swing.JButton;

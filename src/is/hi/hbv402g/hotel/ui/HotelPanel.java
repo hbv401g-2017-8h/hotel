@@ -1,4 +1,4 @@
-package is.hi.hbv402g.hotel.UI;
+package is.hi.hbv402g.hotel.ui;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
