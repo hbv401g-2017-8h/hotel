@@ -78,6 +78,7 @@ public class SearchResultPanel extends JPanel
 	private Checkbox bathroomCheckBox;
 	private final JLabel lblOrderBy = new JLabel("Order by:");
 	private JComboBox comboBox = new JComboBox();
+	private ArrayList<Checkbox> amenityCheckboxes = new ArrayList<>();
 
 	public SearchResultPanel()
 	{
@@ -252,11 +253,20 @@ public class SearchResultPanel extends JPanel
 	{
 		this.search = search;
 		
+		// Removes old checkboxes
+		for(Checkbox cb : amenityCheckboxes)
+		{
+			filterAndSortPanel.remove(cb);
+		}
+		amenityCheckboxes.clear();
+		
+		// Makes new checkboxes for amenities
 		int i = 0;
 		for(String amenity : search.getListOfAmenities())
 		{	
 			Checkbox amenityCheckBox = new Checkbox(amenity);
-			amenityCheckBox.setBounds(12, 321 + (i++)*23, 198, 23);
+			amenityCheckBox.setBounds(12, 321 + (++i)*23, 198, 23);
+			amenityCheckBox.setFont(new Font("Dialog", Font.PLAIN, 12));
 			amenityCheckBox.addItemListener(new ItemListener() 
 			{
 				public void itemStateChanged(ItemEvent e) 
@@ -273,6 +283,7 @@ public class SearchResultPanel extends JPanel
 				}
 			});
 			filterAndSortPanel.add(amenityCheckBox);
+			amenityCheckboxes.add(amenityCheckBox);
 		}
 		applyOrderAndFilters();
 	}

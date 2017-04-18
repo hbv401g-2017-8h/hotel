@@ -327,7 +327,7 @@ public class DatabaseManager implements IDataManager
 			
 			ResultSet results = statement.executeQuery();
 
-			if (results.next())
+			while (results.next())
 			{
 				amenities.add(results.getString("amenity"));
 			}
