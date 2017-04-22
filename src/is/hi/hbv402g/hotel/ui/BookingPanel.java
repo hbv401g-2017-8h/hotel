@@ -322,7 +322,6 @@ public class BookingPanel extends JPanel
 		Calendar today = Calendar.getInstance();
 		today.set(Calendar.HOUR_OF_DAY, 0);
 		if (dateFrom.compareTo(today.getTime()) == -1)
-		// dateFrom.before(new Date()) && !dateFrom.equals(new Date()))
 		{
 			JOptionPane.showMessageDialog(this,
 					"Booking date from has to be today's date or after",
