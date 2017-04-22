@@ -4,12 +4,14 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -128,6 +130,35 @@ public class MainFrame extends JFrame
 		datePickerTo = new JDatePickerImpl(datePanelTo,
 				new DateLabelFormatter());
 		searchTextPanel.add(datePickerTo);
+		
+		MainFrame mf = this;
+		datePickerFrom.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Date dateFrom = dateModelFrom.getValue();
+				Calendar today = Calendar.getInstance();
+				today.set(Calendar.HOUR_OF_DAY, 0);
+				if (dateFrom.compareTo(today.getTime()) < 0)
+				{
+					JOptionPane.showMessageDialog(mf,
+							"Date from has to be today's date or after",
+							"Date from error", JOptionPane.ERROR_MESSAGE);
+					dateModelFrom.setValue(null);
+				}
+			}
+		});
+		datePickerTo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Date dateTo = dateModelTo.getValue();
+				Date dateFrom = dateModelFrom.getValue();
+				if (dateTo.before(dateFrom))
+				{
+					JOptionPane.showMessageDialog(mf,
+							"Date to has to be after date from",
+							"Date to error", JOptionPane.ERROR_MESSAGE);
+					dateModelTo.setValue(null);
+				}
+			}
+		});
 
 		JButton btnSearch = new JButton("Search");
 		btnSearch.setFont(new Font("Dialog", Font.PLAIN, 12));

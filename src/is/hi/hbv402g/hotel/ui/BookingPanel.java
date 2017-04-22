@@ -321,7 +321,7 @@ public class BookingPanel extends JPanel
 		// Check if date from is legal
 		Calendar today = Calendar.getInstance();
 		today.set(Calendar.HOUR_OF_DAY, 0);
-		if (dateFrom.compareTo(today.getTime()) == -1)
+		if (dateFrom.compareTo(today.getTime()) < 0)
 		{
 			JOptionPane.showMessageDialog(this,
 					"Booking date from has to be today's date or after",
